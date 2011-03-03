@@ -1,0 +1,304 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5D72503C1282722D004AF8ED /* libGLTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D72503B1282722D004AF8ED /* libGLTools.a */; };
+		5DD7A416128271510061B880 /* collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40A128271510061B880 /* collection.h */; };
+		5DD7A417128271510061B880 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40B128271510061B880 /* common.h */; };
+		5DD7A418128271510061B880 /* RCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40C128271510061B880 /* RCamera.h */; };
+		5DD7A419128271510061B880 /* REngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40D128271510061B880 /* REngine.h */; };
+		5DD7A41A128271510061B880 /* RGame.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40E128271510061B880 /* RGame.h */; };
+		5DD7A41B128271510061B880 /* RNode.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40F128271510061B880 /* RNode.h */; };
+		5DD7A41C128271510061B880 /* RScene.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A410128271510061B880 /* RScene.h */; };
+		5DD7A41D128271510061B880 /* rtypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A411128271510061B880 /* rtypes.h */; };
+		5DD7A41E128271510061B880 /* RCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DD7A413128271510061B880 /* RCamera.cpp */; };
+		5DD7A41F128271510061B880 /* REngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DD7A414128271510061B880 /* REngine.cpp */; };
+		5DD7A420128271510061B880 /* RGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DD7A415128271510061B880 /* RGame.cpp */; };
+		5DD7A424128271700061B880 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD7A423128271700061B880 /* GLUT.framework */; };
+		5DD7A426128271700061B880 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD7A425128271700061B880 /* OpenGL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5073E0C609E734A800EC74B6 /* ReactorProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = ReactorProj.xcconfig; sourceTree = "<group>"; };
+		5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = ReactorTarget.xcconfig; sourceTree = "<group>"; };
+		5D72503B1282722D004AF8ED /* libGLTools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLTools.a; path = dependencies/GLTools/libGLTools.a; sourceTree = "<group>"; };
+		5DD7A40A128271510061B880 /* collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = collection.h; sourceTree = "<group>"; };
+		5DD7A40B128271510061B880 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		5DD7A40C128271510061B880 /* RCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCamera.h; sourceTree = "<group>"; };
+		5DD7A40D128271510061B880 /* REngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REngine.h; sourceTree = "<group>"; };
+		5DD7A40E128271510061B880 /* RGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGame.h; sourceTree = "<group>"; };
+		5DD7A40F128271510061B880 /* RNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNode.h; sourceTree = "<group>"; };
+		5DD7A410128271510061B880 /* RScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RScene.h; sourceTree = "<group>"; };
+		5DD7A411128271510061B880 /* rtypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtypes.h; sourceTree = "<group>"; };
+		5DD7A413128271510061B880 /* RCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RCamera.cpp; sourceTree = "<group>"; };
+		5DD7A414128271510061B880 /* REngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = REngine.cpp; sourceTree = "<group>"; };
+		5DD7A415128271510061B880 /* RGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RGame.cpp; sourceTree = "<group>"; };
+		5DD7A423128271700061B880 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		5DD7A425128271700061B880 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		D2AAC09D05546B4700DB518D /* Reactor.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = Reactor.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2AAC09B05546B4700DB518D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DD7A424128271700061B880 /* GLUT.framework in Frameworks */,
+				5DD7A426128271700061B880 /* OpenGL.framework in Frameworks */,
+				5D72503C1282722D004AF8ED /* libGLTools.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DDFF38A45A11DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC09D05546B4700DB518D /* Reactor.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* Reactor */ = {
+			isa = PBXGroup;
+			children = (
+				5073E0CA09E734BC00EC74B6 /* Configuration Files */,
+				08FB77ACFE841707C02AAC07 /* Source */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DDFF38A45A11DB9C8B /* Products */,
+			);
+			name = Reactor;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				5DD7A423128271700061B880 /* GLUT.framework */,
+				5DD7A425128271700061B880 /* OpenGL.framework */,
+				5D72503B1282722D004AF8ED /* libGLTools.a */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		08FB77ACFE841707C02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				5DD7A409128271510061B880 /* headers */,
+				5DD7A412128271510061B880 /* src */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		5073E0CA09E734BC00EC74B6 /* Configuration Files */ = {
+			isa = PBXGroup;
+			children = (
+				5073E0C609E734A800EC74B6 /* ReactorProj.xcconfig */,
+				5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */,
+			);
+			name = "Configuration Files";
+			sourceTree = "<group>";
+		};
+		5DD7A409128271510061B880 /* headers */ = {
+			isa = PBXGroup;
+			children = (
+				5DD7A40A128271510061B880 /* collection.h */,
+				5DD7A40B128271510061B880 /* common.h */,
+				5DD7A40C128271510061B880 /* RCamera.h */,
+				5DD7A40D128271510061B880 /* REngine.h */,
+				5DD7A40E128271510061B880 /* RGame.h */,
+				5DD7A40F128271510061B880 /* RNode.h */,
+				5DD7A410128271510061B880 /* RScene.h */,
+				5DD7A411128271510061B880 /* rtypes.h */,
+			);
+			name = headers;
+			path = code/headers;
+			sourceTree = "<group>";
+		};
+		5DD7A412128271510061B880 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				5DD7A413128271510061B880 /* RCamera.cpp */,
+				5DD7A414128271510061B880 /* REngine.cpp */,
+				5DD7A415128271510061B880 /* RGame.cpp */,
+			);
+			name = src;
+			path = code/src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC09905546B4700DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DD7A416128271510061B880 /* collection.h in Headers */,
+				5DD7A417128271510061B880 /* common.h in Headers */,
+				5DD7A418128271510061B880 /* RCamera.h in Headers */,
+				5DD7A419128271510061B880 /* REngine.h in Headers */,
+				5DD7A41A128271510061B880 /* RGame.h in Headers */,
+				5DD7A41B128271510061B880 /* RNode.h in Headers */,
+				5DD7A41C128271510061B880 /* RScene.h in Headers */,
+				5DD7A41D128271510061B880 /* rtypes.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC09C05546B4700DB518D /* Reactor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB916008733D950010E9CD /* Build configuration list for PBXNativeTarget "Reactor" */;
+			buildPhases = (
+				D2AAC09905546B4700DB518D /* Headers */,
+				D2AAC09B05546B4700DB518D /* Frameworks */,
+				D2AAC09A05546B4700DB518D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Reactor;
+			productName = libReactor;
+			productReference = D2AAC09D05546B4700DB518D /* Reactor.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB916408733D950010E9CD /* Build configuration list for PBXProject "Reactor" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 0867D691FE84028FC02AAC07 /* Reactor */;
+			productRefGroup = 034768DDFF38A45A11DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC09C05546B4700DB518D /* Reactor */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC09A05546B4700DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DD7A41E128271510061B880 /* RCamera.cpp in Sources */,
+				5DD7A41F128271510061B880 /* REngine.cpp in Sources */,
+				5DD7A420128271510061B880 /* RGame.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB916108733D950010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = "${GLTOOLS_INCLUDE}";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/dependencies/GLTools\"",
+				);
+				MACH_O_TYPE = staticlib;
+			};
+			name = Debug;
+		};
+		1DEB916208733D950010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				HEADER_SEARCH_PATHS = "${GLTOOLS_INCLUDE}";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/dependencies/GLTools\"",
+				);
+				MACH_O_TYPE = staticlib;
+				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_STYLE = "non-global";
+			};
+			name = Release;
+		};
+		1DEB916508733D950010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5073E0C609E734A800EC74B6 /* ReactorProj.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB916608733D950010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5073E0C609E734A800EC74B6 /* ReactorProj.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB916008733D950010E9CD /* Build configuration list for PBXNativeTarget "Reactor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB916108733D950010E9CD /* Debug */,
+				1DEB916208733D950010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB916408733D950010E9CD /* Build configuration list for PBXProject "Reactor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB916508733D950010E9CD /* Debug */,
+				1DEB916608733D950010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
