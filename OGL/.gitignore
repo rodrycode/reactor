@@ -1,0 +1,17 @@
+*.ncb
+*.suo
+Debug/
+Release/
+build/
+ipch/
+*.user
+*.sdf
+*.opensdf
+.DS_Store
+.project
+.cproject
+*.o
+*.a
+*.lib
+.settings/
+Default/
