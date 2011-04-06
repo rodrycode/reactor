@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D72503C1282722D004AF8ED /* libGLTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D72503B1282722D004AF8ED /* libGLTools.a */; };
+		5D1FBAE4134C2C1600190302 /* libGLTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1FBAE3134C2C1600190302 /* libGLTools.a */; };
 		5DD7A416128271510061B880 /* collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40A128271510061B880 /* collection.h */; };
 		5DD7A417128271510061B880 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40B128271510061B880 /* common.h */; };
 		5DD7A418128271510061B880 /* RCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40C128271510061B880 /* RCamera.h */; };
@@ -23,10 +23,21 @@
 		5DD7A426128271700061B880 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DD7A425128271700061B880 /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		5D1FBAB4134C263600190302 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5D1FBAB0134C263600190302 /* libGLTools.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5D1FBA9F134C263500190302;
+			remoteInfo = libGLTools;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		5073E0C609E734A800EC74B6 /* ReactorProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = ReactorProj.xcconfig; sourceTree = "<group>"; };
 		5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = ReactorTarget.xcconfig; sourceTree = "<group>"; };
-		5D72503B1282722D004AF8ED /* libGLTools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLTools.a; path = dependencies/GLTools/libGLTools.a; sourceTree = "<group>"; };
+		5D1FBAB0134C263600190302 /* libGLTools.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libGLTools.xcodeproj; path = dependencies/GLTools/libGLTools/libGLTools.xcodeproj; sourceTree = "<group>"; };
+		5D1FBAE3134C2C1600190302 /* libGLTools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLTools.a; path = dependencies/GLTools/libGLTools.a; sourceTree = "<group>"; };
 		5DD7A40A128271510061B880 /* collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = collection.h; sourceTree = "<group>"; };
 		5DD7A40B128271510061B880 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		5DD7A40C128271510061B880 /* RCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCamera.h; sourceTree = "<group>"; };
@@ -50,7 +61,7 @@
 			files = (
 				5DD7A424128271700061B880 /* GLUT.framework in Frameworks */,
 				5DD7A426128271700061B880 /* OpenGL.framework in Frameworks */,
-				5D72503C1282722D004AF8ED /* libGLTools.a in Frameworks */,
+				5D1FBAE4134C2C1600190302 /* libGLTools.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +79,7 @@
 		0867D691FE84028FC02AAC07 /* Reactor */ = {
 			isa = PBXGroup;
 			children = (
+				5D1FBAB0134C263600190302 /* libGLTools.xcodeproj */,
 				5073E0CA09E734BC00EC74B6 /* Configuration Files */,
 				08FB77ACFE841707C02AAC07 /* Source */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
@@ -79,9 +91,9 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5D1FBAE3134C2C1600190302 /* libGLTools.a */,
 				5DD7A423128271700061B880 /* GLUT.framework */,
 				5DD7A425128271700061B880 /* OpenGL.framework */,
-				5D72503B1282722D004AF8ED /* libGLTools.a */,
 			);
 			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
@@ -102,6 +114,14 @@
 				5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */,
 			);
 			name = "Configuration Files";
+			sourceTree = "<group>";
+		};
+		5D1FBAB1134C263600190302 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5D1FBAB5134C263600190302 /* libGLTools.dylib */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		5DD7A409128271510061B880 /* headers */ = {
@@ -187,12 +207,28 @@
 			mainGroup = 0867D691FE84028FC02AAC07 /* Reactor */;
 			productRefGroup = 034768DDFF38A45A11DB9C8B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 5D1FBAB1134C263600190302 /* Products */;
+					ProjectRef = 5D1FBAB0134C263600190302 /* libGLTools.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D2AAC09C05546B4700DB518D /* Reactor */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		5D1FBAB5134C263600190302 /* libGLTools.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libGLTools.dylib;
+			remoteRef = 5D1FBAB4134C263600190302 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D2AAC09A05546B4700DB518D /* Sources */ = {
@@ -220,7 +256,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
-				HEADER_SEARCH_PATHS = "${GLTOOLS_INCLUDE}";
+				HEADER_SEARCH_PATHS = (
+					"${GLTOOLS_INCLUDE}",
+					/Users/greiser/Documents/Reactor/OGL/dependencies/GLTools/include,
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/dependencies/GLTools\"",
