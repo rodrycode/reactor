@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D1FBAE4134C2C1600190302 /* libGLTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1FBAE3134C2C1600190302 /* libGLTools.a */; };
+		5D1FBAE6134C2E9F00190302 /* libGLTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1FBAE5134C2E9F00190302 /* libGLTools.a */; };
 		5DD7A416128271510061B880 /* collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40A128271510061B880 /* collection.h */; };
 		5DD7A417128271510061B880 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40B128271510061B880 /* common.h */; };
 		5DD7A418128271510061B880 /* RCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40C128271510061B880 /* RCamera.h */; };
@@ -37,7 +37,7 @@
 		5073E0C609E734A800EC74B6 /* ReactorProj.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = ReactorProj.xcconfig; sourceTree = "<group>"; };
 		5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = ReactorTarget.xcconfig; sourceTree = "<group>"; };
 		5D1FBAB0134C263600190302 /* libGLTools.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libGLTools.xcodeproj; path = dependencies/GLTools/libGLTools/libGLTools.xcodeproj; sourceTree = "<group>"; };
-		5D1FBAE3134C2C1600190302 /* libGLTools.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGLTools.a; path = dependencies/GLTools/libGLTools.a; sourceTree = "<group>"; };
+		5D1FBAE5134C2E9F00190302 /* libGLTools.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libGLTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DD7A40A128271510061B880 /* collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = collection.h; sourceTree = "<group>"; };
 		5DD7A40B128271510061B880 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		5DD7A40C128271510061B880 /* RCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCamera.h; sourceTree = "<group>"; };
@@ -59,9 +59,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D1FBAE6134C2E9F00190302 /* libGLTools.a in Frameworks */,
 				5DD7A424128271700061B880 /* GLUT.framework in Frameworks */,
 				5DD7A426128271700061B880 /* OpenGL.framework in Frameworks */,
-				5D1FBAE4134C2C1600190302 /* libGLTools.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,7 +91,7 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				5D1FBAE3134C2C1600190302 /* libGLTools.a */,
+				5D1FBAE5134C2E9F00190302 /* libGLTools.a */,
 				5DD7A423128271700061B880 /* GLUT.framework */,
 				5DD7A425128271700061B880 /* OpenGL.framework */,
 			);
