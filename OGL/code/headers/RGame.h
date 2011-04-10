@@ -35,6 +35,7 @@ namespace Reactor
 	private:
 		REngine* engine;
 		static RGame *_instance;
+        
 	public:
 		RGame(int argc, char** argv);
 		~RGame();
@@ -45,11 +46,11 @@ namespace Reactor
 		static void OnResize(int width, int height);
 		static void OnRender(void);
 		static void OnIdle(void);
-		virtual void Render(){ this->engine->RenderToScreen(); };
+		virtual void Render(){};
 		virtual void Update(){};
-
+        virtual void Idle(){};
 		REngine* Reactor();
-		
+		float GetFPS();
 
 	};
 };

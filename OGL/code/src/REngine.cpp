@@ -29,12 +29,11 @@ namespace Reactor
 	REngine::REngine()
 	{
 		
-		if(REngine::_instance == null)
-		{
-			REngine::_instance = new REngine();
+		
+        REngine::_instance = this;
 			REngine::_instance->clearColor = RColor(0,0,0,0);
 			//REngine::_instance->gldevice = rGLDevice();
-		}
+		
 	}
 
 	REngine::~REngine()
@@ -55,22 +54,26 @@ namespace Reactor
 	}
 
 	
-
+    const RECT& REngine::GetScreenSize(){
+        int w = glutGet(GLUT_SCREEN_WIDTH);
+        int h = glutGet(GLUT_SCREEN_HEIGHT);
+        return RECT(0, 0, w, h);
+    }
 	
+    
 
-
-	void REngine::Init3DWindowed(RECT &rect, char** title)
+	void REngine::Init3DWindowed(RECT &rect, const char* title)
 	{
 		
 		glutInitWindowSize (rect.right - rect.left, rect.bottom - rect.top);
 		glutInitWindowPosition(rect.left, rect.top);
-		glutCreateWindow(title[0]);
+		window = glutCreateWindow(title);
 		
 		REngine::_instance->_fullscreen = false;
-		REngine::_instance->shaderManager.InitializeStockShaders();
+		//REngine::_instance->shaderManager.InitializeStockShaders();
 	}
 
-	void REngine::Init3DFullscreen(char** title, RINT width, RINT height, RINT color, RINT depth)
+	void REngine::Init3DFullscreen(const char* title, RINT width, RINT height, RINT color, RINT depth)
 	{
 		RECT rect;
 		rect.left=0;
@@ -79,7 +82,7 @@ namespace Reactor
 		rect.bottom=height;
 		glutInitWindowSize (rect.right - rect.left, rect.bottom - rect.top);
 		glutInitWindowPosition(rect.left, rect.top);
-		glutCreateWindow(title[0]);
+		glutCreateWindow(title);
 		std::ostringstream str;
 		str << width << "x" << height << ":" << depth;
 		glutGameModeString(str.str().c_str());

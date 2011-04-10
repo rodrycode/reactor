@@ -76,8 +76,8 @@ typedef uint64_t GLuint64EXT;
 
 
 #ifdef __APPLE__
-#include <GLTools.h>
-#include <GLShaderManager.h>
+//#include <GLTools.h>
+//#include <GLShaderManager.h>
 //#include <OpenGL/GL.h>
 //#include <OpenGL/GLU.h>
 #include <GLUT/GLUT.h>

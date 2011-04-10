@@ -156,9 +156,9 @@ struct RVector2
 	};
 
 	RVector2& operator ++ (RINT) {
-		RVector2 v = *this;
-		++*this;
-		return v;
+		RVector2* v = this;
+		++v;
+		return *v;
 	};
 
 	RVector2& operator -- () {
@@ -168,9 +168,9 @@ struct RVector2
 	};
 
 	RVector2& operator -- (RINT) {
-		RVector2 v = *this;
-		--*this;
-		return v;
+		RVector2* v = this;
+		--v;
+		return *v;
 	};
 
 	RVector2 operator * (const RVector2& v2) {

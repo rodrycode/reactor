@@ -26,58 +26,77 @@ THE SOFTWARE.
 namespace Reactor
 {
 	RGame* RGame::_instance = NULL;
-	
+	static int __ticks = 0;
+    static int __frames = 0;
+    static int __timebase = 0;
+    static float __fps = 0.0f;
 	RGame::RGame(int argc, char** argv)
 	{
-		if(RGame::_instance == null)
+		if(_instance == null)
 		{
-			RGame::_instance = this;
+			_instance = this;
 		
 			this->engine = REngine::getInstance();
 			gltSetWorkingDirectory(argv[0]);
 			glutInit(&argc, argv);
 			glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-			this->Init();
-		}
+            
+        }
 	}
 
 	RGame::~RGame()
 	{
-		if(RGame::_instance->engine)
-			RGame::_instance->engine->DestroyAll();
+		if(_instance->engine)
+			_instance->engine->DestroyAll();
 		delete this;
 	}
 
+    
+    float RGame::GetFPS(){
+        return __fps;
+    }
+    
 	void RGame::Init()
 	{
 		glutDisplayFunc(OnRender);
 		glutReshapeFunc(OnResize);
 		glutIdleFunc(OnIdle);
-		RGame::_instance->Load();
-		
 		glutMainLoop();
 		
-		RGame::_instance->Unload();
 		
 		delete this;
 	}
 
 	void RGame::OnIdle()
 	{
-		RGame::_instance->Update();
+        
+        int time = glutGet(GLUT_ELAPSED_TIME);
+        if (time - __timebase > 1000) {
+            __fps = __frames*1000.0f/(float)(time-__timebase);
+            __timebase = time;
+            __frames = 0;
+        }
+        if(time-__ticks > (1/60)){
+            __ticks = time;
+            ++__frames;
+            OnRender();
+        }
+		_instance->Idle();
 	}
 	
 	void RGame::OnResize(int width, int height)
 	{
-		RGame::_instance->engine->OnResize(width, height);
+		_instance->engine->OnResize(width, height);
 	}
 
 	void RGame::OnRender()
 	{
-		RGame::_instance->Render();
-		RGame::_instance->Update();
+        _instance->Update();
+		_instance->Render();
+		
 	}
 
+    
 	
 
 	REngine* RGame::Reactor()

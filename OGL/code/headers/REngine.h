@@ -38,19 +38,20 @@ namespace Reactor
 		~REngine();
 		bool _fullscreen;
 		RColor clearColor;
-		
+		int window;
 		GLShaderManager shaderManager;
+        
 	public:
 
 		//rGLDevice* getDevice();
 		static REngine* getInstance();
-		
-		void Init3DWindowed(RECT &rect, RBYTE** title);
-		void Init3DFullscreen(RBYTE** title, RINT width, RINT height, RINT color, RINT depth);
+		const RECT& GetScreenSize();
+		void Init3DWindowed(RECT &rect, const char* title);
+		void Init3DFullscreen(const char* title, RINT width, RINT height, RINT color, RINT depth);
 		void Init3DNoRender();
 		void ToggleFullscreen();
 		void DisplayFPS(RBOOL display, RColor color = RColor(1,1,1,1));
-
+        float GetFPS();
 		void OnResize(RINT width, RINT height);
 		void Clear(RBOOL DepthOnly = false);
 		void RenderToScreen();

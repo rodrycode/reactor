@@ -1,0 +1,524 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5D2B2B9F13500824001D57D8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2B2B9E13500824001D57D8 /* Cocoa.framework */; };
+		5D2B2BA913500824001D57D8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5D2B2BA713500824001D57D8 /* InfoPlist.strings */; };
+		5D2B2BAC13500824001D57D8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B2BAB13500824001D57D8 /* main.cpp */; };
+		5D2B2BAF13500824001D57D8 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 5D2B2BAD13500824001D57D8 /* Credits.rtf */; };
+		5D2B2BBF13500825001D57D8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2B2B9E13500824001D57D8 /* Cocoa.framework */; };
+		5D2B2BC713500825001D57D8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5D2B2BC513500825001D57D8 /* InfoPlist.strings */; };
+		5D2B2BCA13500825001D57D8 /* ReactorTestTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 5D2B2BC913500825001D57D8 /* ReactorTestTests.h */; };
+		5D2B2BCC13500825001D57D8 /* ReactorTestTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B2BCB13500825001D57D8 /* ReactorTestTests.m */; };
+		5D2B2BD613500885001D57D8 /* Reactor.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2B2BD513500885001D57D8 /* Reactor.dylib */; };
+		5D2B2BD913500925001D57D8 /* ReactorTestAppDelegate.mpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B2BD813500925001D57D8 /* ReactorTestAppDelegate.mpp */; };
+		5D2B2BE113500969001D57D8 /* ReactorTest.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B2BDD13500969001D57D8 /* ReactorTest.xcdatamodeld */; };
+		5D2B2BEE13501605001D57D8 /* MyGame.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B2BEC13501605001D57D8 /* MyGame.cpp */; };
+		5D2B2BF0135017FF001D57D8 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2B2BEF135017FF001D57D8 /* OpenGL.framework */; };
+		5D2B2BF213501812001D57D8 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D2B2BF113501812001D57D8 /* GLUT.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		5D2B2BC013500825001D57D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5D2B2B9113500824001D57D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5D2B2B9913500824001D57D8;
+			remoteInfo = ReactorTest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		5D2B2B9A13500824001D57D8 /* ReactorTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactorTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D2B2B9E13500824001D57D8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		5D2B2BA113500824001D57D8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		5D2B2BA213500824001D57D8 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		5D2B2BA313500824001D57D8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5D2B2BA613500824001D57D8 /* ReactorTest-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ReactorTest-Info.plist"; sourceTree = "<group>"; };
+		5D2B2BA813500824001D57D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5D2B2BAA13500824001D57D8 /* ReactorTest-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactorTest-Prefix.pch"; sourceTree = "<group>"; };
+		5D2B2BAB13500824001D57D8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		5D2B2BAE13500824001D57D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		5D2B2BBE13500825001D57D8 /* ReactorTestTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ReactorTestTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D2B2BC413500825001D57D8 /* ReactorTestTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ReactorTestTests-Info.plist"; sourceTree = "<group>"; };
+		5D2B2BC613500825001D57D8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5D2B2BC813500825001D57D8 /* ReactorTestTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactorTestTests-Prefix.pch"; sourceTree = "<group>"; };
+		5D2B2BC913500825001D57D8 /* ReactorTestTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactorTestTests.h; sourceTree = "<group>"; };
+		5D2B2BCB13500825001D57D8 /* ReactorTestTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactorTestTests.m; sourceTree = "<group>"; };
+		5D2B2BD513500885001D57D8 /* Reactor.dylib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = Reactor.dylib; path = ../../build/Debug/Reactor.dylib; sourceTree = "<group>"; };
+		5D2B2BD713500925001D57D8 /* ReactorTestAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactorTestAppDelegate.h; sourceTree = "<group>"; };
+		5D2B2BD813500925001D57D8 /* ReactorTestAppDelegate.mpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReactorTestAppDelegate.mpp; sourceTree = "<group>"; };
+		5D2B2BDE13500969001D57D8 /* ReactorTest.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ReactorTest.xcdatamodel; sourceTree = "<group>"; };
+		5D2B2BEC13501605001D57D8 /* MyGame.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyGame.cpp; sourceTree = "<group>"; };
+		5D2B2BED13501605001D57D8 /* MyGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyGame.h; sourceTree = "<group>"; };
+		5D2B2BEF135017FF001D57D8 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		5D2B2BF113501812001D57D8 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5D2B2B9713500824001D57D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D2B2BF213501812001D57D8 /* GLUT.framework in Frameworks */,
+				5D2B2BF0135017FF001D57D8 /* OpenGL.framework in Frameworks */,
+				5D2B2BD613500885001D57D8 /* Reactor.dylib in Frameworks */,
+				5D2B2B9F13500824001D57D8 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D2B2BBA13500825001D57D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D2B2BBF13500825001D57D8 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5D2B2B8F13500824001D57D8 = {
+			isa = PBXGroup;
+			children = (
+				5D2B2BF113501812001D57D8 /* GLUT.framework */,
+				5D2B2BEF135017FF001D57D8 /* OpenGL.framework */,
+				5D2B2BA413500824001D57D8 /* ReactorTest */,
+				5D2B2BC213500825001D57D8 /* ReactorTestTests */,
+				5D2B2B9D13500824001D57D8 /* Frameworks */,
+				5D2B2B9B13500824001D57D8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5D2B2B9B13500824001D57D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5D2B2B9A13500824001D57D8 /* ReactorTest.app */,
+				5D2B2BBE13500825001D57D8 /* ReactorTestTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5D2B2B9D13500824001D57D8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5D2B2B9E13500824001D57D8 /* Cocoa.framework */,
+				5D2B2BA013500824001D57D8 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5D2B2BA013500824001D57D8 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5D2B2BD513500885001D57D8 /* Reactor.dylib */,
+				5D2B2BA113500824001D57D8 /* AppKit.framework */,
+				5D2B2BA213500824001D57D8 /* CoreData.framework */,
+				5D2B2BA313500824001D57D8 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		5D2B2BA413500824001D57D8 /* ReactorTest */ = {
+			isa = PBXGroup;
+			children = (
+				5D2B2BDD13500969001D57D8 /* ReactorTest.xcdatamodeld */,
+				5D2B2BD713500925001D57D8 /* ReactorTestAppDelegate.h */,
+				5D2B2BD813500925001D57D8 /* ReactorTestAppDelegate.mpp */,
+				5D2B2BA513500824001D57D8 /* Supporting Files */,
+				5D2B2BEC13501605001D57D8 /* MyGame.cpp */,
+				5D2B2BED13501605001D57D8 /* MyGame.h */,
+			);
+			path = ReactorTest;
+			sourceTree = "<group>";
+		};
+		5D2B2BA513500824001D57D8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5D2B2BA613500824001D57D8 /* ReactorTest-Info.plist */,
+				5D2B2BA713500824001D57D8 /* InfoPlist.strings */,
+				5D2B2BAA13500824001D57D8 /* ReactorTest-Prefix.pch */,
+				5D2B2BAB13500824001D57D8 /* main.cpp */,
+				5D2B2BAD13500824001D57D8 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5D2B2BC213500825001D57D8 /* ReactorTestTests */ = {
+			isa = PBXGroup;
+			children = (
+				5D2B2BC913500825001D57D8 /* ReactorTestTests.h */,
+				5D2B2BCB13500825001D57D8 /* ReactorTestTests.m */,
+				5D2B2BC313500825001D57D8 /* Supporting Files */,
+			);
+			path = ReactorTestTests;
+			sourceTree = "<group>";
+		};
+		5D2B2BC313500825001D57D8 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5D2B2BC413500825001D57D8 /* ReactorTestTests-Info.plist */,
+				5D2B2BC513500825001D57D8 /* InfoPlist.strings */,
+				5D2B2BC813500825001D57D8 /* ReactorTestTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5D2B2B9913500824001D57D8 /* ReactorTest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5D2B2BCF13500825001D57D8 /* Build configuration list for PBXNativeTarget "ReactorTest" */;
+			buildPhases = (
+				5D2B2B9613500824001D57D8 /* Sources */,
+				5D2B2B9713500824001D57D8 /* Frameworks */,
+				5D2B2B9813500824001D57D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReactorTest;
+			productName = ReactorTest;
+			productReference = 5D2B2B9A13500824001D57D8 /* ReactorTest.app */;
+			productType = "com.apple.product-type.application";
+		};
+		5D2B2BBD13500825001D57D8 /* ReactorTestTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5D2B2BD213500825001D57D8 /* Build configuration list for PBXNativeTarget "ReactorTestTests" */;
+			buildPhases = (
+				5D2B2BB913500825001D57D8 /* Sources */,
+				5D2B2BBA13500825001D57D8 /* Frameworks */,
+				5D2B2BBB13500825001D57D8 /* Resources */,
+				5D2B2BBC13500825001D57D8 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5D2B2BC113500825001D57D8 /* PBXTargetDependency */,
+			);
+			name = ReactorTestTests;
+			productName = ReactorTestTests;
+			productReference = 5D2B2BBE13500825001D57D8 /* ReactorTestTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5D2B2B9113500824001D57D8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				ORGANIZATIONNAME = "Reiser Games";
+			};
+			buildConfigurationList = 5D2B2B9413500824001D57D8 /* Build configuration list for PBXProject "ReactorTest" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5D2B2B8F13500824001D57D8;
+			productRefGroup = 5D2B2B9B13500824001D57D8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5D2B2B9913500824001D57D8 /* ReactorTest */,
+				5D2B2BBD13500825001D57D8 /* ReactorTestTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5D2B2B9813500824001D57D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D2B2BA913500824001D57D8 /* InfoPlist.strings in Resources */,
+				5D2B2BAF13500824001D57D8 /* Credits.rtf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D2B2BBB13500825001D57D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D2B2BC713500825001D57D8 /* InfoPlist.strings in Resources */,
+				5D2B2BCA13500825001D57D8 /* ReactorTestTests.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5D2B2BBC13500825001D57D8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5D2B2B9613500824001D57D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D2B2BAC13500824001D57D8 /* main.cpp in Sources */,
+				5D2B2BD913500925001D57D8 /* ReactorTestAppDelegate.mpp in Sources */,
+				5D2B2BE113500969001D57D8 /* ReactorTest.xcdatamodeld in Sources */,
+				5D2B2BEE13501605001D57D8 /* MyGame.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5D2B2BB913500825001D57D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5D2B2BCC13500825001D57D8 /* ReactorTestTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5D2B2BC113500825001D57D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5D2B2B9913500824001D57D8 /* ReactorTest */;
+			targetProxy = 5D2B2BC013500825001D57D8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		5D2B2BA713500824001D57D8 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5D2B2BA813500824001D57D8 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		5D2B2BAD13500824001D57D8 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5D2B2BAE13500824001D57D8 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		5D2B2BC513500825001D57D8 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5D2B2BC613500825001D57D8 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5D2B2BCD13500825001D57D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"/Users/greiser/Documents/Reactor/OGL/code/headers/\"",
+					"\"/Users/greiser/Documents/Reactor/OGL/dependencies/GLTools/include/\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5D2B2BCE13500825001D57D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"\"/Users/greiser/Documents/Reactor/OGL/code/headers/\"",
+					"\"/Users/greiser/Documents/Reactor/OGL/dependencies/GLTools/include/\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		5D2B2BD013500825001D57D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_ENABLE_SSE42_EXTENSIONS = NO;
+				GCC_FAST_MATH = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "ReactorTest/ReactorTest-Prefix.pch";
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"\"/Users/greiser/Documents/Reactor/OGL/code/headers/\"",
+					"\"/Users/greiser/Documents/Reactor/OGL/dependencies/GLTools/include/\"",
+				);
+				INFOPLIST_FILE = "ReactorTest/ReactorTest-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../build/Debug\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Users/greiser/Documents/Reactor/OGL/code/headers /Users/greiser/Documents/Reactor/OGL/dependencies/GLTools/include";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		5D2B2BD113500825001D57D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = unsupported;
+				GCC_ENABLE_SSE42_EXTENSIONS = NO;
+				GCC_FAST_MATH = NO;
+				GCC_INPUT_FILETYPE = sourcecode.cpp.cpp;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "ReactorTest/ReactorTest-Prefix.pch";
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					"\"/Users/greiser/Documents/Reactor/OGL/code/headers/\"",
+					"\"/Users/greiser/Documents/Reactor/OGL/dependencies/GLTools/include/\"",
+				);
+				INFOPLIST_FILE = "ReactorTest/ReactorTest-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../build/Debug\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "/Users/greiser/Documents/Reactor/OGL/code/headers /Users/greiser/Documents/Reactor/OGL/dependencies/GLTools/include";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		5D2B2BD313500825001D57D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ReactorTest.app/Contents/MacOS/ReactorTest";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReactorTestTests/ReactorTestTests-Prefix.pch";
+				INFOPLIST_FILE = "ReactorTestTests/ReactorTestTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		5D2B2BD413500825001D57D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ReactorTest.app/Contents/MacOS/ReactorTest";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ReactorTestTests/ReactorTestTests-Prefix.pch";
+				INFOPLIST_FILE = "ReactorTestTests/ReactorTestTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5D2B2B9413500824001D57D8 /* Build configuration list for PBXProject "ReactorTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D2B2BCD13500825001D57D8 /* Debug */,
+				5D2B2BCE13500825001D57D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5D2B2BCF13500825001D57D8 /* Build configuration list for PBXNativeTarget "ReactorTest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D2B2BD013500825001D57D8 /* Debug */,
+				5D2B2BD113500825001D57D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5D2B2BD213500825001D57D8 /* Build configuration list for PBXNativeTarget "ReactorTestTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5D2B2BD313500825001D57D8 /* Debug */,
+				5D2B2BD413500825001D57D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5D2B2BDD13500969001D57D8 /* ReactorTest.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5D2B2BDE13500969001D57D8 /* ReactorTest.xcdatamodel */,
+			);
+			currentVersion = 5D2B2BDE13500969001D57D8 /* ReactorTest.xcdatamodel */;
+			path = ReactorTest.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 5D2B2B9113500824001D57D8 /* Project object */;
+}

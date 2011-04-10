@@ -13,10 +13,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5D1FBA9E134C263500190302"
-               BuildableName = "libGLTools.a"
-               BlueprintName = "libGLTools"
-               ReferencedContainer = "container:libGLTools.xcodeproj">
+               BlueprintIdentifier = "5D2B2B9913500824001D57D8"
+               BuildableName = "ReactorTest.app"
+               BlueprintName = "ReactorTest"
+               ReferencedContainer = "container:ReactorTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -27,6 +27,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "5D2B2BBD13500825001D57D8"
+               BuildableName = "ReactorTestTests.octest"
+               BlueprintName = "ReactorTestTests"
+               ReferencedContainer = "container:ReactorTest.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -37,6 +47,15 @@
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5D2B2B9913500824001D57D8"
+            BuildableName = "ReactorTest.app"
+            BlueprintName = "ReactorTest"
+            ReferencedContainer = "container:ReactorTest.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -47,6 +66,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "5D2B2B9913500824001D57D8"
+            BuildableName = "ReactorTest.app"
+            BlueprintName = "ReactorTest"
+            ReferencedContainer = "container:ReactorTest.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

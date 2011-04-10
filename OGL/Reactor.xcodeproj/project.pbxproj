@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5D1FBAE6134C2E9F00190302 /* libGLTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5D1FBAE5134C2E9F00190302 /* libGLTools.a */; };
+		5DB0DDE81350FC4200E0ED92 /* RInput.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DB0DDE71350FC4200E0ED92 /* RInput.h */; };
+		5DB0DDEB1351005600E0ED92 /* RInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5DB0DDE91351005600E0ED92 /* RInput.cpp */; };
 		5DD7A416128271510061B880 /* collection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40A128271510061B880 /* collection.h */; };
 		5DD7A417128271510061B880 /* common.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40B128271510061B880 /* common.h */; };
 		5DD7A418128271510061B880 /* RCamera.h in Headers */ = {isa = PBXBuildFile; fileRef = 5DD7A40C128271510061B880 /* RCamera.h */; };
@@ -31,6 +33,13 @@
 			remoteGlobalIDString = 5D1FBA9F134C263500190302;
 			remoteInfo = libGLTools;
 		};
+		5D2B2B3C135004ED001D57D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5D1FBAB0134C263600190302 /* libGLTools.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 5D1FBA9E134C263500190302;
+			remoteInfo = libGLTools;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +47,8 @@
 		5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; path = ReactorTarget.xcconfig; sourceTree = "<group>"; };
 		5D1FBAB0134C263600190302 /* libGLTools.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libGLTools.xcodeproj; path = dependencies/GLTools/libGLTools/libGLTools.xcodeproj; sourceTree = "<group>"; };
 		5D1FBAE5134C2E9F00190302 /* libGLTools.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libGLTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DB0DDE71350FC4200E0ED92 /* RInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RInput.h; sourceTree = "<group>"; };
+		5DB0DDE91351005600E0ED92 /* RInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RInput.cpp; sourceTree = "<group>"; };
 		5DD7A40A128271510061B880 /* collection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = collection.h; sourceTree = "<group>"; };
 		5DD7A40B128271510061B880 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		5DD7A40C128271510061B880 /* RCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCamera.h; sourceTree = "<group>"; };
@@ -119,7 +130,7 @@
 		5D1FBAB1134C263600190302 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5D1FBAB5134C263600190302 /* libGLTools.dylib */,
+				5D1FBAB5134C263600190302 /* libGLTools.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -135,6 +146,7 @@
 				5DD7A40F128271510061B880 /* RNode.h */,
 				5DD7A410128271510061B880 /* RScene.h */,
 				5DD7A411128271510061B880 /* rtypes.h */,
+				5DB0DDE71350FC4200E0ED92 /* RInput.h */,
 			);
 			name = headers;
 			path = code/headers;
@@ -146,6 +158,7 @@
 				5DD7A413128271510061B880 /* RCamera.cpp */,
 				5DD7A414128271510061B880 /* REngine.cpp */,
 				5DD7A415128271510061B880 /* RGame.cpp */,
+				5DB0DDE91351005600E0ED92 /* RInput.cpp */,
 			);
 			name = src;
 			path = code/src;
@@ -166,6 +179,7 @@
 				5DD7A41B128271510061B880 /* RNode.h in Headers */,
 				5DD7A41C128271510061B880 /* RScene.h in Headers */,
 				5DD7A41D128271510061B880 /* rtypes.h in Headers */,
+				5DB0DDE81350FC4200E0ED92 /* RInput.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -183,6 +197,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5D2B2B3D135004ED001D57D8 /* PBXTargetDependency */,
 			);
 			name = Reactor;
 			productName = libReactor;
@@ -221,10 +236,10 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		5D1FBAB5134C263600190302 /* libGLTools.dylib */ = {
+		5D1FBAB5134C263600190302 /* libGLTools.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.dylib";
-			path = libGLTools.dylib;
+			path = libGLTools.a;
 			remoteRef = 5D1FBAB4134C263600190302 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
@@ -238,10 +253,19 @@
 				5DD7A41E128271510061B880 /* RCamera.cpp in Sources */,
 				5DD7A41F128271510061B880 /* REngine.cpp in Sources */,
 				5DD7A420128271510061B880 /* RGame.cpp in Sources */,
+				5DB0DDEB1351005600E0ED92 /* RInput.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		5D2B2B3D135004ED001D57D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libGLTools;
+			targetProxy = 5D2B2B3C135004ED001D57D8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB916108733D950010E9CD /* Debug */ = {
@@ -249,6 +273,7 @@
 			baseConfigurationReference = 5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -273,6 +298,7 @@
 			baseConfigurationReference = 5073E0C709E734A800EC74B6 /* ReactorTarget.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -293,6 +319,7 @@
 			baseConfigurationReference = 5073E0C609E734A800EC74B6 /* ReactorProj.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -308,6 +335,7 @@
 			baseConfigurationReference = 5073E0C609E734A800EC74B6 /* ReactorProj.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CONFIGURATION_TEMP_DIR = "$(PROJECT_TEMP_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
