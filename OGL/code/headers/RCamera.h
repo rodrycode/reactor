@@ -46,18 +46,19 @@ namespace Reactor
 		void Set ( void );	//executes some glRotates and a glTranslate command
 								//Note: You should call glLoadIdentity before using Render
 
-		void Move ( RVector3 Direction );
+		void Move ( const RVector3& Direction );
 		void Move ( RDOUBLE Left, RDOUBLE Front, RDOUBLE Up );
 		void RotateX ( RDOUBLE Angle );
 		void RotateY ( RDOUBLE Angle );
 		void RotateZ ( RDOUBLE Angle );
-		RVector3 GetLookAt();
+		const RVector3& GetLookAt();
+		const RVector3& GetViewDir();
 		void MoveForward ( RDOUBLE Distance );
 		void MoveUpward ( RDOUBLE Distance );
 		void StrafeRight ( RDOUBLE Distance );
 
-		void SetViewMatrix( RMatrix View );
-		RMatrix GetViewMatrix();
+		void SetViewMatrix( const RMatrix& View );
+		const RMatrix& GetViewMatrix();
 
 
 	};

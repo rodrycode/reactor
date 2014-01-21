@@ -38,7 +38,7 @@ namespace Reactor
 		RotatedX = RotatedY = RotatedZ = 0.0;
 	}
 
-	void RCamera::Move (RVector3 Direction)
+	void RCamera::Move (const RVector3& Direction)
 	{
 		Position = Position + Direction;
 		ViewMatrix.m14 = Position.x;
@@ -121,9 +121,14 @@ namespace Reactor
 
 	}
 
-	RVector3 RCamera::GetLookAt()
+	const RVector3& RCamera::GetLookAt()
 	{
 		return Position+ViewDir;
+	}
+	
+	const RVector3& RCamera::GetViewDir()
+	{
+		return ViewMatrix.Forward();
 	}
 
 	void RCamera::MoveForward( RDOUBLE Distance )
@@ -151,7 +156,7 @@ namespace Reactor
 		ViewMatrix.m34 = Position.z;
 	}
 
-	void RCamera::SetViewMatrix(RMatrix view)
+	void RCamera::SetViewMatrix(const RMatrix& view)
 	{
 		ViewMatrix = view;
 		Position = ViewMatrix.Position();

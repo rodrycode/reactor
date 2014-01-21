@@ -1,9 +1,28 @@
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.9)
 project (Reactor3d)
 
-add_library (ReactorObjects OBJECT ../code/src/RCamera.cpp
- ../code/src/REngine.cpp
- ../code/src/RGame.cpp
- ../code/src/RInput.cpp)
-add_library (Reactor3d  $<TARGET_OBJECTS:ReactorObjects>)
-target_link_libraries(Reactor3d)
+set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
+
+if (APPLE)
+	set(XCODE_ATTRIBUTE_SDKROOT macosx10.6)
+	include_directories ( /System/Library/Frameworks )
+	find_library(COCOA_LIBRARY Cocoa)
+	find_library(OPENGL_LIBRARY OpenGL)
+	find_library(GLUT_LIBRARY GLUT)
+	
+	set(EXTRA_LIBS ${COCOA_LIBRARY} ${GLUT_LIBRARY} ${OPENGL_LIBRARY})
+	add_library (ReactorObjects OBJECT  ../code/src/RCamera.cpp
+										../code/src/REngine.cpp
+ 										../code/src/RGame.cpp
+ 										../code/src/RInput.cpp)
+
+	add_library (sReactor3d STATIC $<TARGET_OBJECTS:ReactorObjects> ${COCOA_LIBRARY} ${OPENGL_LIBRARY} ${GLUT_LIBRARY})
+	add_library (Reactor3d SHARED $<TARGET_OBJECTS:ReactorObjects> ${COCOA_LIBRARY} ${OPENGL_LIBRARY} ${GLUT_LIBRARY})
+
+endif (APPLE)
+
+
+
+
+target_link_libraries(sReactor3d ${EXTRA_LIBS})
+target_link_libraries(Reactor3d ${EXTRA_LIBS})
