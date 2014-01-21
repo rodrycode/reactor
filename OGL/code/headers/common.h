@@ -36,8 +36,7 @@ THE SOFTWARE.
 
 
 
-#include <GLTools.h>
-#include <GLShaderManager.h>
+
 #include <math.h>
 #include <iostream>
 #include <sstream>

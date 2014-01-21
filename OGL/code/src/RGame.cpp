@@ -37,7 +37,7 @@ namespace Reactor
 			_instance = this;
 		
 			this->engine = REngine::getInstance();
-			gltSetWorkingDirectory(argv[0]);
+			//glutSetWorkingDirectory(argv[0]);
 			glutInit(&argc, argv);
 			glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
             

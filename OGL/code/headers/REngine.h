@@ -39,7 +39,7 @@ namespace Reactor
 		bool _fullscreen;
 		RColor clearColor;
 		int window;
-		GLShaderManager shaderManager;
+		
         
 	public:
 
