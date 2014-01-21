@@ -1,0 +1,12 @@
+#!/bin/bash
+
+if [ ! -d output ]; then
+     	mkdir ./output
+		cd ./output
+		cmake ../
+		make
+else
+		cd ./output
+		cmake ../
+		make
+fi

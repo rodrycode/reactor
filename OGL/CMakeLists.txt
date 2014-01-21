@@ -4,7 +4,9 @@ project (Reactor3d)
 set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
 
 if (APPLE)
-	set(XCODE_ATTRIBUTE_SDKROOT macosx10.6)
+	
+	set(XCODE_ATTRIBUTE_SDKROOT macosx10.7)
+	set(CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
 	include_directories ( /System/Library/Frameworks )
 	find_library(COCOA_LIBRARY Cocoa)
 	find_library(OPENGL_LIBRARY OpenGL)
@@ -18,6 +20,8 @@ if (APPLE)
 
 	add_library (sReactor3d STATIC $<TARGET_OBJECTS:ReactorObjects> ${COCOA_LIBRARY} ${OPENGL_LIBRARY} ${GLUT_LIBRARY})
 	add_library (Reactor3d SHARED $<TARGET_OBJECTS:ReactorObjects> ${COCOA_LIBRARY} ${OPENGL_LIBRARY} ${GLUT_LIBRARY})
+	set_target_properties(sReactor3d PROPERTIES PREFIX "")
+	set_target_properties(Reactor3d PROPERTIES PREFIX "")
 
 endif (APPLE)
 
