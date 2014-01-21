@@ -52,7 +52,7 @@ namespace Reactor
 		DIRECTIONAL		=	0x0000,
 		POINT			=	0x0001,
 		SPOT			=	0x0002
-	};
+	} RLIGHT_TYPE;
 
 /*
 
@@ -308,9 +308,9 @@ struct RVector3
 	};
 
 	RVector3& operator ++ (RINT) {
-		RVector3 v = *this;
-		++*this;
-		return v;
+		RVector3* v = this;
+		++v;
+		return *v;
 	};
 
 	RVector3& operator -- () {
@@ -321,9 +321,9 @@ struct RVector3
 	};
 
 	RVector3& operator -- (RINT) {
-		RVector3 v = *this;
-		--*this;
-		return v;
+		RVector3* v = this;
+		--v;
+		return *v;
 	};
 
 	RVector3 operator * (const RVector3& v3) {
@@ -509,6 +509,7 @@ struct RMatrix3
 		m11=1.0; m12=0.0; m13=0.0;
 		m21=0.0; m22=1.0; m23=0.0;
 		m31=0.0; m32=0.0; m33=1.0;
+		return *this;
 	}
 
 	RVector3 Right()
@@ -668,10 +669,10 @@ struct RColor
 		a=color.a;
 	};
 
-	GLfloat* toGLfloat() const
+	GLfloat toGLfloat() const
 	{
 		GLfloat color[] = {r, g, b, a};
-		return color;
+		return *color;
 	};
 };
 

@@ -33,30 +33,30 @@ namespace Reactor {
         RInput();
         ~RInput();
         static RInput* _instance;
-        static void KeyFunc(unsigned char key, int x, int y);
-        static void KeyUpFunc(unsigned char key, int x, int y);
-        static void SpecialKeyFunc(int key, int x, int y);
-        static void SpecialKeyUpFunc(int key, int x, int y);
-        static void MouseFunc(int button, int state, int x, int y);
-        static void JoystickFunc(unsigned int state, int x, int y, int z);
-        bool* keys;
-        bool* mbuttons;
-        bool* jbuttons;
+        static RVOID KeyFunc(RCHAR key, RINT x, RINT y);
+        static RVOID KeyUpFunc(RCHAR key, RINT x, RINT y);
+        static RVOID SpecialKeyFunc(RINT key, RINT x, RINT y);
+        static RVOID SpecialKeyUpFunc(RINT key, RINT x, RINT y);
+        static RVOID MouseFunc(RINT button, RINT state, RINT x, RINT y);
+        static RVOID JoystickFunc(RUINT state, RINT x, RINT y, RINT z);
+        RBOOL* keys;
+        RBOOL* mbuttons;
+        RBOOL* jbuttons;
         RVector3 joystick;
         RVector2 mouse;
         
     public:
         static RInput* getInstance();
-        void Init();
-        void Destroy();
+        RVOID Init();
+        RVOID Destroy();
         const RVector2& GetMouse();
-        void GetMouse(int &x, int &y);
-        void GetMouseButtonState(bool &b1, bool &b2, bool &b3);
+        RVOID GetMouse(RINT &x, RINT &y);
+        RVOID GetMouseButtonState(RBOOL &b1, RBOOL &b2, RBOOL &b3);
         const RVector3& GetJoystick();
-        bool IsJoyButtonDown(int button);
-        bool IsKeyDown(char key);
-        bool IsKeyUp(char key);
-        void SetRepeat(int milliseconds);
+        RBOOL IsJoyButtonDown(RINT button);
+        RBOOL IsKeyDown(RBYTE key);
+        RBOOL IsKeyUp(RBYTE key);
+        RVOID SetRepeat(RINT milliseconds);
         
     };
 };

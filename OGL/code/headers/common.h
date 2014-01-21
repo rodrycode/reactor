@@ -96,7 +96,7 @@ typedef long RRESULT;
 #define R_FALSE ((RRESULT)1L)
 #define R_INVALIDARG	((RRESULT)0x80070057L)
 #define R_OUTOFMEMORY	((RRESULT)0x8007000EL)
-
+#define FAILED(Status) ((RRESULT)(Status)<0)
 
 #define null NULL
 

@@ -48,7 +48,7 @@ namespace Reactor {
         return _instance;
     }
     
-    void RInput::Init(){
+    RVOID RInput::Init(){
         keys = new bool[256];
         for(int i=0; i<256; i++){
             keys[i] = false;
@@ -71,14 +71,14 @@ namespace Reactor {
         glutMouseFunc(MouseFunc);   
     }
     
-    void RInput::JoystickFunc(unsigned int state, int x, int y, int z){
+    RVOID RInput::JoystickFunc(RUINT state, RINT x, RINT y, RINT z){
         for(int i=0;i<32;i++){      
             _instance->jbuttons[i] =  (state & (1<<i));
         }
         _instance->joystick = RVector3(x, y, z);
         
     }
-    void RInput::KeyFunc(unsigned char key, int x, int y){
+    RVOID RInput::KeyFunc(RCHAR key, RINT x, RINT y){
         fprintf(stdout, "Key Out: %c", key);
         
         _instance->keys[key] = true;
@@ -86,26 +86,26 @@ namespace Reactor {
         
     }
     
-    void RInput::KeyUpFunc(unsigned char key, int x, int y){
+    RVOID RInput::KeyUpFunc(RCHAR key, RINT x, RINT y){
         fprintf(stdout, "Key Up: %c", key);
         _instance->keys[key] = false;
         _instance->mouse = RVector2(x, y);
         
     }
     
-    void RInput::SpecialKeyFunc(int key, int x, int y){
+    RVOID RInput::SpecialKeyFunc(RINT key, RINT x, RINT y){
         fprintf(stdout, "Key Up: %c", key);
         _instance->keys[key] = true;
         _instance->mouse = RVector2(x, y);
     }
     
-    void RInput::SpecialKeyUpFunc(int key, int x, int y){
+    RVOID RInput::SpecialKeyUpFunc(RINT key, RINT x, RINT y){
         fprintf(stdout, "Key Up: %c", key);
         _instance->keys[key] = false;
         _instance->mouse = RVector2(x, y);
     }
     
-    void RInput::MouseFunc(int button, int state, int x, int y){
+    RVOID RInput::MouseFunc(RINT button, RINT state, RINT x, RINT y){
         
         if(state == GLUT_UP)
             _instance->mbuttons[button] = false;
@@ -113,7 +113,7 @@ namespace Reactor {
             _instance->mbuttons[button] = true;
     }
     
-    void RInput::Destroy(){
+    RVOID RInput::Destroy(){
         delete keys;
         delete mbuttons;
         delete jbuttons;
@@ -123,17 +123,17 @@ namespace Reactor {
         delete _instance;
     }
     
-    bool RInput::IsKeyDown(char key){
+    RBOOL RInput::IsKeyDown(RBYTE key){
         bool ret = keys[key];
         return ret;
     }
     
-    bool RInput::IsKeyUp(char key){
+    RBOOL RInput::IsKeyUp(RBYTE key){
         bool ret = !(keys[key]);
         return ret;
     }
     
-    bool RInput::IsJoyButtonDown(int button){
+    RBOOL RInput::IsJoyButtonDown(RINT button){
         if(button<32){
             bool ret = jbuttons[button];
             return ret;
@@ -142,7 +142,7 @@ namespace Reactor {
         }
     }
     
-    void RInput::SetRepeat(int milliseconds){
+    RVOID RInput::SetRepeat(RINT milliseconds){
         glutSetKeyRepeat(milliseconds);
     }
     
@@ -150,13 +150,13 @@ namespace Reactor {
         return mouse;
     }
     
-    void RInput::GetMouse(int &x, int &y){
+    RVOID RInput::GetMouse(RINT &x, RINT &y){
         x = (int)mouse.x;
         y = (int)mouse.y;
         return;
     }
     
-    void RInput::GetMouseButtonState(bool &b1, bool &b2, bool &b3){
+    RVOID RInput::GetMouseButtonState(RBOOL &b1, RBOOL &b2, RBOOL &b3){
         b1 = mbuttons[GLUT_LEFT_BUTTON];
         b2 = mbuttons[GLUT_MIDDLE_BUTTON];
         b3 = mbuttons[GLUT_RIGHT_BUTTON];

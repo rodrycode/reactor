@@ -16,7 +16,8 @@ if (APPLE)
 	add_library (ReactorObjects OBJECT  ../code/src/RCamera.cpp
 										../code/src/REngine.cpp
  										../code/src/RGame.cpp
- 										../code/src/RInput.cpp)
+ 										../code/src/RInput.cpp
+										../code/src/RNode.cpp)
 
 	add_library (sReactor3d STATIC $<TARGET_OBJECTS:ReactorObjects> ${COCOA_LIBRARY} ${OPENGL_LIBRARY} ${GLUT_LIBRARY})
 	add_library (Reactor3d SHARED $<TARGET_OBJECTS:ReactorObjects> ${COCOA_LIBRARY} ${OPENGL_LIBRARY} ${GLUT_LIBRARY})

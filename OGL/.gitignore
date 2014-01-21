@@ -2,7 +2,7 @@
 *.suo
 Debug/
 Release/
-build/
+output/
 ipch/
 *.user
 *.sdf

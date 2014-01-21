@@ -57,7 +57,8 @@ namespace Reactor
     const RECT& REngine::GetScreenSize(){
         int w = glutGet(GLUT_SCREEN_WIDTH);
         int h = glutGet(GLUT_SCREEN_HEIGHT);
-        return RECT(0, 0, w, h);
+		RECT* r = new RECT(0, 0, w, h);
+        return *r;
     }
 	
     

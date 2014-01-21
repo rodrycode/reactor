@@ -123,12 +123,14 @@ namespace Reactor
 
 	const RVector3& RCamera::GetLookAt()
 	{
-		return Position+ViewDir;
+		RVector3* v = new RVector3(Position+ViewDir);
+		return *v;
 	}
 	
 	const RVector3& RCamera::GetViewDir()
 	{
-		return ViewMatrix.Forward();
+		RVector3* v = new RVector3(ViewMatrix.Forward());
+		return *v;
 	}
 
 	void RCamera::MoveForward( RDOUBLE Distance )

@@ -33,31 +33,23 @@ namespace Reactor {
 	{
 	private:
 		RArray<RNode>* childNodes;
-		RNode* parent;
+		const RNode* parent;
 		string name;
 	public:
-		RNode(){ childNodes = new RArray<RNode>(); parent = NULL;};
-		~RNode(){ childNodes->RemoveAll(); delete childNodes;};
+		RNode();
+		~RNode();
 		
-		string GetName(){ return name; };
-		void SetName(string& Name){ name = Name;};
-		void SetParent(RNode& ParentNode){ parent = &ParentNode; };
-		RNode* GetParent();
+		string GetName();
+		void SetName(const string& Name);
+		void SetParent(const RNode& ParentNode);
+		const RNode& GetParent();
 		
-		void AddChild(RNode* ChildNode);
-		RNode* GetChild(RINT index);
-		RNode* GetChild(string& Name);
+		void AddChild(const RNode& ChildNode);
+		const RNode& GetChild(RINT index);
+		const RNode* GetChild(const string& Name);
 		
-		/*RBOOL operator == (const RNode& n)
-		{
-			RNode node = n;
-			if(GetName() == node.GetName())
-				return true;
-			else {
-				return false;
-			}
-
-		}*/
+		RBOOL operator == (const RNode& n);
+		RBOOL operator != (const RNode& n);
 		
 	};
 };
