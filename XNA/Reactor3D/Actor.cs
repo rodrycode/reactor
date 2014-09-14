@@ -48,7 +48,7 @@ namespace Reactor
         internal Vector3 scaling;
         internal Vector3 _rotation;
         internal Vector3 _position;
-        internal Effect _defaultEffect;
+        internal RShader _defaultEffect;
         internal BasicEffect _basicEffect;
         internal RMaterial _material;
         internal AnimationPlayer _player;
@@ -81,11 +81,11 @@ namespace Reactor
             scaling = new Vector3(scale, scale, scale);
             _objectMatrix = BuildScalingMatrix(_objectMatrix);
 #if !XBOX
-            _defaultEffect = _resourcecontent.Load<Effect>("Actor");
+            _defaultEffect = _resourcecontent.Load<RShader>("Actor");
 #else
             _defaultEffect = _resourcecontent.Load<Effect>("Actor1");
 #endif
-            _defaultEffect.CurrentTechnique = _defaultEffect.Techniques[0];
+            _defaultEffect.effect.CurrentTechnique = _defaultEffect.effect.Techniques[0];
             _sphere = _model.Meshes[0].BoundingSphere;
             foreach (ModelMesh mesh in _model.Meshes)
             {
@@ -95,9 +95,8 @@ namespace Reactor
                     BasicEffect effect = (BasicEffect)mesh.MeshParts[i].Effect;
 
                     Texture t = effect.Texture;
-                    mesh.MeshParts[i].Effect = _defaultEffect.Clone(REngine.Instance._graphics.GraphicsDevice);
+                    mesh.MeshParts[i].Effect = _defaultEffect.effect.Clone();
                     mesh.MeshParts[i].Effect.Parameters["Texture"].SetValue(t);
-                    mesh.MeshParts[i].Effect.CommitChanges();
                     
                 }
             }
@@ -109,7 +108,7 @@ namespace Reactor
 
         public override void Render()
         {
-            Render(_defaultEffect.Techniques[0].Name);
+            Render(_defaultEffect.effect.Techniques[0].Name);
         }
         public void Render(string techniqueName)
         {
@@ -119,18 +118,10 @@ namespace Reactor
                 {
                     GraphicsDevice graphicsDevice = REngine.Instance._graphics.GraphicsDevice;
 
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
-
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaTestEnable = false;
-
-                    
-                    RenderState state = graphicsDevice.RenderState;
-
+                    REngine.Instance._graphics.GraphicsDevice.RasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
+                    REngine.Instance._graphics.GraphicsDevice.DepthStencilState.DepthBufferEnable = true;
+                    REngine.Instance._graphics.GraphicsDevice.DepthStencilState.DepthBufferWriteEnable = true;
+                    REngine.Instance._graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
                     Matrix[] bones = _player.GetSkinTransforms();
                     RCamera camera = REngine.Instance._camera;
@@ -193,21 +184,14 @@ namespace Reactor
         {
             Matrix[] bones = _player.GetSkinTransforms();
             GraphicsDevice graphicsDevice = REngine.Instance._graphics.GraphicsDevice;
-            
-            REngine.Instance._graphics.GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
 
-            REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendOperation = BlendFunction.Add;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.SourceBlend = Blend.One;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.DestinationBlend = Blend.Zero;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
+            REngine.Instance._graphics.GraphicsDevice.RasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
+            REngine.Instance._graphics.GraphicsDevice.DepthStencilState.DepthBufferEnable = true;
 
-            REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaTestEnable = false;
-            
-            RenderState state = graphicsDevice.RenderState;
+            REngine.Instance._graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+
             _material.Prepare(this);
-            //graphicsDevice.VertexDeclaration = RVERTEXFORMAT.VertexDeclaration;
+
             Effect e = _material.shader.effect;
             e.CurrentTechnique = e.Techniques[techniqueName];
             RCamera camera = REngine.Instance._camera;
@@ -368,7 +352,7 @@ namespace Reactor
             if (_material != null)
             {
                 Texture t = RTextureFactory.Instance._textureList[TextureID];
-                etexture = _material.shader.effect.Parameters.GetParameterBySemantic("TEXTURE" + (int)TextureLayer);
+                etexture = _material.shader.GetParameterBySemantic("TEXTURE" + (int)TextureLayer);
                 etexture.SetValue(t);
 
 
@@ -376,7 +360,7 @@ namespace Reactor
             else
             {
                 Texture tex = (Texture2D)RTextureFactory.Instance._textureList[TextureID];
-                _defaultEffect.Parameters.GetParameterBySemantic("TEXTURE" + TextureLayer).SetValue(tex);
+                _material.shader.GetParameterBySemantic("TEXTURE" + TextureLayer).SetValue(tex);
                 
 
 
@@ -384,7 +368,7 @@ namespace Reactor
                 {
                     foreach (Effect effect in mesh.Effects)
                     {
-                        effect.Parameters.GetParameterBySemantic("TEXTURE" + TextureLayer).SetValue(tex);
+                        _material.shader.GetParameterBySemantic("TEXTURE" + TextureLayer).SetValue(tex);
                     }
                 }
             }
@@ -395,7 +379,7 @@ namespace Reactor
             if (_materials[MeshID] != null)
             {
                 Texture t = RTextureFactory.Instance._textureList[TextureID];
-                etexture = _material.shader.effect.Parameters.GetParameterBySemantic("TEXTURE" + (int)TextureLayer);
+                etexture = _material.shader.GetParameterBySemantic("TEXTURE" + (int)TextureLayer);
                 etexture.SetValue(t);
 
 
@@ -403,14 +387,14 @@ namespace Reactor
             else
             {
                 Texture tex = (Texture2D)RTextureFactory.Instance._textureList[TextureID];
-                _defaultEffect.Parameters.GetParameterBySemantic("TEXTURE" + TextureLayer).SetValue(tex);
+                _defaultEffect.GetParameterBySemantic("TEXTURE" + TextureLayer).SetValue(tex);
 
 
 
                 
                     foreach (Effect effect in _model.Meshes[MeshID].Effects)
                     {
-                        effect.Parameters.GetParameterBySemantic("TEXTURE" + TextureLayer).SetValue(tex);
+                       // effect.GetParameterBySemantic("TEXTURE" + TextureLayer).SetValue(tex);
                     }
                 
 

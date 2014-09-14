@@ -43,7 +43,6 @@ namespace Reactor
         }
 
         internal List<Effect> Effects = new List<Effect>();
-        internal EffectPool effectPool = new EffectPool();
         internal ContentManager content;
         public RShaderManager()
         {
@@ -51,7 +50,6 @@ namespace Reactor
             {
                 _instance = this;
 
-                _instance.effectPool = new EffectPool();
 
                 _instance.content = new ContentManager(REngine.Instance._game.Services);
                 _instance.content.RootDirectory = _instance.content.RootDirectory+"\\Content";
@@ -89,29 +87,14 @@ namespace Reactor
 
             effect = RShaderManager.Instance.content.Load<Effect>(Filename);
         }
-        public void Action_Begin()
-        {
-            effect.Begin();
-        }
-        public void Action_End()
-        {
-            effect.End();
-        }
+
         public bool GetParamBool(string ParamName)
         {
             return effect.Parameters[ParamName].GetValueBoolean();
         }
-        public bool[] GetParamBoolArray(string ParamName, int ArrayCount)
-        {
-            return effect.Parameters[ParamName].GetValueBooleanArray(ArrayCount);
-        }
         public int GetParamInt32(string ParamName)
         {
             return effect.Parameters[ParamName].GetValueInt32();
-        }
-        public int[] GetParamInt32Array(string ParamName, int ArrayCount)
-        {
-            return effect.Parameters[ParamName].GetValueInt32Array(ArrayCount);
         }
         public R3DMATRIX GetParamMatrix(string ParamName)
         {
@@ -136,35 +119,19 @@ namespace Reactor
             RQUATERNION q = RQUATERNION.FromQuaternion(effect.Parameters[ParamName].GetValueQuaternion());
             return q;
         }
-        public RQUATERNION[] GetParamQuaternionArray(string ParamName, int ArrayCount)
-        {
-            Quaternion[] qarray = effect.Parameters[ParamName].GetValueQuaternionArray(ArrayCount);
-
-            RQUATERNION[] quaternions = new RQUATERNION[qarray.Length];
-
-            int index = 0;
-            foreach (Quaternion q in qarray)
-            {
-                quaternions[index] = new RQUATERNION(q);
-            }
-            return quaternions;
-        }
         public Single GetParamSingle(string ParamName)
         {
             return effect.Parameters[ParamName].GetValueSingle();
         }
-        public Single[] GetParamSingleArray(string ParamName, int ArrayCount)
+        public Single[] GetParamSingleArray(string ParamName)
         {
-            return effect.Parameters[ParamName].GetValueSingleArray(ArrayCount);
+            return effect.Parameters[ParamName].GetValueSingleArray();
         }
         public void SetParam(string ParamName, bool value)
         {
             effect.Parameters[ParamName].SetValue(value);
         }
-        public void SetParam(string ParamName, bool[] values)
-        {
-            effect.Parameters[ParamName].SetValue(values);
-        }
+        
         public void SetParam(string ParamName, float value)
         {
             effect.Parameters[ParamName].SetValue(value);
@@ -176,10 +143,6 @@ namespace Reactor
         public void SetParam(string ParamName, int value)
         {
             effect.Parameters[ParamName].SetValue(value);
-        }
-        public void SetParam(string ParamName, int[] values)
-        {
-            effect.Parameters[ParamName].SetValue(values);
         }
         public void SetParam(string ParamName, R3DMATRIX value)
         {
@@ -201,21 +164,7 @@ namespace Reactor
         {
             effect.Parameters[ParamName].SetValue(value.quaternion);
         }
-        public void SetParam(string ParamName, RQUATERNION[] values)
-        {
-            Quaternion[] q = new Quaternion[values.Length];
-            int index = 0;
-            foreach (RQUATERNION rm in values)
-            {
-                q[index] = rm.quaternion;
-            }
-            effect.Parameters[ParamName].SetValue(q);
-            q = null;
-        }
-        public void SetParam(string ParamName, string value)
-        {
-            effect.Parameters[ParamName].SetValue(value);
-        }
+        
         public void SetParam(string ParamName, RTexture value)
         {
 
@@ -299,7 +248,7 @@ namespace Reactor
         {
             try
             {
-                EffectParameter param = effect.Parameters.GetParameterBySemantic(ParamName);
+                EffectParameter param = GetParameterBySemantic(ParamName);
                 return true;
             }
             catch
@@ -319,6 +268,17 @@ namespace Reactor
                 effect.Dispose();
                 effect = null;
             }
+        }
+
+        internal EffectParameter GetParameterBySemantic(String ParamName)
+        {
+            foreach(EffectParameter p in effect.Parameters){
+                if (p.Semantic == ParamName)
+                {
+                    return p;
+                }
+            }
+            return null;
         }
     }
 }

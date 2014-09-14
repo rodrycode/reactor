@@ -133,7 +133,6 @@ namespace Reactor
         Effect bloomCombineEffect;
         Effect gaussianBlurEffect;
         RRenderTarget2D renderTargetSource;
-        ResolveTexture2D resolveTarget;
         RenderTarget2D renderTarget1;
         RenderTarget2D renderTarget2;
 
@@ -210,9 +209,6 @@ namespace Reactor
 
             SurfaceFormat format = pp.BackBufferFormat;
 
-            // Create a texture for reading back the backbuffer contents.
-            resolveTarget = new ResolveTexture2D(GraphicsDevice, width, height, 1,
-                format);
 
             // Create two rendertargets for the bloom processing. These are half the
             // size of the backbuffer, in order to minimize fillrate costs. Reducing
@@ -221,10 +217,10 @@ namespace Reactor
             //width /= 2;
             //height /= 2;
 
-            renderTarget1 = new RenderTarget2D(GraphicsDevice, width, height, 1,
-                format);
-            renderTarget2 = new RenderTarget2D(GraphicsDevice, width, height, 1,
-                format);
+            renderTarget1 = new RenderTarget2D(GraphicsDevice, width, height, true,
+                format, DepthFormat.Depth24);
+            renderTarget2 = new RenderTarget2D(GraphicsDevice, width, height, true,
+                format, DepthFormat.Depth24);
         }
 
 
@@ -233,7 +229,6 @@ namespace Reactor
         /// </summary>
         protected override void UnloadContent()
         {
-            resolveTarget.Dispose();
             renderTarget1.Dispose();
             renderTarget2.Dispose();
         }
@@ -252,14 +247,14 @@ namespace Reactor
         {
             // Resolve the scene into a texture, so we can
             // use it as input data for the bloom processing.
-            GraphicsDevice.ResolveBackBuffer(resolveTarget);
-
+            //GraphicsDevice.ResolveBackBuffer(resolveTarget);
+            //GraphicsDevice.g
             // Pass 1: draw the scene into rendertarget 1, using a
             // shader that extracts only the brightest parts of the image.
             bloomExtractEffect.Parameters["BloomThreshold"].SetValue(
                 Settings.BloomThreshold);
 
-            DrawFullscreenQuad(renderTargetSource.target.GetTexture(), renderTarget1,
+            DrawFullscreenQuad(renderTargetSource.target, renderTarget1,
                                bloomExtractEffect,
                                IntermediateBuffer.PreBloom);
 
@@ -267,7 +262,7 @@ namespace Reactor
             // using a shader to apply a horizontal gaussian blur filter.
             SetBlurEffectParameters(1.0f / (float)renderTarget1.Width, 0);
 
-            DrawFullscreenQuad(renderTarget1.GetTexture(), renderTarget2,
+            DrawFullscreenQuad(renderTarget1, renderTarget2,
                                gaussianBlurEffect,
                                IntermediateBuffer.BlurredHorizontally);
 
@@ -275,14 +270,14 @@ namespace Reactor
             // using a shader to apply a vertical gaussian blur filter.
             SetBlurEffectParameters(0, 1.0f / (float)renderTarget1.Height);
 
-            DrawFullscreenQuad(renderTarget2.GetTexture(), renderTarget1,
+            DrawFullscreenQuad(renderTarget2, renderTarget1,
                                gaussianBlurEffect,
                                IntermediateBuffer.BlurredBothWays);
 
             // Pass 4: draw both rendertarget 1 and the original scene
             // image back into the main backbuffer, using a shader that
             // combines them to produce the final bloomed result.
-            GraphicsDevice.SetRenderTarget(0, null);
+            GraphicsDevice.SetRenderTarget(null);
 
             EffectParameterCollection parameters = bloomCombineEffect.Parameters;
 
@@ -291,11 +286,11 @@ namespace Reactor
             parameters["BloomSaturation"].SetValue(Settings.BloomSaturation);
             parameters["BaseSaturation"].SetValue(Settings.BaseSaturation);
 
-            GraphicsDevice.Textures[1] = resolveTarget;
+            GraphicsDevice.Textures[1] = renderTarget1;
 
             Viewport viewport = GraphicsDevice.Viewport;
 
-            DrawFullscreenQuad(renderTarget1.GetTexture(),
+            DrawFullscreenQuad(renderTarget1,
                                viewport.Width, viewport.Height,
                                bloomCombineEffect,
                                IntermediateBuffer.FinalResult);
@@ -309,13 +304,13 @@ namespace Reactor
         void DrawFullscreenQuad(Texture2D texture, RenderTarget2D renderTarget,
                                 Effect effect, IntermediateBuffer currentBuffer)
         {
-            GraphicsDevice.SetRenderTarget(0, renderTarget);
+            GraphicsDevice.SetRenderTarget(renderTarget);
 
             DrawFullscreenQuad(texture,
                                renderTarget.Width, renderTarget.Height,
                                effect, currentBuffer);
 
-            GraphicsDevice.SetRenderTarget(0, null);
+            GraphicsDevice.SetRenderTarget(null);
         }
 
 
@@ -326,9 +321,7 @@ namespace Reactor
         void DrawFullscreenQuad(Texture2D texture, int width, int height,
                                 Effect effect, IntermediateBuffer currentBuffer)
         {
-            spriteBatch.Begin(SpriteBlendMode.None,
-                              SpriteSortMode.Immediate,
-                              SaveStateMode.None);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
 
             // Begin the custom effect, if it is currently enabled. If the user
             // has selected one of the show intermediate buffer options, we still
@@ -336,20 +329,14 @@ namespace Reactor
             // but might need to skip applying the custom pixel shader.
             if (showBuffer >= currentBuffer)
             {
-                effect.Begin();
-                effect.CurrentTechnique.Passes[0].Begin();
+                effect.CurrentTechnique.Passes[0].Apply();
             }
 
             // Draw the quad.
             spriteBatch.Draw(texture, new Rectangle(0, 0, width, height), Color.White);
             spriteBatch.End();
 
-            // End the custom effect.
-            if (showBuffer >= currentBuffer)
-            {
-                effect.CurrentTechnique.Passes[0].End();
-                effect.End();
-            }
+            
         }
 
 

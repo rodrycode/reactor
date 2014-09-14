@@ -45,7 +45,6 @@ namespace Reactor
 
 
         #region FullscreenQuadForSkybox
-        internal VertexDeclaration QuadvertexDecl = null;
         internal VertexPositionTexture[] Quadverts = null;
         internal short[] Quadib = null;
         internal TextureCube skyTex;
@@ -81,10 +80,7 @@ namespace Reactor
         {
             if (_instance != null)
             {
-                if (_instance.QuadvertexDecl != null)
-                    _instance.QuadvertexDecl.Dispose();
 
-                _instance.QuadvertexDecl = null;
                 if (_instance.skyEffect != null)
                 {
                     _instance.skyEffect.Dispose();
@@ -251,11 +247,11 @@ namespace Reactor
                     //_instance.skyEffect.Parameters["FOGCOLOR"].SetValue(RAtmosphere.Instance.fogColor);
                     //_instance.skyEffect.Parameters["FOGDIST"].SetValue(RAtmosphere.Instance.fogDistance);
 
-                    REngine.Instance._game.GraphicsDevice.RenderState.DepthBufferEnable = false;
+                    REngine.Instance._game.GraphicsDevice.DepthStencilState.DepthBufferEnable = false;
 
                     //_instance.skyEffect.Begin();
 
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.CullMode = CullMode.None;
+                    REngine.Instance._graphics.GraphicsDevice.RasterizerState.CullMode = CullMode.None;
 
                     foreach (ModelMesh mesh in _instance.skyBox.Meshes)
                     {
@@ -278,8 +274,7 @@ namespace Reactor
         }
         void RenderQuad(Vector2 v1, Vector2 v2)
         {
-            VertexDeclaration olddec = REngine.Instance._graphics.GraphicsDevice.VertexDeclaration;
-            REngine.Instance._graphics.GraphicsDevice.VertexDeclaration = _instance.QuadvertexDecl;
+
 
             _instance.Quadverts[0].Position.X = v2.X;
             _instance.Quadverts[0].Position.Y = v1.Y;
@@ -296,16 +291,10 @@ namespace Reactor
             REngine.Instance._graphics.GraphicsDevice.DrawUserIndexedPrimitives<VertexPositionTexture>
                 (PrimitiveType.TriangleList, _instance.Quadverts, 0, 4, _instance.Quadib, 0, 2);
 
-            REngine.Instance._graphics.GraphicsDevice.VertexDeclaration = olddec;
         }
         void InitFullScreenQuad()
         {
-            if (_instance.QuadvertexDecl == null)
-            {
-                _instance.QuadvertexDecl = new VertexDeclaration(
-                                        REngine.Instance._graphics.GraphicsDevice,
-                                        VertexPositionTexture.VertexElements);
-            }
+
             if (_instance.Quadverts == null)
             {
                 _instance.Quadverts = new VertexPositionTexture[]

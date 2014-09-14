@@ -68,7 +68,7 @@ namespace Reactor
             _content = new ContentManager(REngine.Instance._game.Services);
             _content.RootDirectory = _content.RootDirectory + "\\Content";
             _objectMatrix = Matrix.CreateScale(1.0f);
-            _basicEffect = new BasicEffect(REngine.Instance._game.GraphicsDevice, REngine.Instance._effectPool);
+            _basicEffect = new BasicEffect(REngine.Instance._game.GraphicsDevice);
         }
 
         internal Matrix BuildScalingMatrix(Matrix m)
@@ -230,42 +230,15 @@ namespace Reactor
 
                 GraphicsDevice graphicsDevice = REngine.Instance._graphics.GraphicsDevice;
 
-                REngine.Instance._graphics.GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendOperation = BlendFunction.Add;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.SourceBlend = Blend.SourceAlpha;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
-
-                REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaTestEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.RangeFogEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.FogEnable = false;
                 if (RAtmosphere.Instance.fogEnabled)
                 {
-                    //REngine.Instance._graphics.GraphicsDevice.RenderState.FogEnable = RAtmosphere.Instance.fogEnabled;
-                    //REngine.Instance._graphics.GraphicsDevice.RenderState.FogVertexMode = FogMode.None;
-                    //REngine.Instance._graphics.GraphicsDevice.RenderState.FogDensity = 0.1f;
-                    //REngine.Instance._graphics.GraphicsDevice.RenderState.FogStart = REngine.Instance._camera.znear;
-                    //REngine.Instance._graphics.GraphicsDevice.RenderState.FogEnd = RAtmosphere.Instance.fogDistance * 2;
-                    //REngine.Instance._graphics.GraphicsDevice.RenderState.FogColor = new Color(RAtmosphere.Instance.fogColor);
-                    //REngine.Instance._graphics.GraphicsDevice.RenderState.RangeFogEnable = false;
+                   
 
                 }
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaFunction = CompareFunction.Always;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.ReferenceAlpha = 0;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferFunction = CompareFunction.LessEqual;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.StencilDepthBufferFail = StencilOperation.Keep;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.StencilEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels = ColorWriteChannels.All;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels1 = ColorWriteChannels.All;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels2 = ColorWriteChannels.All;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels3 = ColorWriteChannels.All;
-                RenderState state = graphicsDevice.RenderState;
-                graphicsDevice.VertexDeclaration = RVERTEXFORMAT.VertexDeclaration;
+                
+                
                 graphicsDevice.Indices = _index;
-                graphicsDevice.Vertices[0].SetSource(_buffer, 0, RVERTEXFORMAT.SizeInBytes);
+                graphicsDevice.SetVertexBuffer(_buffer);
                 //_material.shader.effect.CurrentTechnique = _material.shader.effect.Techniques[techniqueName];
                 _basicEffect.CurrentTechnique = _basicEffect.Techniques[techniqueName];
                 // Draw the model. A model can have multiple meshes, so loop.
@@ -288,24 +261,12 @@ namespace Reactor
                 //effect.World = _objectMatrix;
                 _basicEffect.View = camera.viewMatrix;
                 _basicEffect.Projection = camera.projMatrix;
-                _basicEffect.Begin();
                 foreach(EffectPass pass in _basicEffect.CurrentTechnique.Passes)
                 {
-                    pass.Begin();
-                    graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleFan, 0, 0, vertCount, 0, vertCount / 3);
-                    pass.End();
+                    pass.Apply();
+                    graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, vertCount, 0, vertCount / 3);
                 }
-                _basicEffect.End();
                 
-                REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = false;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferWriteEnable = false;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendOperation = BlendFunction.Add;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.SourceBlend = Blend.SourceAlpha;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
-                REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
-
-                REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaTestEnable = false;
                 //REngine.Instance._graphics.GraphicsDevice.RenderState.RangeFogEnable = false;
                 //REngine.Instance._graphics.GraphicsDevice.RenderState.FogEnable = false;
 
@@ -323,81 +284,27 @@ namespace Reactor
             //REngine.Instance._graphics.GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
             GraphicsDevice graphicsDevice = REngine.Instance._graphics.GraphicsDevice;
 
-            REngine.Instance._graphics.GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
-
-            REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendOperation = BlendFunction.Add;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.SourceBlend = Blend.One;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.DestinationBlend = Blend.Zero;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
-
-            REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaTestEnable = false;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaFunction = CompareFunction.Always;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ReferenceAlpha = 0;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferFunction = CompareFunction.LessEqual;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.StencilDepthBufferFail = StencilOperation.Keep;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.StencilEnable = false;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels = ColorWriteChannels.All;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels1 = ColorWriteChannels.All;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels2 = ColorWriteChannels.All;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels3 = ColorWriteChannels.All;
+            REngine.Instance._graphics.GraphicsDevice.RasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
+            DepthStencilState ds = new DepthStencilState
+            {
+                DepthBufferEnable = true,
+            };
+            REngine.Instance._graphics.GraphicsDevice.DepthStencilState = ds;
+            REngine.Instance._graphics.GraphicsDevice.BlendState = BlendState.Opaque;
+            
             for (int i = 0; i < 8; i++)
             {
                 REngine.Instance._graphics.GraphicsDevice.SamplerStates[i].AddressU = TextureAddressMode.Wrap;
                 REngine.Instance._graphics.GraphicsDevice.SamplerStates[i].AddressV = TextureAddressMode.Wrap;
                 REngine.Instance._graphics.GraphicsDevice.SamplerStates[i].AddressW = TextureAddressMode.Wrap;
-                REngine.Instance._graphics.GraphicsDevice.SamplerStates[i].MinFilter = TextureFilter.Point;
-                REngine.Instance._graphics.GraphicsDevice.SamplerStates[i].MagFilter = TextureFilter.Point;
-                REngine.Instance._graphics.GraphicsDevice.SamplerStates[i].MipFilter = TextureFilter.None;
+                REngine.Instance._graphics.GraphicsDevice.SamplerStates[i].Filter = TextureFilter.Point;
+
 
 
             }
-            for (int i = 0; i < 4; i++)
-            {
-                REngine.Instance._graphics.GraphicsDevice.VertexSamplerStates[i].AddressU = TextureAddressMode.Wrap;
-                REngine.Instance._graphics.GraphicsDevice.VertexSamplerStates[i].AddressV = TextureAddressMode.Wrap;
-                //REngine.Instance._graphics.GraphicsDevice.VertexSamplerStates[i].AddressW = TextureAddressMode.Wrap;
-                REngine.Instance._graphics.GraphicsDevice.VertexSamplerStates[i].MinFilter = TextureFilter.Point;
-                REngine.Instance._graphics.GraphicsDevice.VertexSamplerStates[i].MagFilter = TextureFilter.Point;
-                REngine.Instance._graphics.GraphicsDevice.VertexSamplerStates[i].MipFilter = TextureFilter.None;
-            }
-            RenderState state = graphicsDevice.RenderState;
-            //graphicsDevice.VertexDeclaration = RVERTEXFORMAT.VertexDeclaration;
-            //Effect e = _material.shader.effect;
-            //e.Parameters["Texture"].SetValue(_basicEffect.Texture);
+            
             _material.shader.effect.CurrentTechnique = _material.shader.effect.Techniques[techniqueName];
-            /*this.Matrix = _transforms[_model.Meshes[0].ParentBone.Index] * _objectMatrix;
-            _material.Prepare(this);
-            // Draw the model. A model can have multiple meshes, so loop.
-            foreach (ModelMesh mesh in _model.Meshes)
-            {
-                //foreach (Effect effect in mesh.Effects)
-                //{
-                //effect.Begin();
-
-
-                //effect.Parameters["View"].SetValue(camera.viewMatrix);
-                //effect.Parameters["Projection"].SetValue(camera.projMatrix);
-                foreach (EffectPass pass in effect.CurrentTechnique.Passes)
-                {
-                    pass.Begin();
-                    foreach (ModelMeshPart part in mesh.MeshParts)
-                    {
-                        graphicsDevice.VertexDeclaration = part.VertexDeclaration;
-                        graphicsDevice.Vertices[0].SetSource(mesh.VertexBuffer, part.StreamOffset, part.VertexStride);
-                        graphicsDevice.Indices = mesh.IndexBuffer;
-                        graphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, part.BaseVertex, 0, part.NumVertices, part.StartIndex, part.PrimitiveCount);
-                    }
-                    pass.End();
-                }
-                effect.End();
-                 
-
-                //}
-                mesh.Draw();
-            }
-        */
+            
         }
         public void Dispose()
         {
@@ -441,7 +348,7 @@ namespace Reactor
             _model = new Model();
             _content = new ContentManager(REngine.Instance._game.Services);
             _content.RootDirectory = _content.RootDirectory + "\\Content";
-            _basicEffect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice, REngine.Instance._effectPool);
+            _basicEffect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice);
             _basicEffect.CurrentTechnique = _basicEffect.Techniques[0];
         }
         public void Load(string filename)
@@ -567,8 +474,6 @@ namespace Reactor
                 //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels2 = ColorWriteChannels.All;
                 //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels3 = ColorWriteChannels.All;
                 
-                RenderState state = graphicsDevice.RenderState;
-                graphicsDevice.VertexDeclaration = RVERTEXFORMAT.VertexDeclaration;
                 //_material.shader.effect.CurrentTechnique = _material.shader.effect.Techniques[techniqueName];
                 
                 // Draw the model. A model can have multiple meshes, so loop.
@@ -619,17 +524,7 @@ namespace Reactor
 
                 }
                 
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferWriteEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendOperation = BlendFunction.Add;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.SourceBlend = Blend.SourceAlpha;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.DestinationBlend = Blend.InverseSourceAlpha;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
-
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaTestEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.RangeFogEnable = false;
-                //REngine.Instance._graphics.GraphicsDevice.RenderState.FogEnable = false;
+                
                 
             }
             else
@@ -645,30 +540,6 @@ namespace Reactor
             //REngine.Instance._graphics.GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
             GraphicsDevice graphicsDevice = REngine.Instance._graphics.GraphicsDevice;
 
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
-
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendOperation = BlendFunction.Add;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.SourceBlend = Blend.One;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.DestinationBlend = Blend.Zero;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
-
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaTestEnable = false;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaFunction = CompareFunction.Always;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ReferenceAlpha = 0;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferFunction = CompareFunction.LessEqual;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.StencilDepthBufferFail = StencilOperation.Keep;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.StencilEnable = false;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels = ColorWriteChannels.All;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels1 = ColorWriteChannels.All;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels2 = ColorWriteChannels.All;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.ColorWriteChannels3 = ColorWriteChannels.All;
-            
-            RenderState state = graphicsDevice.RenderState;
-            //graphicsDevice.VertexDeclaration = RVERTEXFORMAT.VertexDeclaration;
-            //Effect e = _material.shader.effect;
-            //e.Parameters["Texture"].SetValue(_basicEffect.Texture);
             _material.shader.effect.CurrentTechnique = _material.shader.effect.Techniques[techniqueName];
             this.Matrix = _transforms[_model.Meshes[0].ParentBone.Index] * _objectMatrix;
             //_material.Prepare(this);
@@ -773,7 +644,7 @@ namespace Reactor
             if (_material != null)
             {
                 Texture t = RTextureFactory.Instance._textureList[TextureID];
-                etexture = _material.shader.effect.Parameters.GetParameterBySemantic("TEXTURE"+(int)TextureLayer);
+                etexture = _material.shader.GetParameterBySemantic("TEXTURE"+(int)TextureLayer);
                 etexture.SetValue(t);
                 
                 
@@ -801,7 +672,7 @@ namespace Reactor
             if (_materials[MeshID] != null)
             {
                 Texture t = RTextureFactory.Instance._textureList[TextureID];
-                etexture = _material.shader.effect.Parameters.GetParameterBySemantic("TEXTURE" + (int)TextureLayer);
+                etexture = _material.shader.GetParameterBySemantic("TEXTURE" + (int)TextureLayer);
                 etexture.SetValue(t);
 
 

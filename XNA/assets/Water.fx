@@ -18,13 +18,13 @@ float2  WaveMapOffset0;
 float2  WaveMapOffset1;
 bool FOGENABLE;
 float FOGDIST;
-float4 FOGCOLOR = float4(1, 1, 1, 0.5);
+float4 FOGCOLOR = float4(1, 1, 1, 1.0);
 // Two normal maps and the reflection/refraction maps
 texture WaveMap0;
 texture WaveMap1;
 texture ReflectMap;
 texture RefractMap;
-
+float WaterLevel = 0.0f;
 //scale used on the wave maps
 float TexScale;
 
@@ -78,7 +78,7 @@ struct OutputVS
     float2 tex1			: TEXCOORD2;
     float4 projTexC		: TEXCOORD3;
     float4 pos			: TEXCOORD4;
-    float Fog           : FOG;
+    float2 Fog           : TEXCOORD5;
 };
 
 OutputVS WaterVS( float3 posL	: POSITION0, 
@@ -104,7 +104,7 @@ OutputVS WaterVS( float3 posL	: POSITION0,
 	
 	// Generate projective texture coordinates from camera's perspective.
 	outVS.projTexC = outVS.posH;
-	outVS.Fog = 1 - saturate(length(mul(posL, mul(World,View))) / FOGDIST);
+	outVS.Fog = float2(1.0 - saturate(length(posW) / FOGDIST),0);
 	// Done--return the output.
     return outVS;
 }
@@ -113,7 +113,8 @@ float4 WaterPS( float3 toEyeW		: TEXCOORD0,
 				float2 tex0			: TEXCOORD1,
 				float2 tex1			: TEXCOORD2,
 				float4 projTexC		: TEXCOORD3,
-				float4 pos			: TEXCOORD4) : COLOR
+				float4 pos			: TEXCOORD4,
+				float2 fog          : TEXCOORD5) : COLOR
 {
 	//transform the projective texcoords to NDC space
 	//and scale and offset xy to correctly sample a DX texture
@@ -158,24 +159,23 @@ float4 WaterPS( float3 toEyeW		: TEXCOORD0,
 	float sunFactor = SunFactor;
 	float sunPower = SunPower;
 	
-	if(EyePos.y < pos.y)
-	{
-		sunFactor = 7.0f; //these could also be sent to the shader
-		sunPower = 55.0f;
-	}
+	
 	float3 sunlight = sunFactor * pow(saturate(dot(R, lightVecW)), sunPower) * SunColor;
 
 	float4 refl = tex2D(ReflectMapS, projTexC.xy + projTexC.z * normalT.xz);
 	float4 refr = tex2D(RefractMapS, projTexC.xy - projTexC.z * normalT.xz);
 	
 	//only use the refraction map if we're under water
-	if(EyePos.y < pos.y)
+	if(EyePos.y < WaterLevel)
 		f = 0.0f;
 	
 	//interpolate the reflection and refraction maps based on the fresnel term and add the sunlight
 	finalColor.rgb = WaterColor * lerp( refr, refl, f) + sunlight;
+	//finalColor.a = lerp(finalColor.a, 0.0, 1-(fog.x));
+	//if(FOGENABLE)
+		//finalColor.rgb = lerp(WaterColor, FOGCOLOR, 1-(fog.x)) * (lerp(lerp( refr, refl, f),FOGCOLOR, 1-(fog.x))) + sunlight;
 	
-	return finalColor;
+		return finalColor;
 }
 
 technique WaterTech
@@ -184,7 +184,7 @@ technique WaterTech
     {
     
         // Specify the vertex and pixel shader associated with this pass.
-        vertexShader = compile vs_2_0 WaterVS();
-        pixelShader  = compile ps_2_0 WaterPS();
+        vertexShader = compile vs_3_0 WaterVS();
+        pixelShader  = compile ps_3_0 WaterPS();
     }    
 }

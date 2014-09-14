@@ -222,7 +222,7 @@ namespace Reactor
         }
         public void PlayMediaLibraryMusic()
         {
-            SongCollection s = _library.Albums[_instance._random.Next(_library.Albums.Count)].Songs;
+            SongCollection s = _library.Songs;
             MediaPlayer.Play(s);
             
             

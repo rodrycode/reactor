@@ -63,8 +63,8 @@ namespace Reactor
                 _instance = this;
                 _instance._fontcontent = new ContentManager(REngine.Instance._game.Services);
                 _instance._spritebatch = new SpriteBatch(REngine.Instance._graphics.GraphicsDevice);
-                _instance._basicEffect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice, REngine.Instance._effectPool);
-                _instance._lineDeclaration = new VertexDeclaration(REngine.Instance._graphics.GraphicsDevice, VertexPositionColor.VertexElements);
+                _instance._basicEffect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice);
+                _instance._lineDeclaration = VertexPositionColor.VertexDeclaration;
                 _instance._lineTexture = new Texture2D(REngine.Instance._graphics.GraphicsDevice, 1, 1);
                 _instance._lineTexture.SetData(new Color[] { Color.White });
             }
@@ -79,7 +79,7 @@ namespace Reactor
         }
         public void Action_Begin2D()
         {
-            _instance._spritebatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            _instance._spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
         }
         public void Action_End2D()
         {
@@ -88,12 +88,12 @@ namespace Reactor
         internal static void IAction_Begin2D()
         {
 
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = false;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferWriteEnable = false;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = false;
+            REngine.Instance._graphics.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+
+            
             if (RAtmosphere.Instance != null)
                 if (RAtmosphere.Instance.fogEnabled)
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
+                    REngine.Instance._graphics.GraphicsDevice.BlendState = BlendState.Opaque;
             
                 //_instance._spritebatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Texture, SaveStateMode.SaveState);
         }
@@ -108,20 +108,7 @@ namespace Reactor
         
         internal static void IAction_End2D()
         {
-            if (RAtmosphere.Instance != null)
-
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = true;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = true;
-            //REngine.Instance._graphics.GraphicsDevice.SamplerStates[0].AddressU = TextureAddressMode.Wrap;
-            //REngine.Instance._graphics.GraphicsDevice.SamplerStates[0].AddressV = TextureAddressMode.Wrap;
-            //REngine.Instance._graphics.GraphicsDevice.SamplerStates[0].AddressW = TextureAddressMode.Wrap;
-            //REngine.Instance._graphics.GraphicsDevice.SamplerStates[0].MinFilter = TextureFilter.Anisotropic;
-            //REngine.Instance._graphics.GraphicsDevice.SamplerStates[0].MipFilter = TextureFilter.Anisotropic;
-            //REngine.Instance._graphics.GraphicsDevice.SamplerStates[0].MagFilter = TextureFilter.Anisotropic;
             
-                //_instance._spritebatch.End();
         }
         
         public RFONT Create_TextureFont(string FontName, string FileName)
@@ -142,7 +129,7 @@ namespace Reactor
 
             try
             {
-                _instance._spritebatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState);
+                _instance._spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 _instance._spritebatch.Draw(_instance._lineTexture, new Rectangle(X, Y, Width, Height), c);
                 _instance._spritebatch.End();
 
@@ -163,18 +150,16 @@ namespace Reactor
             _instance._basicEffect.VertexColorEnabled = true;
 
             
-            _instance._basicEffect.Begin();
+ 
             
-            _instance._basicEffect.CurrentTechnique.Passes[0].Begin();
+            _instance._basicEffect.CurrentTechnique.Passes[0].Apply();
 
             // Draw the triangle.
-            REngine.Instance._graphics.GraphicsDevice.VertexDeclaration = _instance._lineDeclaration;
 
             REngine.Instance._graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip,
                                               v, 0, 2);
 
-            _instance._basicEffect.CurrentTechnique.Passes[0].End();
-            _instance._basicEffect.End();
+
         }
         public void Draw_TextureFont(RFONT font, int X, int Y, string Message, R4DVECTOR color)
         {

@@ -70,7 +70,7 @@ float4 BasicShader(PS_INPUT Input) : COLOR0
     return tex;
 }
 
-technique BasicShader 
+technique normal 
 {
     pass cubemap
     {

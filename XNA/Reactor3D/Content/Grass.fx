@@ -36,8 +36,8 @@ float FOGDIST;
 float4 FOGCOLOR = float4(1, 1, 1, 0.5);
 
 // Parameters describing the billboard itself.
-float BillboardWidth;
-float BillboardHeight;
+static float BillboardWidth;
+static float BillboardHeight;
 float normalStrength = 8.0f;
 float startFadingInDistance;
 float stopFadingInDistance;
@@ -135,7 +135,7 @@ float4 tex2Dlod_bilinear(sampler texSam, float4 uv)
 	return lerp(tA, tB, uv.y);
 }
 
-VS_OUTPUT VertexShader(VS_INPUT input)
+VS_OUTPUT VShader(VS_INPUT input)
 {
     VS_OUTPUT output;
 
@@ -245,7 +245,7 @@ sampler TextureSampler3 = sampler_state
 };
 
 
-float4 PixelShader(in float2 texCoord : TEXCOORD0, in float4 worldPos : TEXCOORD1, in float4 color : COLOR0, in float2 fog : TEXCOORD3) : COLOR0
+float4 PShader(in float2 texCoord : TEXCOORD0, in float4 worldPos : TEXCOORD1, in float4 color : COLOR0, in float2 fog : TEXCOORD3) : COLOR0
 {
     float3 mapdata = tex2D(grassmapSampler, worldPos);
 	color = tex2D(TextureSampler1, texCoord) * mapdata.r;
@@ -303,8 +303,8 @@ technique Billboards
     
     pass RenderOpaquePixels
     {
-        VertexShader = compile vs_3_0 VertexShader();
-        PixelShader = compile ps_3_0 PixelShader();
+        VertexShader = compile vs_3_0 VShader();
+        PixelShader = compile ps_3_0 PShader();
 
         AlphaBlendEnable = false;
         SrcBlend = SrcAlpha;
@@ -321,8 +321,8 @@ technique Billboards
 
     pass RenderAlphaBlendedFringes
     {
-        VertexShader = compile vs_3_0 VertexShader();
-        PixelShader = compile ps_3_0 PixelShader();
+        VertexShader = compile vs_3_0 VShader();
+        PixelShader = compile ps_3_0 PShader();
         
         AlphaBlendEnable = true;
         SrcBlend = SrcAlpha;
@@ -340,8 +340,8 @@ technique Billboards
     
     /*pass RenderAlphaBlendedSinglePass
     {
-        VertexShader = compile vs_3_0 VertexShader();
-        PixelShader = compile ps_3_0 PixelShader();
+        VertexShader = compile vs_3_0 VShader();
+        PixelShader = compile ps_3_0 PShader();
         
         AlphaBlendEnable = true;
         SrcBlend = SrcAlpha;

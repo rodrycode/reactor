@@ -36,7 +36,7 @@ float2 EndSize;
 // Particle texture and sampler.
 texture Texture;
 
-sampler Sampler = sampler_state
+sampler TextureSampler = sampler_state
 {
     Texture = (Texture);
     
@@ -167,7 +167,7 @@ float4 ComputeParticleRotation(float randomValue, float age)
 
 
 // Custom vertex shader animates particles entirely on the GPU.
-VertexShaderOutput VertexShader(VertexShaderInput input)
+VertexShaderOutput VShader(VertexShaderInput input)
 {
     VertexShaderOutput output;
     
@@ -197,19 +197,18 @@ struct NonRotatingPixelShaderInput
 {
     float4 Color : COLOR0;
     
-#ifdef XBOX
-    float2 TextureCoordinate : SPRITETEXCOORD;
-#else
+
     float2 TextureCoordinate : TEXCOORD0;
-#endif
+
 };
 
 
 // Pixel shader for drawing particles that do not rotate.
 float4 NonRotatingPixelShader(NonRotatingPixelShaderInput input) : COLOR0
 {
-    return tex2D(Sampler, input.TextureCoordinate) * input.Color;
-}
+    float4 retColor = tex2D(TextureSampler, input.TextureCoordinate) * input.Color;
+	return retColor;
+};
 
 
 // Pixel shader input structure for particles that can rotate.
@@ -218,11 +217,8 @@ struct RotatingPixelShaderInput
     float4 Color : COLOR0;
     float4 Rotation : COLOR1;
     
-#ifdef XBOX
-    float2 TextureCoordinate : SPRITETEXCOORD;
-#else
     float2 TextureCoordinate : TEXCOORD0;
-#endif
+
 };
 
 
@@ -255,8 +251,9 @@ float4 RotatingPixelShader(RotatingPixelShaderInput input) : COLOR0
     // Undo the offset used to control the rotation origin.
     textureCoordinate += 0.5;
 
-    return tex2D(Sampler, textureCoordinate) * input.Color;
-}
+    float4 retColor = tex2D(TextureSampler, textureCoordinate) * input.Color;
+	return retColor;
+};
 
 
 // Effect technique for drawing particles that do not rotate. Works with shader 1.1.
@@ -264,8 +261,8 @@ technique NonRotatingParticles
 {
     pass P0
     {
-        VertexShader = compile vs_1_1 VertexShader();
-        PixelShader = compile ps_1_1 NonRotatingPixelShader();
+        VertexShader = compile vs_2_0 VShader();
+        PixelShader = compile ps_2_0 NonRotatingPixelShader();
     }
 }
 
@@ -275,7 +272,7 @@ technique RotatingParticles
 {
     pass P0
     {
-        VertexShader = compile vs_1_1 VertexShader();
+        VertexShader = compile vs_2_0 VShader();
         PixelShader = compile ps_2_0 RotatingPixelShader();
     }
 }

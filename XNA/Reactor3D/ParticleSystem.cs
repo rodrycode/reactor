@@ -83,10 +83,10 @@ namespace Reactor
         }
         static public VertexElement[] VertexElements = new VertexElement[]
         {
-            new VertexElement(0,0,VertexElementFormat.Vector3,VertexElementMethod.Default,VertexElementUsage.Position,0),
-            new VertexElement(0,4*3,VertexElementFormat.Vector2,VertexElementMethod.Default,VertexElementUsage.TextureCoordinate,0),                
-            new VertexElement(0,4*5,VertexElementFormat.Color ,VertexElementMethod.Default,VertexElementUsage.Color,0),
-            new VertexElement(0,4*6,VertexElementFormat.Vector4,VertexElementMethod.Default,VertexElementUsage.Position,1),
+            new VertexElement(0,VertexElementFormat.Vector3, VertexElementUsage.Position,0),
+            new VertexElement(4*3,VertexElementFormat.Vector2,VertexElementUsage.TextureCoordinate,0),                
+            new VertexElement(4*5,VertexElementFormat.Color ,VertexElementUsage.Color,0),
+            new VertexElement(4*6,VertexElementFormat.Vector4,VertexElementUsage.Position,1),
         };
 
         public static int SizeInBytes = (3 + 2 + 1 + 4) * 4;
@@ -136,7 +136,7 @@ namespace Reactor
         }
         public void LoadContent()
         {
-            m_vDec = new VertexDeclaration(REngine.Instance._game.GraphicsDevice, BillboardParticleElement.VertexElements);
+            m_vDec = new VertexDeclaration(BillboardParticleElement.VertexElements);
 
             shader = REngine.Instance._resourceContent.Load<Effect>("Billboard");
             
@@ -251,25 +251,13 @@ namespace Reactor
         public void Render()
         {
             GameTime gameTime = REngine.Instance._gameTime;
-            REngine.Instance._graphics.GraphicsDevice.VertexDeclaration = m_vDec;
-            REngine.Instance._graphics.GraphicsDevice.Vertices[0].SetSource(vb, 0, BillboardParticleElement.SizeInBytes);
+            REngine.Instance._graphics.GraphicsDevice.SetVertexBuffer(vb);
             REngine.Instance._graphics.GraphicsDevice.Indices = ib;
 
-            bool AlphaBlendEnable = REngine.Instance._game.GraphicsDevice.RenderState.AlphaBlendEnable;
-            Blend DestinationBlend = REngine.Instance._game.GraphicsDevice.RenderState.DestinationBlend;
-            Blend SourceBlend = REngine.Instance._game.GraphicsDevice.RenderState.SourceBlend;
-            bool DepthBufferWriteEnable = REngine.Instance._game.GraphicsDevice.RenderState.DepthBufferWriteEnable;
-            BlendFunction BlendFunc = REngine.Instance._game.GraphicsDevice.RenderState.BlendFunction;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = true;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.SourceBlend = Blend.SourceAlpha;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DestinationBlend = Blend.One;
-            //REngine.Instance._graphics.GraphicsDevice.RenderState.FogEnable = false;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferWriteEnable = false;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = true;
+            REngine.Instance._graphics.GraphicsDevice.BlendState = BlendState.AlphaBlend;
             if (RAtmosphere.Instance != null)
                 if (RAtmosphere.Instance.fogEnabled)
-                    REngine.Instance._graphics.GraphicsDevice.RenderState.AlphaBlendEnable = false;
+                    REngine.Instance._graphics.GraphicsDevice.BlendState = BlendState.Additive;
             //Matrix World = Matrix.CreateBillboard(myPosition, REngine.Instance._camera.Position.vector, REngine.Instance._camera.viewMatrix.Up, null);
             Matrix World = Matrix.CreateScale(myScale) * Matrix.CreateFromQuaternion(myRotation) * Matrix.CreateTranslation(myPosition);
             shader.Parameters["world"].SetValue(World);
@@ -277,24 +265,15 @@ namespace Reactor
             shader.Parameters["vp"].SetValue(vp);
 
             shader.Parameters["particleTexture"].SetValue(texture);
-            shader.Begin();
+
             for (int ps = 0; ps < shader.CurrentTechnique.Passes.Count; ps++)
             {
-                shader.CurrentTechnique.Passes[ps].Begin();
+                shader.CurrentTechnique.Passes[ps].Apply();
                 REngine.Instance._game.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4 * partCount, 0, partCount * 2);
-                shader.CurrentTechnique.Passes[ps].End();
+
             }
-            shader.End();
+            REngine.Instance._graphics.GraphicsDevice.BlendState = BlendState.Opaque;
 
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferEnable = true;
-            REngine.Instance._graphics.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
-            
-            REngine.Instance._graphics.GraphicsDevice.RenderState.SeparateAlphaBlendEnabled = true;
-
-            REngine.Instance._game.GraphicsDevice.RenderState.AlphaBlendEnable = AlphaBlendEnable;
-
-            REngine.Instance._game.GraphicsDevice.RenderState.DestinationBlend = DestinationBlend;
-            REngine.Instance._game.GraphicsDevice.RenderState.SourceBlend = SourceBlend;
 
         }
     }
@@ -553,15 +532,13 @@ namespace Reactor
         {
 
             LoadParticleEffect();
-            vertexDeclaration = new VertexDeclaration(REngine.Instance._game.GraphicsDevice,
-                                                      PointParticleVertex.VertexElements);
+            vertexDeclaration = new VertexDeclaration(PointParticleVertex.VertexElements);
 
             // Create a dynamic vertex buffer.
             int size = PointParticleVertex.SizeInBytes * particles.Length;
 
-            vertexBuffer = new DynamicVertexBuffer(REngine.Instance._game.GraphicsDevice, size, 
-                                                   BufferUsage.WriteOnly |
-                                                   BufferUsage.Points);
+            vertexBuffer = new DynamicVertexBuffer(REngine.Instance._game.GraphicsDevice, vertexDeclaration, size, 
+                                                   BufferUsage.WriteOnly);
             
         }
 
@@ -736,7 +713,6 @@ namespace Reactor
             // If there are any active particles, draw them now!
             if (firstActiveParticle != firstFreeParticle)
             {
-                SetParticleRenderStates(device.RenderState);
 
                 // Set an effect parameter describing the viewport size. This is needed
                 // to convert particle sizes into screen space point sprite sizes.
@@ -748,51 +724,42 @@ namespace Reactor
                 effectTimeParameter.SetValue(currentTime);
 
                 // Set the particle vertex buffer and vertex declaration.
-                device.Vertices[0].SetSource(vertexBuffer, 0,
-                                             PointParticleVertex.SizeInBytes);
-
-                device.VertexDeclaration = vertexDeclaration;
+                device.SetVertexBuffer(vertexBuffer);
 
                 // Activate the particle effect.
-                particleEffect.Begin();
+
 
                 foreach (EffectPass pass in particleEffect.CurrentTechnique.Passes)
                 {
-                    pass.Begin();
+                    pass.Apply();
 
                     if (firstActiveParticle < firstFreeParticle)
                     {
                         // If the active particles are all in one consecutive range,
                         // we can draw them all in a single call.
-                        device.DrawPrimitives(PrimitiveType.PointList,
-                                              firstActiveParticle,
-                                              firstFreeParticle - firstActiveParticle);
+                        //device.DrawPrimitives(PrimitiveType.,
+                        //                      firstActiveParticle,
+                        //                      firstFreeParticle - firstActiveParticle);
                     }
                     else
                     {
                         // If the active particle range wraps past the end of the queue
                         // back to the start, we must split them over two draw calls.
-                        device.DrawPrimitives(PrimitiveType.PointList,
-                                              firstActiveParticle,
-                                              particles.Length - firstActiveParticle);
+                        //device.DrawPrimitives(PrimitiveType.PointList,
+                        //                      firstActiveParticle,
+                        //                      particles.Length - firstActiveParticle);
 
                         if (firstFreeParticle > 0)
                         {
-                            device.DrawPrimitives(PrimitiveType.PointList,
-                                                  0,
-                                                  firstFreeParticle);
+                        //    device.DrawPrimitives(PrimitiveType.PointList,
+                        //                          0,
+                        //                          firstFreeParticle);
                         }
                     }
 
-                    pass.End();
+                    
                 }
 
-                particleEffect.End();
-
-                // Reset a couple of the more unusual renderstates that we changed,
-                // so as not to mess up any other subsequent drawing.
-                device.RenderState.PointSpriteEnable = false;
-                device.RenderState.DepthBufferWriteEnable = true;
             }
 
             drawCounter++;
@@ -841,7 +808,7 @@ namespace Reactor
         /// <summary>
         /// Helper for setting the renderstates used to draw particles.
         /// </summary>
-        void SetParticleRenderStates(RenderState renderState)
+        /*void SetParticleRenderStates(RenderState renderState)
         {
             // Enable point sprites.
             renderState.PointSpriteEnable = true;
@@ -865,7 +832,7 @@ namespace Reactor
             renderState.DepthBufferWriteEnable = false;
 
             //renderState.FogEnable = false;
-        }
+        }*/
 
 
         #endregion

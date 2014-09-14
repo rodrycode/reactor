@@ -1239,8 +1239,8 @@ namespace Reactor
             actionKeys.Add(Actions.StrafeLeftPrimary, Keys.Left);
             actionKeys.Add(Actions.StrafeLeftAlternate, Keys.A);
 
-            Game.Activated += new EventHandler(HandleGameActivatedEvent);
-            Game.Deactivated += new EventHandler(HandleGameDeactivatedEvent);
+            Game.Activated += new EventHandler<System.EventArgs>(HandleGameActivatedEvent);
+            Game.Deactivated += new EventHandler<System.EventArgs>(HandleGameDeactivatedEvent);
 
             UpdateOrder = 1;
         }
@@ -1881,7 +1881,7 @@ namespace Reactor
             if (Game.IsFixedTimeStep)
                 elapsedTimeSec = (float)gameTime.ElapsedGameTime.TotalSeconds;
             else
-                elapsedTimeSec = (float)gameTime.ElapsedRealTime.TotalSeconds;
+                elapsedTimeSec = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             Vector3 direction = new Vector3();
 

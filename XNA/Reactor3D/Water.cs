@@ -301,14 +301,14 @@ namespace Reactor
             }
 
             mVertexBuffer = new VertexBuffer(REngine.Instance._game.GraphicsDevice,
-                                             VertexPositionTexture.SizeInBytes * mOptions.Width * mOptions.Height,
+                                             VertexPositionTexture.VertexDeclaration,VertexPositionTexture.VertexDeclaration.VertexStride * mOptions.Width * mOptions.Height,
                                              BufferUsage.WriteOnly);
             mVertexBuffer.SetData(vertices);
 
             mIndexBuffer = new IndexBuffer(REngine.Instance._game.GraphicsDevice, typeof(int), indices.Length, BufferUsage.WriteOnly);
             mIndexBuffer.SetData(indices);
 
-            mDecl = new VertexDeclaration(REngine.Instance._game.GraphicsDevice, VertexPositionTexture.VertexElements);
+            mDecl = VertexPositionTexture.VertexDeclaration;
 
             //normalzie the sun direction in case the user didn't
         }
@@ -324,15 +324,14 @@ namespace Reactor
             //get the attributes of the back buffer
             PresentationParameters pp = REngine.Instance._game.GraphicsDevice.PresentationParameters;
             SurfaceFormat format = pp.BackBufferFormat;
-            MultiSampleType msType = pp.MultiSampleType;
-            int msQuality = pp.MultiSampleQuality;
+            
 
             //create the reflection and refraction render targets
             //using the backbuffer attributes
             mRefractionMap = new RenderTarget2D(REngine.Instance._game.GraphicsDevice, mOptions.RenderTargetSize, mOptions.RenderTargetSize,
-                                                1, format, msType, msQuality);
+                                                true, format, DepthFormat.Depth24Stencil8);
             mReflectionMap = new RenderTarget2D(REngine.Instance._game.GraphicsDevice, mOptions.RenderTargetSize, mOptions.RenderTargetSize,
-                                                1, format, msType, msQuality);
+                                                true, format, DepthFormat.Depth24Stencil8);
 
 #if !XBOX
             mEffect = REngine.Instance._resourceContent.Load<Effect>("Water");
@@ -387,14 +386,13 @@ namespace Reactor
 
         public void Draw()
         {
-            REngine.Instance._game.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-            REngine.Instance._game.GraphicsDevice.RenderState.AlphaTestEnable = false;
-            REngine.Instance._game.GraphicsDevice.RenderState.DepthBufferEnable = true;
-            REngine.Instance._game.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
+            REngine.Instance._game.GraphicsDevice.BlendState = BlendState.Opaque;
+            REngine.Instance._game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            
 
             //don't cull back facing triangles since we want the water to be visible
             //from beneath the water plane too
-            REngine.Instance._game.GraphicsDevice.RenderState.CullMode = CullMode.None;
+            REngine.Instance._game.GraphicsDevice.RasterizerState.CullMode = CullMode.None;
             if (RAtmosphere.Instance != null)
             {
                 mEffect.Parameters["FOGENABLE"].SetValue(RAtmosphere.Instance.fogEnabled);
@@ -405,27 +403,15 @@ namespace Reactor
             UpdateEffectParams();
 
             REngine.Instance._game.GraphicsDevice.Indices = mIndexBuffer;
-            REngine.Instance._game.GraphicsDevice.Vertices[0].SetSource(mVertexBuffer, 0, VertexPositionTexture.SizeInBytes);
-            REngine.Instance._game.GraphicsDevice.VertexDeclaration = mDecl;
-
-            mEffect.Begin(SaveStateMode.None);
+            REngine.Instance._game.GraphicsDevice.SetVertexBuffer(mVertexBuffer);
 
             foreach (EffectPass pass in mEffect.CurrentTechnique.Passes)
             {
-                pass.Begin();
+                pass.Apply();
                 REngine.Instance._game.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, mNumVertices, 0, mNumTris);
-                pass.End();
+
             }
 
-            mEffect.End();
-            REngine.Instance._game.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-            REngine.Instance._game.GraphicsDevice.RenderState.AlphaTestEnable = false;
-            REngine.Instance._game.GraphicsDevice.RenderState.DepthBufferEnable = true;
-            REngine.Instance._game.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
-
-
-            //REngine.Instance._game.GraphicsDevice.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-            //RScreen2D.IAction_End2D();
         }
 
         /// <summary>
@@ -457,9 +443,9 @@ namespace Reactor
              * Render to the Reflection Map
              */
             //clip objects below the water line, and render the scene upside down
-            REngine.Instance._game.GraphicsDevice.RenderState.CullMode = CullMode.CullClockwiseFace;
+            REngine.Instance._game.GraphicsDevice.RasterizerState.CullMode = CullMode.CullClockwiseFace;
             //RenderTarget oldTarget = REngine.Instance._game.GraphicsDevice.GetRenderTarget(0);
-            REngine.Instance._game.GraphicsDevice.SetRenderTarget(0, mReflectionMap);
+            REngine.Instance._game.GraphicsDevice.SetRenderTarget(mReflectionMap);
             REngine.Instance._game.GraphicsDevice.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, mOptions.WaterColor.vector, 1.0f, 0);
 
             //reflection plane in local space
@@ -478,8 +464,8 @@ namespace Reactor
             Vector4 waterPlaneH = Vector4.Transform(waterPlaneL, wvpInvTrans);
             pwaterPlaneH = new Plane(waterPlaneH);
             pwaterPlaneW = new Plane(waterPlaneW);
-            REngine.Instance._game.GraphicsDevice.ClipPlanes[0].IsEnabled = true;
-            REngine.Instance._game.GraphicsDevice.ClipPlanes[0].Plane = pwaterPlaneH;
+            //REngine.Instance._game.GraphicsDevice.ClipPlanes[0].IsEnabled = true;
+            //REngine.Instance._game.GraphicsDevice.ClipPlanes[0].Plane = pwaterPlaneH;
 
             reflectionMatrix = Matrix.CreateReflection(pwaterPlaneW);
 
@@ -488,11 +474,11 @@ namespace Reactor
                 mDrawFunc(R3DMATRIX.FromMatrix(reflectionMatrix));
             }
 
-            REngine.Instance._game.GraphicsDevice.RenderState.CullMode = CullMode.None;
-            REngine.Instance._game.GraphicsDevice.ClipPlanes[0].IsEnabled = false;
+            REngine.Instance._game.GraphicsDevice.RasterizerState.CullMode = CullMode.None;
+            //REngine.Instance._game.GraphicsDevice.ClipPlanes[0].IsEnabled = false;
             
 
-            REngine.Instance._game.GraphicsDevice.SetRenderTarget(0, null);
+            REngine.Instance._game.GraphicsDevice.SetRenderTarget(null);
             //RScreen2D.IAction_End2D();
             
 
@@ -512,13 +498,13 @@ namespace Reactor
 
             //update the refraction map, clip objects above the water line
             //so we don't get artifacts
-            REngine.Instance._game.GraphicsDevice.SetRenderTarget(0, mRefractionMap);
+            REngine.Instance._game.GraphicsDevice.SetRenderTarget(mRefractionMap);
             REngine.Instance._game.GraphicsDevice.Clear(new Color(mOptions.WaterColor.vector));
 
             if (mDrawFunc != null)
                 mDrawFunc(R3DMATRIX.FromMatrix(Matrix.Identity));
 
-            REngine.Instance._game.GraphicsDevice.SetRenderTarget(0, null);
+            REngine.Instance._game.GraphicsDevice.SetRenderTarget(null);
         }
 
         /// <summary>
@@ -527,8 +513,8 @@ namespace Reactor
         private void UpdateEffectParams()
         {
             //update the reflection and refraction textures
-            mEffect.Parameters["ReflectMap"].SetValue(mReflectionMap.GetTexture());
-            mEffect.Parameters["RefractMap"].SetValue(mRefractionMap.GetTexture());
+            mEffect.Parameters["ReflectMap"].SetValue(mReflectionMap);
+            mEffect.Parameters["RefractMap"].SetValue(mRefractionMap);
 
             //normal map offsets
             mEffect.Parameters["WaveMapOffset0"].SetValue(mOptions.WaveMapOffset0.vector);

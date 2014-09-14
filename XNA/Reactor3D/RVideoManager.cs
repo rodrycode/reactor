@@ -41,7 +41,7 @@ namespace Reactor
     public class RVideoManager
     {
         Video video;
-        VideoPlayer vidPlayer;
+        //VideoPlayer vidPlayer;
         double crop;
         double time;
         bool PlayFullVid;
@@ -66,40 +66,40 @@ namespace Reactor
             scale = Size.vector;
             position = Position.vector;
             crop = Crop;
-            vidPlayer = new VideoPlayer();
+            //vidPlayer = new VideoPlayer();
 
         }
 
-        public bool IsPaused
+        /*public bool IsPaused
         {
-            get { return vidPlayer.State == MediaState.Paused; }
+            //get { return vidPlayer.State == MediaState.Paused; }
         }
         public bool IsPlaying
         {
-            get { return vidPlayer.State == MediaState.Playing; }
+           // get { return vidPlayer.State == MediaState.Playing; }
         }
         public bool IsStopped
         {
-            get { return vidPlayer.State == MediaState.Stopped; }
-        }
+            //get { return vidPlayer.State == MediaState.Stopped; }
+        }*/
         public void Start()
         {
             timer = 0;
-            if (vidPlayer.State != MediaState.Playing)
-                vidPlayer.Play(video);
+            //if (vidPlayer.State != MediaState.Playing)
+            //    vidPlayer.Play(video);
         }
 
         public void Stop()
         {
-            vidPlayer.Stop();
+            //vidPlayer.Stop();
         }
 
         public void Pause()
         {
-            if (vidPlayer.State == MediaState.Paused)
-                vidPlayer.Resume();
-            else if (vidPlayer.State == MediaState.Playing)
-                vidPlayer.Pause();
+            //if (vidPlayer.State == MediaState.Paused)
+            //    vidPlayer.Resume();
+            //else if (vidPlayer.State == MediaState.Playing)
+            //    vidPlayer.Pause();
         }
 
         /// <summary>  
@@ -110,41 +110,41 @@ namespace Reactor
         {
             timer += REngine.Instance._gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (!loop)
-                if (timer > video.Duration.TotalSeconds - crop)
-                {
-                    vidPlayer.Stop();
-                }
+            //if (!loop)
+                //if (timer > video.Duration.TotalSeconds - crop)
+                //{
+                //    vidPlayer.Stop();
+                //}
         }
         public void Draw_Video(int X, int Y, int Width, int Height, int scaleX, int scaleY)
         {
 
-            Texture2D tex = vidPlayer.GetTexture();
+            //Texture2D tex = vidPlayer.GetTexture();
             Rectangle rect = new Rectangle(X, Y, Width * scaleX, Height * scaleY);
             RScreen2D.Instance._spritebatch.Begin();
-            RScreen2D.Instance._spritebatch.Draw(tex, rect, Color.White);
+            //RScreen2D.Instance._spritebatch.Draw(tex, rect, Color.White);
             RScreen2D.Instance._spritebatch.End();
 
         }
         public void Draw_Video(int X, int Y, int Width, int Height, int scaleX, int scaleY, R4DVECTOR color)
         {
             Color c = new Color(color.vector);
-            Texture2D tex = vidPlayer.GetTexture();
+            //Texture2D tex = vidPlayer.GetTexture();
             Rectangle rect = new Rectangle(X, Y, Width * scaleX, Height * scaleY);
             RScreen2D.Instance._spritebatch.Begin();
-            RScreen2D.Instance._spritebatch.Draw(tex, rect, c);
+            //RScreen2D.Instance._spritebatch.Draw(tex, rect, c);
             RScreen2D.Instance._spritebatch.End();
 
         }
         public void Draw_Video(int X, int Y, int Width, int Height, int SourceX, int SourceY, int SourceWidth, int SourceHeight, int scaleX, int scaleY, R4DVECTOR color)
         {
             Color c = new Color(color.vector);
-            Texture2D tex = vidPlayer.GetTexture();
+            //Texture2D tex = vidPlayer.GetTexture();
             Rectangle rect = new Rectangle(X, Y, Width * scaleX, Height * scaleY);
             Rectangle sourcerect = new Rectangle(SourceX, SourceY, SourceWidth, SourceHeight);
 
             RScreen2D.Instance._spritebatch.Begin();
-            RScreen2D.Instance._spritebatch.Draw(tex, rect, sourcerect, c);
+            //RScreen2D.Instance._spritebatch.Draw(tex, rect, sourcerect, c);
             RScreen2D.Instance._spritebatch.End();
 
 
@@ -152,26 +152,26 @@ namespace Reactor
         public void Draw_Video(int X, int Y, int Width, int Height, int SourceX, int SourceY, int SourceWidth, int SourceHeight, int scaleX, int scaleY, R4DVECTOR color, float Rotation)
         {
             Color c = new Color(color.vector);
-            Texture2D tex = vidPlayer.GetTexture();
+            //Texture2D tex = vidPlayer.GetTexture();
             Rectangle rect = new Rectangle(X, Y, Width * scaleX, Height * scaleY);
             Rectangle sourcerect = new Rectangle(SourceX, SourceY, SourceWidth, SourceHeight);
 
             RScreen2D.Instance._spritebatch.Begin();
-            RScreen2D.Instance._spritebatch.Draw(tex, rect, sourcerect, c, Rotation, new Vector2((rect.Width / 2), (rect.Height / 2)), SpriteEffects.None, 1.0f);
+            //RScreen2D.Instance._spritebatch.Draw(tex, rect, sourcerect, c, Rotation, new Vector2((rect.Width / 2), (rect.Height / 2)), SpriteEffects.None, 1.0f);
             RScreen2D.Instance._spritebatch.End();
 
         }
         public void Draw_Video(int X, int Y, int Width, int Height, int SourceX, int SourceY, int SourceWidth, int SourceHeight, int scaleX, int scaleY, R4DVECTOR color, float Rotation, bool FlipHorizontal)
         {
             Color c = new Color(color.vector);
-            Texture2D tex = vidPlayer.GetTexture();
+            //Texture2D tex = vidPlayer.GetTexture();
             Rectangle rect = new Rectangle(X, Y, Width * scaleX, Height * scaleY);
             Rectangle sourcerect = new Rectangle(SourceX, SourceY, SourceWidth, SourceHeight);
             SpriteEffects effects = SpriteEffects.None;
             if (FlipHorizontal)
                 effects = SpriteEffects.FlipHorizontally;
             RScreen2D.Instance._spritebatch.Begin();
-            RScreen2D.Instance._spritebatch.Draw(tex, rect, sourcerect, c, Rotation, new Vector2((rect.Width / 2), (rect.Height / 2)), effects, 1.0f);
+            //RScreen2D.Instance._spritebatch.Draw(tex, rect, sourcerect, c, Rotation, new Vector2((rect.Width / 2), (rect.Height / 2)), effects, 1.0f);
             RScreen2D.Instance._spritebatch.End();
             
         }

@@ -19,51 +19,71 @@ float TerrainWidth;
 
 //------- Texture Samplers --------
 Texture TextureMap;
-sampler TextureMapSampler = sampler_state { texture = <TextureMap> ; magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                                                                         mipfilter = ANISOTROPIC; AddressU  = Wrap;
-                                                                         AddressV  = Wrap; AddressW  = Wrap;};
+sampler TextureMapSampler = sampler_state { 
+	texture = <TextureMap>;
+	magfilter = ANISOTROPIC;
+	minfilter = ANISOTROPIC;
+	AddressU  = Wrap;
+    AddressV  = Wrap;
+	AddressW  = Wrap;
+};
 
 Texture GrassTexture;
-sampler GrassTextureSampler = sampler_state { texture = <GrassTexture> ; magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                                                                         mipfilter = ANISOTROPIC; AddressU  = Wrap;
-                                                                         AddressV  = Wrap; AddressW  = Wrap;};
+sampler GrassTextureSampler = sampler_state { 
+	texture = <GrassTexture>;
+	magfilter = ANISOTROPIC;
+	minfilter = ANISOTROPIC;
+	AddressU  = Wrap;
+    AddressV  = Wrap;
+	AddressW  = Wrap;
+};
 
 Texture SandTexture;
-sampler SandTextureSampler = sampler_state { texture = <SandTexture> ; magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                                                                       mipfilter = ANISOTROPIC; AddressU  = Wrap;
-                                                                       AddressV  = Wrap; AddressW  = Wrap;};
+sampler SandTextureSampler = sampler_state { 
+	texture = <SandTexture>;
+	magfilter = ANISOTROPIC;
+	minfilter = ANISOTROPIC;
+	AddressU  = Wrap;
+    AddressV  = Wrap;
+	AddressW  = Wrap;
+};
 
 Texture RockTexture;
-sampler RockTextureSampler = sampler_state { texture = <RockTexture> ; magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                                                                       mipfilter = ANISOTROPIC; AddressU  = Wrap;
-                                                                       AddressV  = Wrap; AddressW  = Wrap;};
+sampler RockTextureSampler = sampler_state { 
+	texture = <RockTexture>;
+	magfilter = ANISOTROPIC;
+	minfilter = ANISOTROPIC;
+	AddressU  = Wrap;
+    AddressV  = Wrap;
+	AddressW  = Wrap;
+};
 
 Texture GrassNormal;
-sampler2D GrassNormalSampler : TEXUNIT1 = sampler_state
+sampler2D GrassNormalSampler = sampler_state
 { Texture   = (GrassNormal); magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                             mipfilter = ANISOTROPIC; AddressU  = Wrap;
+                             AddressU  = Wrap;
                              AddressV  = Wrap; AddressW  = Wrap;};
 
 Texture SandNormal;
-sampler2D SandNormalSampler : TEXUNIT1 = sampler_state
+sampler2D SandNormalSampler = sampler_state
 { Texture   = (SandNormal); magfilter  = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                             mipfilter = ANISOTROPIC; AddressU  = Wrap;
+                             AddressU  = Wrap;
                              AddressV  = Wrap; AddressW  = Wrap;};
 
 Texture RockNormal;
-sampler2D RockNormalSampler : TEXUNIT1 = sampler_state
+sampler2D RockNormalSampler = sampler_state
 { Texture   = (RockNormal); magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                             mipfilter = ANISOTROPIC; AddressU  = Wrap;
+                             AddressU  = Wrap;
                              AddressV  = Wrap; AddressW  = Wrap;};
 
 Texture HeightMap;
 sampler HeightMapSampler = sampler_state { texture = <HeightMap> ; magfilter = Linear; minfilter = Linear; 
-                                                                       mipfilter = Linear; AddressU  = Clamp;
+                                                                       AddressU  = Clamp;
                                                                        AddressV  = Clamp; AddressW  = Clamp;};
                                                                        
 Texture NormalMap;
 sampler NormalMapSampler = sampler_state { texture = <NormalMap> ; magfilter = Linear; minfilter = Linear; 
-                                                                       mipfilter = Linear; AddressU  = Clamp;
+                                                                       AddressU  = Clamp;
                                                                        AddressV  = Clamp; AddressW  = Clamp;};
 
 float normalStrength = 1.0f;
@@ -74,8 +94,8 @@ float textureSize = 512;
  {
      float4 Position            : POSITION;    
      float3 Normal              : NORMAL0;    
-     float3 Tangent            : TANGENT0;	// Needed for accurate normal mapping
-     float3 Binormal             : BINORMAL0;		// Needed for accurate normal mapping
+     float3 Tangent             : TANGENT0;	// Needed for accurate normal mapping
+     float3 Binormal            : BINORMAL0;		// Needed for accurate normal mapping
      float4 Color               : COLOR0;
  };
 
@@ -87,7 +107,7 @@ struct VS_OUTPUT
     float3 Binormal			   : TEXCOORD2;
     float3 Tangent			   : TEXCOORD3;
     float3 Normal			   : TEXCOORD4;
-    float2 Fog                  : TEXCOORD5;
+    float2 Fog                 : TEXCOORD5;
 };
 
  VS_OUTPUT MultiTexturedNormaledVS( VS_INPUT input)    
@@ -141,7 +161,7 @@ struct VS_OUTPUT
      Color += tex2D(RockTextureSampler, input.texCoord)  * TerrainColorWeight.b;
 
      float3 Reflect = ((lightingFactor) * input.Normal) + (LightDirection);
-     float3 specular = pow(normalize(dot(Reflect, CameraForward)), SpecularPower);
+     float3 specular = pow(abs(normalize(dot(Reflect, CameraForward))), SpecularPower);
      
 	 Color.rgb *= ((AmbientColor + (DiffuseColor * lightingFactor) + (SpecularColor * specular * lightingFactor)) * AmbientPower);
 	 //Color.rgb *= ((AmbientColor + (DiffuseColor * lightingFactor)) * AmbientPower);

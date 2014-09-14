@@ -75,7 +75,7 @@ namespace Reactor
                 }
             RMaterial mat = new RMaterial();
             RShader sh = new RShader();
-            sh.effect = shader.effect.Clone(REngine.Instance._graphics.GraphicsDevice);
+            sh.effect = shader.effect.Clone();
             mat.name = this.name+num;
             mat.shader = sh;
             mat.ambColor = ambColor;
@@ -129,14 +129,14 @@ namespace Reactor
         public void SetTexture(int TextureID)
         {
             Texture texture = RTextureFactory.Instance._textureList[TextureID];
-            EffectParameter param = shader.effect.Parameters.GetParameterBySemantic("texture0");
+            EffectParameter param = shader.GetParameterBySemantic("texture0");
             param.SetValue(texture);
             
         }
         public void SetTexture(int TextureID, CONST_REACTOR_TEXTURELAYER TextureLayer)
         {
             Texture texture = RTextureFactory.Instance._textureList[TextureID];
-            EffectParameter param = shader.effect.Parameters.GetParameterBySemantic("texture" + ((int)TextureLayer).ToString());
+            EffectParameter param = shader.GetParameterBySemantic("texture" + ((int)TextureLayer).ToString());
             param.SetValue(texture);
         }
         internal void Prepare(RSceneNode node)
@@ -144,28 +144,28 @@ namespace Reactor
             EffectParameter param;
             try
             {
-                param = shader.effect.Parameters.GetParameterBySemantic("View");
+                param = shader.GetParameterBySemantic("View");
                 param.SetValue(REngine.Instance._camera.viewMatrix);
             }
             catch { }
             
             try
             {
-                param = shader.effect.Parameters.GetParameterBySemantic("ViewProjection");
+                param = shader.GetParameterBySemantic("ViewProjection");
                 param.SetValue(REngine.Instance._camera.ViewProjectionMatrix.matrix);
             }
             catch { }
             
             try
             {
-                param = shader.effect.Parameters.GetParameterBySemantic("World");
+                param = shader.GetParameterBySemantic("World");
                 param.SetValue(node.Matrix);
             }
             catch { }
             
             try
             {
-                param = shader.effect.Parameters.GetParameterBySemantic("WorldViewProjection");
+                param = shader.GetParameterBySemantic("WorldViewProjection");
                 param.SetValue(node.Matrix * REngine.Instance._camera.ViewProjectionMatrix.matrix);
             }
             catch { }
@@ -173,7 +173,7 @@ namespace Reactor
             try
             {
                 
-                param = shader.effect.Parameters.GetParameterBySemantic("RLight");
+                param = shader.GetParameterBySemantic("RLight");
                 if (node != null)
                 {
                     //param.StructureMembers;
@@ -221,7 +221,7 @@ namespace Reactor
                 material.specPower = 100;
                 material.ID = _instance._MaterialList.Count;
                 material.shader = new RShader();
-                material.shader.effect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice, REngine.Instance._effectPool);
+                material.shader.effect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice);
                 _instance._MaterialList.Add(Name, material);
                 return material;
             }

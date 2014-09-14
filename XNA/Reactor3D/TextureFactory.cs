@@ -46,9 +46,7 @@ namespace Reactor
         internal string Name = "NONAME";
         internal string Filename = "NONE";
         internal Texture _Texture;
-#if !XBOX
-        internal TextureInformation tinfo;
-#endif
+
         internal CONST_RTEXTURE_TYPE iType;
         public int GetWidth()
         {
@@ -69,12 +67,29 @@ namespace Reactor
         }
         internal void BuildInfo()
         {
-#if !XBOX
-            tinfo = Texture.GetTextureInformation(Filename);
-            Height = tinfo.Height;
-            Width = tinfo.Width;
-            LevelCount = tinfo.MipLevels;
-#endif
+            if (iType == CONST_RTEXTURE_TYPE.Texture2D)
+            {
+                Texture2D t = (Texture2D)_Texture;
+                Height = t.Height;
+                Width = t.Width;
+                LevelCount = t.LevelCount;
+            }
+            else if (iType == CONST_RTEXTURE_TYPE.Texture3D)
+            {
+                Texture3D t = (Texture3D)_Texture;
+                Height = t.Height;
+                Width = t.Width;
+                LevelCount = t.LevelCount;
+            }
+            else
+            {
+                TextureCube t = (TextureCube)_Texture;
+                LevelCount = t.LevelCount;
+                Height = -1;
+                Width = -1;
+            }
+            
+
         }
         public Color[] GetData()
         {
@@ -197,7 +212,7 @@ namespace Reactor
             }
             else if (iType == CONST_RTEXTURE_TYPE.Texture3D)
             {
-                Texture3D t = new Texture3D(REngine.Instance._graphics.GraphicsDevice, Width, Height, Num3DLevels, 6, TextureUsage.AutoGenerateMipMap, SurfaceFormat.Color);
+                Texture3D t = new Texture3D(REngine.Instance._graphics.GraphicsDevice, Width, Height, Num3DLevels, true, SurfaceFormat.Color);
                 t.Tag = Name;
                 t.Name = Name;
                 _instance._textureList.Add(t);
@@ -207,7 +222,7 @@ namespace Reactor
             }
             else if (iType == CONST_RTEXTURE_TYPE.TextureCube)
             {
-                TextureCube t = new TextureCube(REngine.Instance._graphics.GraphicsDevice, Width*Height, 6, TextureUsage.AutoGenerateMipMap, SurfaceFormat.Color);
+                TextureCube t = new TextureCube(REngine.Instance._graphics.GraphicsDevice, Width*Height, true, SurfaceFormat.Color);
                 t.Tag = Name;
                 t.Name = Name;
                 _instance._textureList.Add(t);
@@ -317,7 +332,7 @@ namespace Reactor
             Texture2D negY = ((Texture2D)_instance._textureList[NegativeYID]);
             Texture2D negZ = ((Texture2D)_instance._textureList[PositiveZID]);
             
-            TextureCube cube = new TextureCube(REngine.Instance._graphics.GraphicsDevice, Size, 0, TextureUsage.AutoGenerateMipMap, (SurfaceFormat)Format);
+            TextureCube cube = new TextureCube(REngine.Instance._graphics.GraphicsDevice, Size, true, (SurfaceFormat)Format);
             Color[] data0 = new Color[(Size * Size) * 1];
             Color[] data1 = new Color[(Size * Size) * 1];
             Color[] data2 = new Color[(Size * Size) * 1];

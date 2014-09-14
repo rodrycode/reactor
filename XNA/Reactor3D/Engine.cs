@@ -61,7 +61,6 @@ namespace Reactor
         internal RCamera _camera;
         internal GraphicsDeviceManager _graphics;
         internal GameTime _gameTime;
-        internal EffectPool _effectPool;
         internal Matrix _worldMatrix;
         GraphicsDevice _device;
         GameServiceContainer _services;
@@ -101,7 +100,6 @@ namespace Reactor
 
                 _instance._currentViewport = CreateViewport("root");
                 _instance._camera = new RCamera();
-                _instance._effectPool = new EffectPool();
                 _instance._logfile = Path.GetFullPath("reactordebug.txt");
                 //_instance._logwriter = (TextWriter)new StreamWriter(File.Open(_instance._logfile, FileMode.CreateNew, FileAccess.Write, FileShare.Read));
                 _instance._log = new StringBuilder();
@@ -126,7 +124,7 @@ namespace Reactor
         }
 #if !XBOX
         
-        internal RenderTarget _renderTarget;
+        internal RenderTarget2D _renderTarget;
         
 #endif
         
@@ -136,7 +134,7 @@ namespace Reactor
             _instance.AddToLog("Reactor 3D Starting Up");
             _instance._graphics.PreferredBackBufferHeight = iHeight;
             _instance._graphics.PreferredBackBufferWidth = iWidth;
-            _instance._graphics.GraphicsDevice.DeviceReset += new EventHandler(GraphicsDevice_DeviceReset);
+            _instance._graphics.GraphicsDevice.DeviceReset += new EventHandler<System.EventArgs>(GraphicsDevice_DeviceReset);
             _currentViewport.Height = iHeight;
             _currentViewport.Width = iWidth;
             _aspectRatio = iWidth / iHeight;
@@ -187,14 +185,15 @@ namespace Reactor
 #endif
         public void TakeScreenshot(string savePath)
         {
-            ResolveTexture2D texture = new ResolveTexture2D(_instance._graphics.GraphicsDevice, _instance._currentViewport.Width, _instance._currentViewport.Height, 1, SurfaceFormat.Color);
-            _instance._graphics.GraphicsDevice.ResolveBackBuffer(texture);
+            
+            Texture2D texture = new Texture2D(_instance._graphics.GraphicsDevice, _instance._currentViewport.Width, _instance._currentViewport.Height, true, SurfaceFormat.Color);
+            //_instance._graphics.GraphicsDevice.ResolveBackBuffer(texture);
             if (File.Exists(savePath + ".jpg"))
             {
                 File.Delete(savePath + ".jpg");
             }
 #if !XBOX
-            texture.Save(savePath+".jpg", ImageFileFormat.Jpg);
+            texture.SaveAsJpeg(new FileStream("", FileMode.Create), texture.Width, texture.Height);            
 #endif
             _instance.AddToLog("REngine Successfully Created a Screenshot at : " + savePath + ".jpg");
             texture.Dispose();
@@ -244,7 +243,7 @@ namespace Reactor
         }
         public bool IsWidescreen()
         {
-            return GraphicsAdapter.DefaultAdapter.IsWideScreen;
+            return GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.AspectRatio <= (16 / 9);
         }
         public void ForceClear()
         {
@@ -340,7 +339,7 @@ namespace Reactor
         }
         internal void DrawString(Vector2 position, string message)
         {
-            _instance._system2d.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
+            _instance._system2d.Begin();
             _instance._system2d.DrawString(_systemfont, message, position, Color.White);
             _instance._system2d.End();
         }
@@ -353,11 +352,7 @@ namespace Reactor
                 _instance._logwriter.Flush();
             }
         }
-        void Reset()
-        {
-            _instance.AddToLog("Graphics Device Reset");
-            _instance._device.Reset();
-        }
+
         public void Resize(int Width, int Height)
         {
             _instance._graphics.PreferredBackBufferWidth = Width;
@@ -414,16 +409,6 @@ namespace Reactor
             return _instance._gameTime.ElapsedGameTime.Ticks;
         }
         
-        public CONST_REACTOR_PS_PROFILE GetInternalPSShaderVersion()
-        {
-            return (CONST_REACTOR_PS_PROFILE)_instance._graphics.GraphicsDevice.GraphicsDeviceCapabilities.MaxPixelShaderProfile;
-        }
-
-        public CONST_REACTOR_VS_PROFILE GetInternalVSShaderVersion()
-        {
-            return (CONST_REACTOR_VS_PROFILE)_instance._graphics.GraphicsDevice.GraphicsDeviceCapabilities.MaxVertexShaderProfile;
-        }
-
         public void SetDebugFile(string DebugFile)
         {
             _logfile = Path.GetFullPath(DebugFile);
@@ -476,7 +461,6 @@ namespace Reactor
                 _instance._system2d.Dispose();
                 _instance._systemfont = null;
                 _instance._camera.Dispose();
-                _instance._effectPool.Dispose();
                 _instance.AddToLog("EffectPool cleaned");
                 _instance.AddToLog("EOF");
                 if (_instance._logwriter != null)

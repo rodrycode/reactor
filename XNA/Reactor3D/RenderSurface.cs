@@ -54,12 +54,12 @@ namespace Reactor
             this.height = Height;
             this.format = format;
             this.levels = Levels;
-            target = new RenderTarget2D(REngine.Instance._game.GraphicsDevice, Width, Height, Levels, format, RenderTargetUsage.DiscardContents);
-            REngine.Instance._game.GraphicsDevice.SetRenderTarget(0, null);
+            target = new RenderTarget2D(REngine.Instance._game.GraphicsDevice, Width, Height, true, format, DepthFormat.Depth24Stencil8,Levels, RenderTargetUsage.PlatformContents);
+            REngine.Instance._game.GraphicsDevice.SetRenderTarget(null);
             //RTextureFactory.Instance._textureList.Add(target.GetTexture());
             //int tid = RTextureFactory.Instance._textureList.Count - 1;
-            target.Disposing += new EventHandler(target_Disposing);
-            target.ContentLost += new EventHandler(target_ContentLost);
+            target.Disposing += new EventHandler<System.EventArgs>(target_Disposing);
+            target.ContentLost += new EventHandler<System.EventArgs>(target_ContentLost);
             //RTextureFactory.Instance._textureTable.Add(Name, tid);
             
             //texindex = RTextureFactory.Instance._textureList.LastIndexOf(target.GetTexture());
@@ -74,7 +74,7 @@ namespace Reactor
 
         void target_ContentLost(object sender, EventArgs e)
         {
-            target = new RenderTarget2D(REngine.Instance._game.GraphicsDevice, width, height, levels, format);
+            target = new RenderTarget2D(REngine.Instance._game.GraphicsDevice, width, height, true, format, DepthFormat.Depth24Stencil8, levels, RenderTargetUsage.PlatformContents);
         }
         internal int Index
         {
@@ -84,12 +84,12 @@ namespace Reactor
         
         public void Start()
         {
-            REngine.Instance._graphics.GraphicsDevice.SetRenderTarget(0, target);
+            REngine.Instance._graphics.GraphicsDevice.SetRenderTarget(target);
         }
         public void End()
         {
             
-            REngine.Instance._graphics.GraphicsDevice.SetRenderTarget(0, null);
+            REngine.Instance._graphics.GraphicsDevice.SetRenderTarget(null);
             //RTextureFactory.Instance._textureList[texindex].Dispose();
             //RTextureFactory.Instance._textureList[texindex] = target.GetTexture();
         }

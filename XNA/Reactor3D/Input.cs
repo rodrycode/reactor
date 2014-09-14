@@ -146,7 +146,7 @@ namespace Reactor
                 B4 = true;
             if (state.XButton2 == ButtonState.Pressed)
                 B5 = true;
-            if(System.Windows.Forms.Form.FromHandle(REngine.Instance._game.Window.Handle).Focused)   
+
                 Mouse.SetPosition(REngine.Instance.GetViewport().Width / 2, REngine.Instance.GetViewport().Height / 2);
 
         }
@@ -165,7 +165,7 @@ namespace Reactor
                 B2 = true;
             if (state.MiddleButton == ButtonState.Pressed)
                 B3 = true;
-            if (System.Windows.Forms.Form.FromHandle(REngine.Instance._game.Window.Handle).Focused)  
+
             Mouse.SetPosition(REngine.Instance.GetViewport().Width / 2, REngine.Instance.GetViewport().Height / 2);
             
 
@@ -182,7 +182,7 @@ namespace Reactor
                 B1 = true;
             if (state.RightButton == ButtonState.Pressed)
                 B2 = true;
-            if (System.Windows.Forms.Form.FromHandle(REngine.Instance._game.Window.Handle).Focused)  
+
             Mouse.SetPosition(REngine.Instance.GetViewport().Width / 2, REngine.Instance.GetViewport().Height / 2);
 
 

@@ -49,11 +49,11 @@ namespace Reactor
         public static int SizeInBytes = (3 + 3 + 3 + 3 + 4) * 4;
         public static VertexElement[] VertexElements = new VertexElement[]
         {
-            new VertexElement( 0, 0, VertexElementFormat.Vector3, VertexElementMethod.Default, VertexElementUsage.Position, 0 ),
-            new VertexElement( 0, sizeof(float) * 3, VertexElementFormat.Vector3, VertexElementMethod.Default, VertexElementUsage.Normal, 0 ),
-            new VertexElement( 0, sizeof(float) * 6, VertexElementFormat.Vector3, VertexElementMethod.Default, VertexElementUsage.Tangent, 0 ),
-            new VertexElement( 0, sizeof(float) * 9, VertexElementFormat.Vector3, VertexElementMethod.Default, VertexElementUsage.Binormal, 0 ),
-            new VertexElement( 0, sizeof(float) * 12, VertexElementFormat.Vector4, VertexElementMethod.Default, VertexElementUsage.Color, 0 ),
+            new VertexElement( 0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0 ),
+            new VertexElement( sizeof(float) * 3, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0 ),
+            new VertexElement( sizeof(float) * 6, VertexElementFormat.Vector3, VertexElementUsage.Tangent, 0 ),
+            new VertexElement( sizeof(float) * 9, VertexElementFormat.Vector3, VertexElementUsage.Binormal, 0 ),
+            new VertexElement( sizeof(float) * 12, VertexElementFormat.Vector4, VertexElementUsage.Color, 0 ),
         };
     }
 
@@ -79,7 +79,7 @@ namespace Reactor
         public GrassBillboard()
         {
             if (dec == null)
-                dec = new VertexDeclaration(REngine.Instance._graphics.GraphicsDevice, VertexBillboard.VertexElements);
+                dec = new VertexDeclaration(VertexBillboard.VertexElements);
             
             Random = (float)random.NextDouble() * 2 - 1;
         }
@@ -113,7 +113,7 @@ namespace Reactor
             width = 3.0f;
             height = 3.0f;
             if(dec == null)
-                dec = new VertexDeclaration(REngine.Instance._graphics.GraphicsDevice, VertexBillboard.VertexElements);
+                dec = new VertexDeclaration( VertexBillboard.VertexElements);
         }
         public void SetEffect(ref Effect effect)
         {
@@ -195,8 +195,8 @@ namespace Reactor
                 float frac = maxDistance * 0.25f;
                 float min = maxDistance - frac;
                 float dist = distancecalc > min ? (distancecalc - min / maxDistance - min) : 1.0f;
-                
-                    REngine.Instance._game.GraphicsDevice.Vertices[0].SetSource(buffer, 0, VertexBillboard.SizeInBytes);
+
+                REngine.Instance._game.GraphicsDevice.SetVertexBuffer(buffer);
                     REngine.Instance._game.GraphicsDevice.Indices = indices;
                 
                 vegEffect.CurrentTechnique = vegEffect.Techniques["Billboards"];
@@ -220,14 +220,12 @@ namespace Reactor
                     vegEffect.Parameters["FOGCOLOR"].SetValue(RAtmosphere.Instance.fogColor);
                     vegEffect.Parameters["FOGDIST"].SetValue(RAtmosphere.Instance.fogDistance);
                 }
-                vegEffect.Begin();
                 foreach (EffectPass pass in vegEffect.CurrentTechnique.Passes)
                 {
-                    pass.Begin();
+                    pass.Apply();
                     REngine.Instance._graphics.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 4, 0, 2);
-                    pass.End();
                 }
-                vegEffect.End();
+
 
 
 
@@ -366,11 +364,10 @@ namespace Reactor
                 this.Terrain = SourceTerrain;
                 Terrain.Device = REngine.Instance._game.GraphicsDevice;
                 // Line effect is used for rendering debug bounding boxes
-                lineEffect = new BasicEffect(REngine.Instance._game.GraphicsDevice, REngine.Instance._effectPool);
+                lineEffect = new BasicEffect(REngine.Instance._game.GraphicsDevice);
                 lineEffect.VertexColorEnabled = true;
 
-                lineVertexDeclaration = new VertexDeclaration(Terrain.Device,
-                                                        VertexPositionColor.VertexElements);
+                lineVertexDeclaration = VertexPositionColor.VertexDeclaration;
 
                 // This truncation requires all heightmap images to be
                 // a power of two in height and width
@@ -412,11 +409,10 @@ namespace Reactor
             {
                 this.Terrain = SourceTerrain;
 
-                lineEffect = new BasicEffect(Terrain.Device, null);
+                lineEffect = new BasicEffect(Terrain.Device);
                 lineEffect.VertexColorEnabled = true;
 
-                lineVertexDeclaration = new VertexDeclaration(Terrain.Device,
-                                                              VertexPositionColor.VertexElements);
+                lineVertexDeclaration = VertexPositionColor.VertexDeclaration;
 
                 this.OffsetX = OffsetX;
                 this.OffsetY = OffsetY;
@@ -581,8 +577,8 @@ namespace Reactor
                     int numIndices = grassCount * 6;
                     int[] index = new int[numIndices];
                     VertexBillboard[] grassverts = new VertexBillboard[numVertices];
-                    grassBuffer = new VertexBuffer(Terrain.Device, VertexBillboard.SizeInBytes * numVertices, BufferUsage.None);
-                    grassIndex = new IndexBuffer(Terrain.Device, numIndices * sizeof(int), BufferUsage.None, IndexElementSize.ThirtyTwoBits);
+                    grassBuffer = new VertexBuffer(Terrain.Device,VertexPositionColorTexture.VertexDeclaration, VertexBillboard.SizeInBytes * numVertices, BufferUsage.None);
+                    grassIndex = new IndexBuffer(Terrain.Device, IndexElementSize.ThirtyTwoBits, numIndices * sizeof(int), BufferUsage.None);
 
 
                     for (int i = 0; i < Width; i++)
@@ -629,7 +625,7 @@ namespace Reactor
                     grassBuffer.SetData<VertexBillboard>(grassverts);
                     grassIndex.SetData<int>(index);
                 
-                GrassBillboard.dec = new VertexDeclaration(Terrain.Device, VertexBillboard.VertexElements);
+                GrassBillboard.dec = new VertexDeclaration(VertexBillboard.VertexElements);
                 /*GrassBillboard gtype0 = new GrassBillboard(Vector3.One, Vector3.Up, 0, Terrain.GrassDistance);
                 gtype0.ParentNode = Terrain;
                 gtype0.SetEffect(ref Terrain.vegEffect);
@@ -901,16 +897,15 @@ namespace Reactor
                         //Terrain.Device.VertexDeclaration = new VertexDeclaration(Terrain.Device, VertexTerrain.VertexElements);
                         Terrain.Device.Indices = LeafPatch.IndexBuffers;
 
-                        Terrain.effect.Begin();
+
                         foreach (EffectPass pass in Terrain.effect.CurrentTechnique.Passes)
                         {
-                            pass.Begin();
+                            pass.Apply();
 
                             Terrain.Device.DrawIndexedPrimitives(PrimitiveType.TriangleList, VertexBufferOffset, 0, Width * Height, 0, LeafPatch.NumTris);
 
-                            pass.End();
+
                         }
-                        Terrain.effect.End();
 
                         leavesDrawn++;
                     }
@@ -1013,18 +1008,12 @@ namespace Reactor
                                 {
                                     //Sort our Vegitation based on distance from camera.  Draw back to front.
                                     //GrassList.Sort(GrassBillboard.DistanceSorter);
+
+                                    Terrain.Device.BlendState = BlendState.AlphaBlend;
                                     
-
-                                    Terrain.Device.RenderState.AlphaBlendEnable = true;
-                                    //Terrain.Device.RenderState.SourceBlend = Blend.SourceAlpha;
-                                    //Terrain.Device.RenderState.DestinationBlend = Blend.DestinationAlpha;
-
-                                    Terrain.Device.RenderState.DepthBufferEnable = true;
-                                    Terrain.Device.RenderState.DepthBufferWriteEnable = true;
-                                    Terrain.Device.RenderState.SeparateAlphaBlendEnabled = false;
                                     //REngine.Instance._graphics.GraphicsDevice.Indices = indices;
 
-                                    REngine.Instance._graphics.GraphicsDevice.VertexDeclaration = GrassBillboard.dec;
+                                    
 
                                     /*foreach (GrassBillboard g in GrassList)
                                     {
@@ -1056,7 +1045,7 @@ namespace Reactor
                                         }
                                     }*/
 
-                                    REngine.Instance._game.GraphicsDevice.Vertices[0].SetSource(grassBuffer, 0, VertexBillboard.SizeInBytes);
+                                    REngine.Instance._game.GraphicsDevice.SetVertexBuffer(grassBuffer);
                                     REngine.Instance._game.GraphicsDevice.Indices = grassIndex;
                                     Effect vegEffect = Terrain.vegEffect;
 
@@ -1105,16 +1094,16 @@ namespace Reactor
                                     }
                                     try
                                     {
-                                        Terrain.vegEffect.Begin();
+
 
 
                                         foreach (EffectPass pass in Terrain.vegEffect.CurrentTechnique.Passes)
                                         {
-                                            pass.Begin();
+                                            pass.Apply();
                                             REngine.Instance._graphics.GraphicsDevice.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, grassCount * 4, 0, grassCount * 2);
-                                            pass.End();
+
                                         }
-                                        Terrain.vegEffect.End();
+
                                     }
                                     catch (Exception e)
                                     {
@@ -1124,11 +1113,7 @@ namespace Reactor
 
                                 }
 
-                                Terrain.Device.RenderState.AlphaBlendEnable = false;
-                                Terrain.Device.RenderState.AlphaTestEnable = false;
-                                //Terrain.Device.RenderState.FogEnable = false;
-                                Terrain.Device.RenderState.DepthBufferEnable = true;
-                                Terrain.Device.RenderState.DepthBufferWriteEnable = true;
+                                
                             }
                         //REngine.Instance._camera.SetClipPlanes(1.0f, far);
                     }
@@ -1159,17 +1144,16 @@ namespace Reactor
                             lineEffect.View = REngine.Instance._camera.viewMatrix;
                             lineEffect.Projection = REngine.Instance._camera.projMatrix;
 
-                            lineEffect.Begin();
-                            lineEffect.CurrentTechnique.Passes[0].Begin();
+
+                            lineEffect.CurrentTechnique.Passes[0].Apply();
 
                             // Draw the triangle.
-                            Terrain.Device.VertexDeclaration = lineVertexDeclaration;
 
                             Terrain.Device.DrawUserPrimitives(PrimitiveType.TriangleList,
                                                               BoundingBoxMesh, 0, 12);
 
-                            lineEffect.CurrentTechnique.Passes[0].End();
-                            lineEffect.End();
+
+
 
 
                             Query.End();
@@ -1217,17 +1201,16 @@ namespace Reactor
                         lineEffect.View = REngine.Instance._camera.viewMatrix;
                         lineEffect.Projection = REngine.Instance._camera.projMatrix;
 
-                        lineEffect.Begin();
-                        lineEffect.CurrentTechnique.Passes[0].Begin();
+
+                        lineEffect.CurrentTechnique.Passes[0].Apply();
 
                         // Draw the triangle.
-                        Terrain.Device.VertexDeclaration = lineVertexDeclaration;
+
 
                         Terrain.Device.DrawUserPrimitives(PrimitiveType.TriangleList,
                                                           BoundingBoxMesh, 0, 12);
 
-                        lineEffect.CurrentTechnique.Passes[0].End();
-                        lineEffect.End();
+
                     }
                     else if (TreeList != null)
                     {
@@ -1351,9 +1334,9 @@ namespace Reactor
         public static int SizeInBytes = (3 + 3 + 2) * 4;
         public static VertexElement[] VertexElements = new VertexElement[]
         {
-            new VertexElement( 0, 0, VertexElementFormat.Vector3, VertexElementMethod.Default, VertexElementUsage.Position, 0 ),
-            new VertexElement( 0, sizeof(float) * 3, VertexElementFormat.Vector3, VertexElementMethod.Default, VertexElementUsage.Normal, 0 ),
-            new VertexElement( 0, sizeof(float) * 6, VertexElementFormat.Vector2, VertexElementMethod.Default, VertexElementUsage.TextureCoordinate, 0 ),
+            new VertexElement( 0, VertexElementFormat.Vector3, VertexElementUsage.Position, 0 ),
+            new VertexElement( sizeof(float) * 3, VertexElementFormat.Vector3, VertexElementUsage.Normal, 0 ),
+            new VertexElement( sizeof(float) * 6, VertexElementFormat.Vector2, VertexElementUsage.TextureCoordinate, 0 ),
             
             
         };
@@ -1655,59 +1638,47 @@ namespace Reactor
         }
         internal RenderTarget2D normalRenderTarget;
         SpriteBatch normalSpriteBatch;
-        DepthStencilBuffer normalDepthBuffer;
         private void ComputeNormalMap()
         {
             GraphicsDevice graphicsDevice = Device;
 
-            RenderTarget2D oldRenderTarget = graphicsDevice.GetRenderTarget(0) as RenderTarget2D;
-            DepthStencilBuffer oldDepthBuffer = graphicsDevice.DepthStencilBuffer;
+            RenderTarget2D oldRenderTarget = graphicsDevice.GetRenderTargets()[0].RenderTarget as RenderTarget2D;
+            
 
             normalSpriteBatch = new SpriteBatch(Device);
 
             normalRenderTarget = new RenderTarget2D(graphicsDevice, HeightMap.Width,
-                HeightMap.Height, 1, SurfaceFormat.Color);
+                HeightMap.Height);
 
-            normalDepthBuffer = new DepthStencilBuffer(graphicsDevice,
-                HeightMap.Width, HeightMap.Height, graphicsDevice.DepthStencilBuffer.Format);
+           
 
-            graphicsDevice.SetRenderTarget(0, normalRenderTarget);
-            graphicsDevice.DepthStencilBuffer = normalDepthBuffer;
+            graphicsDevice.SetRenderTarget(normalRenderTarget);
 
             graphicsDevice.Clear(Color.White);
 
-            normalSpriteBatch.Begin(SpriteBlendMode.None, SpriteSortMode.Immediate, SaveStateMode.None);
+            normalSpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
 
             effect.Parameters["HeightMap"].SetValue(HeightMap);
             effect.Parameters["textureSize"].SetValue(HeightMap.Width);
             effect.Parameters["normalStrength"].SetValue(ElevationStrength);
             effect.CurrentTechnique = effect.Techniques["ComputeNormals"];
 
-            effect.Begin();
-            effect.CurrentTechnique.Passes[0].Begin();
+            effect.CurrentTechnique.Passes[0].Apply();
 
             normalSpriteBatch.Draw(HeightMap, new Rectangle(0, 0, HeightMap.Width, HeightMap.Height),
                                    Color.Black);
 
-            effect.CurrentTechnique.Passes[0].End();
-            effect.End();
+
 
             normalSpriteBatch.End();
-            graphicsDevice.SetRenderTarget(0, oldRenderTarget);
-            graphicsDevice.DepthStencilBuffer = oldDepthBuffer;
+            graphicsDevice.SetRenderTarget(oldRenderTarget);
 
             //normalRenderTarget.GetTexture().Save("height.jpg", ImageFileFormat.Jpg);
             
 
-            Device.RenderState.AlphaBlendEnable = false;
-            Device.RenderState.AlphaTestEnable = false;
-            Device.RenderState.DepthBufferEnable = true;
-            Device.RenderState.DepthBufferWriteEnable = true;
             for (int i = 0; i < 12; i++)
             {
-                Device.SamplerStates[i].MinFilter = TextureFilter.Anisotropic;
-                Device.SamplerStates[i].MipFilter = TextureFilter.Anisotropic;
-                Device.SamplerStates[i].MagFilter = TextureFilter.Anisotropic;
+                Device.SamplerStates[i].Filter = TextureFilter.Anisotropic;
                 Device.SamplerStates[i].AddressU = TextureAddressMode.Wrap;
                 Device.SamplerStates[i].AddressV = TextureAddressMode.Wrap;
                 Device.SamplerStates[i].AddressW = TextureAddressMode.Wrap;
@@ -1774,7 +1745,7 @@ namespace Reactor
             SmoothTerrain((int)SmoothingPasses);
             SetupTerrainNormals();
 
-            renderTarget = new RenderTarget2D(REngine.Instance._game.GraphicsDevice, 256, 256, 0, SurfaceFormat.Color);
+            renderTarget = new RenderTarget2D(REngine.Instance._game.GraphicsDevice, 256, 256);
             RootQuadTree = new QuadTree(this, TerrainNormals.Length);
             TerrainTypeData = null;     // Free terrain data to GC now that each quad section has its own.
 
@@ -2100,7 +2071,7 @@ namespace Reactor
         {
 
 
-            TerrainVertexBuffer = new VertexBuffer(Device, VertexTerrain.SizeInBytes * (MapWidth + (MapWidth / (int)(Math.Sqrt(MinimumLeafSize)))) * (MapHeight + (MapHeight / (int)(Math.Sqrt(MinimumLeafSize)))), BufferUsage.WriteOnly);
+            TerrainVertexBuffer = new VertexBuffer(Device, dec, VertexTerrain.SizeInBytes * (MapWidth + (MapWidth / (int)(Math.Sqrt(MinimumLeafSize)))) * (MapHeight + (MapHeight / (int)(Math.Sqrt(MinimumLeafSize)))), BufferUsage.WriteOnly);
             TerrainVertexBuffer.SetData(TerrainVertices.ToArray());
 
             
@@ -2118,29 +2089,20 @@ namespace Reactor
         #region Methods
         internal void OcclusionRender()
         {
-            REngine.Instance._game.GraphicsDevice.RenderState.AlphaTestEnable = false;
-            REngine.Instance._game.GraphicsDevice.RenderState.AlphaBlendEnable = false;
-            REngine.Instance._game.GraphicsDevice.RenderState.DepthBufferEnable = true;
-            REngine.Instance._game.GraphicsDevice.RenderState.DepthBufferWriteEnable = true;
-            REngine.Instance._game.GraphicsDevice.SetRenderTarget(0, renderTarget);
+            REngine.Instance._game.GraphicsDevice.BlendState = BlendState.Opaque;
+            REngine.Instance._game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+            REngine.Instance._game.GraphicsDevice.SetRenderTarget(renderTarget);
             REngine.Instance._game.GraphicsDevice.Clear(Color.Black);
             RootQuadTree.DrawOcclusionQuery();
-            REngine.Instance._game.GraphicsDevice.SetRenderTarget(0, null);
+            REngine.Instance._game.GraphicsDevice.SetRenderTarget(null);
         }
         public override void Render()
         {
+
+
+            REngine.Instance._game.GraphicsDevice.BlendState = BlendState.Opaque;
+            REngine.Instance._game.GraphicsDevice.DepthStencilState = DepthStencilState.Default;
             
-
-            //Device.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-            Device.RenderState.DepthBufferEnable = true;
-            Device.RenderState.DepthBufferWriteEnable = true;
-
-            Device.RenderState.AlphaBlendEnable = false;
-            
-            Device.RenderState.SeparateAlphaBlendEnabled = true;
-
-            Device.RenderState.AlphaTestEnable = false;
-
             
             try
             {
@@ -2152,14 +2114,7 @@ namespace Reactor
                 Console.WriteLine(e.ToString());
                 REngine.Instance.AddToLog(e.ToString());
             }
-            Device.RenderState.DepthBufferEnable = false;
-            Device.RenderState.DepthBufferWriteEnable = false;
-
-            Device.RenderState.AlphaBlendEnable = false;
-
-            Device.RenderState.SeparateAlphaBlendEnabled = false;
-
-            Device.RenderState.AlphaTestEnable = false;
+            
         }
         public void RenderGrass()
         {
@@ -2196,12 +2151,10 @@ namespace Reactor
             if (DrawTerrain)
             {
                 if(dec == null)
-                    dec = new VertexDeclaration(Device, VertexTerrain.VertexElements);
-                Device.RenderState.CullMode = CullMode.CullCounterClockwiseFace;
-                Device.Vertices[0].SetSource(TerrainVertexBuffer, 0, VertexTerrain.SizeInBytes);
-
-                Device.VertexDeclaration = dec;
-
+                    dec = new VertexDeclaration(VertexTerrain.VertexElements);
+                Device.RasterizerState.CullMode = CullMode.CullCounterClockwiseFace;
+                Device.SetVertexBuffer(TerrainVertexBuffer);
+                
                 
                     effect.CurrentTechnique = effect.Techniques["MultiTexturedNormaled"];
                     effect.Parameters["GrassNormal"].SetValue(TerrainTextureNormals[0]);
@@ -2223,9 +2176,9 @@ namespace Reactor
                 _world = Matrix.CreateTranslation(this.Position);
                 if (_reflected)
                 {
-                    Device.RenderState.CullMode = CullMode.None;
+                    Device.RasterizerState.CullMode = CullMode.None;
                     if (RWater.water.World.Translation.Y < REngine.Instance._camera.Position.Y)
-                        Device.RenderState.CullMode = CullMode.None;
+                        Device.RasterizerState.CullMode = CullMode.None;
                     _world *= _reflection;
                     lightDir.Y *= -1;
                 }
@@ -2253,12 +2206,13 @@ namespace Reactor
             
             if (DrawBoundingBox)
             {
-                Device.RenderState.FillMode = FillMode.WireFrame;
-                Device.RenderState.CullMode = CullMode.None;
-                Device.RenderState.DepthBufferEnable = false;
+                Device.RasterizerState.FillMode = FillMode.WireFrame;
+                Device.RasterizerState.CullMode = CullMode.None;
+                REngine.Instance._game.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            
 
                 RootQuadTree.DrawBoundingBox();
-                Device.RenderState.FillMode = FillMode.Solid;
+                Device.RasterizerState.FillMode = FillMode.Solid;
             }
         }
         internal void DrawVegitation()
@@ -2571,7 +2525,7 @@ namespace Reactor
                 {
                     VertexElement tmp = elems[elementIndex + 1];
 
-                    if (tmp.Stream == e.Stream)
+                    if (tmp == e)
                     {
                         iNextElem = elementIndex + 1;
                     }
@@ -2584,7 +2538,7 @@ namespace Reactor
                 else
                 {
                     elemSize =
-                       decl.GetVertexStrideSize(e.Stream) - e.Offset;
+                       decl.VertexStride - e.Offset;
                 }
             }
 
@@ -2599,8 +2553,7 @@ namespace Reactor
             VertexElement[] elems = decl.GetVertexElements();
             for (int x = 0; x < elems.Length; x++)
             {
-                if (elems[x].Stream == stream &&
-                    elems[x].VertexElementUsage == usage &&
+                if (elems[x].VertexElementUsage == usage &&
                     elems[x].UsageIndex == usageIndex)
                 {
                     return elems[x].Offset;
@@ -2645,11 +2598,10 @@ namespace Reactor
                               VertexDeclaration toDecl,
                               int toStreamIndex)
         {
-            byte[] fromData = new byte[vb.SizeInBytes];
+            byte[] fromData = new byte[vb.VertexCount * fromDecl.VertexStride];
             vb.GetData<byte>(fromData);
 
-            int fromNumVertices = vb.SizeInBytes /
-                                    fromDecl.GetVertexStrideSize(0);
+            int fromNumVertices = vb.VertexCount;
 
             List<int> vertMap = new List<int>();
 
@@ -2665,7 +2617,7 @@ namespace Reactor
                 {
                     VertexElement elem = toDecl.GetVertexElements()[i];
 
-                    if (elem.Stream == toStreamIndex)
+                    
                         if (thisElem.VertexElementUsage == elem.VertexElementUsage &&
                             thisElem.UsageIndex == elem.UsageIndex &&
                             thisElem.VertexElementFormat == elem.VertexElementFormat)
@@ -2686,14 +2638,14 @@ namespace Reactor
 
 
             int newBufferSize = fromNumVertices *
-                                    toDecl.GetVertexStrideSize(toStreamIndex);
+                                    toDecl.VertexStride;
 
 
 
             byte[] toData = new byte[newBufferSize];
 
-            int toDeclVertexStride = toDecl.GetVertexStrideSize(toStreamIndex);
-            int fromDeclVertexStride = fromDecl.GetVertexStrideSize(fromStreamIndex);
+            int toDeclVertexStride = toDecl.VertexStride;
+            int fromDeclVertexStride = fromDecl.VertexStride;
 
             for (int x = 0; x < vertMap.Count; x++)
             {
@@ -2717,7 +2669,8 @@ namespace Reactor
 
             VertexBuffer newVB = new VertexBuffer(
                 vb.GraphicsDevice,
-                fromNumVertices * toDecl.GetVertexStrideSize(toStreamIndex),
+                toDecl,
+                fromNumVertices,
                 BufferUsage.None); // in xna 1.0 use vb.ResourceUsage instead
 
             newVB.SetData<byte>(toData);
@@ -2750,10 +2703,8 @@ namespace Reactor
                 if (calcTangent)
                 {
                     newElems[elems.Length] =
-                        new VertexElement((short)iStream,
-                                          (short)fromDecl.GetVertexStrideSize(iStream),
+                        new VertexElement((short)fromDecl.VertexStride,
                                           VertexElementFormat.Vector3,
-                                          VertexElementMethod.Default,
                                           VertexElementUsage.Tangent,
                                           0);
                 }
@@ -2761,18 +2712,14 @@ namespace Reactor
                 if (calcBinormal)
                 {
                     newElems[elems.Length + (calcTangent ? 1 : 0)] =
-                        new VertexElement((short)iStream,
-                                          (short)(fromDecl.GetVertexStrideSize(iStream) +
+                        new VertexElement((short)(fromDecl.VertexStride +
                                                         (calcTangent ? sizeof(float) * 3 : 0)),
                                           VertexElementFormat.Vector3,
-                                          VertexElementMethod.Default,
                                           VertexElementUsage.Binormal,
                                           0);
                 }
 
-                VertexDeclaration toDecl = new VertexDeclaration(
-                                                fromDecl.GraphicsDevice,
-                                                newElems);
+                VertexDeclaration toDecl = new VertexDeclaration(newElems);
 
 
                 fromVB = ConvertVB(fromVB, fromDecl, iStream, toDecl, iStream);
@@ -2783,15 +2730,14 @@ namespace Reactor
             #endregion
 
 
-            Vector3[] tans = new Vector3[fromVB.SizeInBytes / fromDecl.GetVertexStrideSize(iStream)];
-            Vector3[] bitans = new Vector3[fromVB.SizeInBytes / fromDecl.GetVertexStrideSize(iStream)];
+            Vector3[] tans = new Vector3[fromVB.VertexCount];
+            Vector3[] bitans = new Vector3[fromVB.VertexCount];
 
 
-            int fromNumVertices = fromVB.SizeInBytes /
-                                    fromDecl.GetVertexStrideSize(iStream);
+            int fromNumVertices = fromVB.VertexCount;
 
             int newBufferSize = fromNumVertices *
-                                    fromDecl.GetVertexStrideSize(iStream);
+                                    fromDecl.VertexStride;
 
             byte[] data = new byte[newBufferSize];
 
@@ -2803,7 +2749,7 @@ namespace Reactor
             int iTanOffset = GetVertexElementByteOffset(fromDecl, VertexElementUsage.Tangent, 0, iStream);
             int iBitanOffset = GetVertexElementByteOffset(fromDecl, VertexElementUsage.Binormal, 0, iStream);
 
-            int dwVertSize = fromDecl.GetVertexStrideSize(iStream);
+            int dwVertSize = fromDecl.VertexStride;
 
             int numIndices = 0;
 
@@ -2811,7 +2757,7 @@ namespace Reactor
             #region 16 bit indices
             if (IB.IndexElementSize == IndexElementSize.SixteenBits)
             {
-                numIndices = IB.SizeInBytes / sizeof(short);
+                numIndices = IB.IndexCount;
 
                 short[] indices = new short[numIndices];
                 IB.GetData<short>(indices);
@@ -2905,7 +2851,7 @@ namespace Reactor
 
 
 
-                count = fromVB.SizeInBytes / fromDecl.GetVertexStrideSize(iStream);
+                count = fromVB.VertexCount;
 
                 for (int i = 0; i < count; i++)
                 {
@@ -2997,7 +2943,7 @@ namespace Reactor
             #region 32 bit indices
             if (IB.IndexElementSize == IndexElementSize.ThirtyTwoBits)
             {
-                numIndices = IB.SizeInBytes / sizeof(int);
+                numIndices = IB.IndexCount;
 
                 int[] indices = new int[numIndices];
                 IB.GetData<int>(indices);
@@ -3091,7 +3037,7 @@ namespace Reactor
 
 
 
-                count = fromVB.SizeInBytes / fromDecl.GetVertexStrideSize(iStream);
+                count = fromVB.VertexCount;
 
                 for (int i = 0; i < count; i++)
                 {

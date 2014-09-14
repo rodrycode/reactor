@@ -280,12 +280,10 @@ namespace Reactor
         }
         public void SetShadeMode(CONST_REACTOR_FILLMODE ShadeMode)
         {
-            if (ShadeMode == CONST_REACTOR_FILLMODE.Point)
-                REngine.Instance._graphics.GraphicsDevice.RenderState.FillMode = FillMode.Point;
             if (ShadeMode == CONST_REACTOR_FILLMODE.Wireframe)
-                REngine.Instance._graphics.GraphicsDevice.RenderState.FillMode = FillMode.WireFrame;
+                REngine.Instance._graphics.GraphicsDevice.RasterizerState.FillMode = FillMode.WireFrame;
             if (ShadeMode == CONST_REACTOR_FILLMODE.Solid)
-                REngine.Instance._graphics.GraphicsDevice.RenderState.FillMode = FillMode.Solid;
+                REngine.Instance._graphics.GraphicsDevice.RasterizerState.FillMode = FillMode.Solid;
 
         }
         public void DestroyAll()

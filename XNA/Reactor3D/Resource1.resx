@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Actor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Actor.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -144,54 +144,6 @@
   </data>
   <data name="Grass" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Grass.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Actor1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\Actor.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Billboard1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\Billboard.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="box1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\box.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Landscape1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\Landscape.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ParticleSystem1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\ParticleSystem.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="SkyCube" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\SkyCube.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Tahoma1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\Tahoma.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Water1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\Water.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Skybox1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\Skybox.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Grass1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\Grass.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BloomCombine" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\BloomCombine.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BloomCombine1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\BloomCombine.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BloomExtract" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\BloomExtract.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BloomExtract1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\BloomExtract.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="GaussianBlur" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\x86\Debug\Content\GaussianBlur.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="GaussianBlur1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>bin\Xbox 360\Debug\Content\GaussianBlur.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="LobbyCube" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>SkyCube.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

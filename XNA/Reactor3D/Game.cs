@@ -111,11 +111,11 @@ namespace Reactor
             {
                 //System.IO.Stream stream = (System.IO.Stream)System.IO.File.Open("watermark.dat", System.IO.FileMode.Open);
                 //System.IO.TextReader reader = System.IO.File.OpenText("watermark.dat");
-                watermark = new Texture2D(graphics.GraphicsDevice, 180, 60, 0, TextureUsage.None, SurfaceFormat.Color);
+                watermark = new Texture2D(graphics.GraphicsDevice, 180, 60, false, SurfaceFormat.Color);
                 List<Color> cwatermark = new List<Color>();
                 
                 // No Longer Included...
-                REngine.Instance.PrepareWatermark();
+                //REngine.Instance.PrepareWatermark();
                 int i = 0;
                 for (int it = 0; it < REngine.Instance.cwatermark.Length / 4; it++)
                 {
@@ -161,7 +161,7 @@ namespace Reactor
                     {
                         REngine.Instance.SetWatermarkPosition(REngine.Instance.watermarkposition);
                         
-                        RScreen2D.Instance._spritebatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+                        RScreen2D.Instance._spritebatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                         RScreen2D.Instance._spritebatch.Draw(watermark, REngine.Instance.cwaterrect, new Color(wc.ToVector4()));
                         RScreen2D.Instance._spritebatch.End();
                         //RScreen2D.IAction_End2D();
@@ -256,10 +256,9 @@ namespace Reactor
             /// load ResourceManagementMode.Manual content.
             /// </summary>
             /// <param name="loadAllContent">Which type of content to load.</param>
-            protected override void LoadGraphicsContent(bool loadAllContent)
+            protected override void LoadContent()
             {
-                if (loadAllContent)
-                {
+                
                     if (waterrenderer == null)
                     {
                         waterrenderer = new SpriteBatch(graphics.GraphicsDevice);
@@ -268,7 +267,7 @@ namespace Reactor
                     }
 
                     
-                }
+                
                 
                 // TODO: Load any ResourceManagementMode.Manual content
             }
@@ -281,10 +280,9 @@ namespace Reactor
             /// Disposed by the GraphicsDevice during a Reset.
             /// </summary>
             /// <param name="unloadAllContent">Which type of content to unload.</param>
-            protected override void UnloadGraphicsContent(bool unloadAllContent)
+            protected override void UnloadContent()
             {
-                if (unloadAllContent)
-                {
+                
                     // TODO: Unload any ResourceManagementMode.Automatic content
                     try
                     {
@@ -299,7 +297,7 @@ namespace Reactor
                     {
                     }
                     
-                }
+                
                 //game.Destroy();
                 // TODO: Unload any ResourceManagementMode.Manual content
             }
@@ -390,7 +388,7 @@ namespace Reactor
                 {
                     if (REngine.Instance._w32handle.ToInt32() != 0)
                     {
-                        REngine.Instance._graphics.GraphicsDevice.Present(REngine.Instance._w32handle);
+                        REngine.Instance._graphics.GraphicsDevice.Present();
                     }
                 }
                 //graphics.GraphicsDevice.SetRenderTarget(0, null);
