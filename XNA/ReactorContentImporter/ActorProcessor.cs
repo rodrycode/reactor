@@ -115,7 +115,7 @@ namespace Reactor.Content.Importer
     [ContentProcessor(DisplayName = "Reactor 3D Effect")]
     public class REffectProcessor : EffectProcessor
     {
-        public override CompiledEffect Process(EffectContent input, ContentProcessorContext context)
+        public override CompiledEffectContent Process(EffectContent input, ContentProcessorContext context)
         {
             string effect = input.EffectCode;
             effect = "shared Light lights[8]; \r\n" + effect;

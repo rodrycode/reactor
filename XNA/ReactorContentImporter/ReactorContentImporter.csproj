@@ -68,6 +68,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsGL\MonoGame.Framework.dll</HintPath>
     </Reference>
+    <Reference Include="MonoGame.Framework.Content.Pipeline">
+      <HintPath>..\..\..\projects\MonoGame\MonoGame.Framework.Content.Pipeline\bin\Windows\AnyCPU\Debug\MonoGame.Framework.Content.Pipeline.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <Private>False</Private>
     </Reference>
