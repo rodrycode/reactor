@@ -1,7 +1,7 @@
-half4x4 world : WORLD;
-half4x4 vp : VIEWPROJECTION;
+float4x4 world : WORLD;
+float4x4 vp : VIEWPROJECTION;
 
-half4x4 view : VIEW;
+float4x4 view : VIEW;
 #define worldUp half3(0,1,0)
 
 texture particleTexture;
@@ -60,7 +60,7 @@ VertexOut VS(VertexIn input)
     Out.Color.a = input.Data.y;
     
     return Out;
-}
+};
 
 PixelToFrame PS(VertexOut input)
 {
@@ -75,13 +75,13 @@ PixelToFrame PS(VertexOut input)
     Out.Color = color * input.Color;    
     
     return Out;
-}
+};
 
 technique Go
 {
     pass P0 
     {
-        VertexShader = compile vs_2_0 VS();
-        PixelShader  = compile ps_2_0 PS();
+        VertexShader = compile vs_3_0 VS();
+        PixelShader  = compile ps_3_0 PS();
     }
 }

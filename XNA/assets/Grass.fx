@@ -36,8 +36,8 @@ float FOGDIST;
 float4 FOGCOLOR = float4(1, 1, 1, 0.5);
 
 // Parameters describing the billboard itself.
-float BillboardWidth;
-float BillboardHeight;
+static float BillboardWidth;
+static float BillboardHeight;
 float normalStrength = 8.0f;
 float startFadingInDistance;
 float stopFadingInDistance;
@@ -47,9 +47,21 @@ texture Texture1 : TEXTURE1;
 texture Texture2 : TEXTURE2;
 texture Heightmap : HEIGHTMAP;
 texture Normalmap : NORMALMAP;
+texture Grassmap : GRASSMAP;
 sampler heightSampler = sampler_state
 {
 	Texture = <Heightmap>;
+	
+	MipFilter = Point;
+	MinFilter = Point;
+	MagFilter = Point;
+	
+	AddressU = Clamp;
+	AddressV = Clamp;
+};
+sampler grassmapSampler = sampler_state
+{
+	Texture = <Grassmap>;
 	
 	MipFilter = Point;
 	MinFilter = Point;
@@ -123,7 +135,7 @@ float4 tex2Dlod_bilinear(sampler texSam, float4 uv)
 	return lerp(tA, tB, uv.y);
 }
 
-VS_OUTPUT VertexShader(VS_INPUT input)
+VS_OUTPUT VShader(VS_INPUT input)
 {
     VS_OUTPUT output;
 
@@ -145,9 +157,9 @@ VS_OUTPUT VertexShader(VS_INPUT input)
     float3 position = float3(input.Position.x+Position.x,input.Position.y+Position.y,input.Position.z+Position.z) * terrainScale;
     output.WorldPos = float4(position,1);
     
-    float2 heightMapCoord = float2((((position.x/terrainScale)/(textureSize))), 
-	                               (((position.z/terrainScale)/(textureSize))));
-	float posheight = tex2Dlod(heightSampler, float4(heightMapCoord.xy, 0, 0));
+    float2 heightMapCoord = float2((((position.x/(textureSize*terrainScale)))), 
+	                               (((position.z/(textureSize*terrainScale)))));
+	//float posheight = tex2Dlod(heightSampler, float4(heightMapCoord.xy, 0, 0));
 	//position.z *= terrainScale;
 	//position.x *= terrainScale;	
 	//position.y *= terrainScale;
@@ -155,7 +167,10 @@ VS_OUTPUT VertexShader(VS_INPUT input)
 	if(position.y < GrassHeight || position.y > MaxGrassHeight)
 	{
 	position.y = -10000 * terrainScale;
-	}                          
+	
+	}
+	else
+	{                          
     // Offset to the left or right.
     position += rightVector * (input.TexCoord.x - 0.5) * BillboardWidth;
     
@@ -174,18 +189,18 @@ VS_OUTPUT VertexShader(VS_INPUT input)
     wind *= (1 - input.TexCoord.y);
     
     position += WindDirection * wind;
-
+	}
     // Apply the camera transform.
     float4 viewPosition = mul(float4(position, 1), View);
 	float4 worldPos = mul(viewPosition, Projection);
-    output.Position = mul(viewPosition, Projection);
+    output.Position = worldPos;
     output.TexCoord = input.TexCoord;
     // Compute lighting.
     float diffuseLight = max(-dot(input.Normal, LightDirection), 0);
     
     output.Color.rgb = diffuseLight * LightColor + AmbientColor;
     output.Color.a = 1.0f;
-    output.Fog = float2(1 - saturate(length(output.WorldPos) / FOGDIST),0);
+    output.Fog = float2(1-length(worldPos / (Distance*8)),0);
     output.WorldPos.x = worldPos.x / (textureSize * terrainScale);
     output.WorldPos.y = worldPos.y / (textureSize * terrainScale);
     output.WorldPos.z = worldPos.z / (textureSize * terrainScale);
@@ -229,75 +244,36 @@ sampler TextureSampler3 = sampler_state
     AddressV = Wrap;
 };
 
-// This computes a normal map using an 8-tap Sodel filter for the loaded heightmap.
-float4 ComputeNormalsPS(in float2 uv : TEXCOORD0) : COLOR
+
+float4 PShader(in float2 texCoord : TEXCOORD0, in float4 worldPos : TEXCOORD1, in float4 color : COLOR0, in float2 fog : TEXCOORD3) : COLOR0
 {
-	float texelSize = 1.0f / textureSize;
-	
-	// Top left
-	float tl = abs(tex2D(heightPSSampler, uv + texelSize * float2(-1, 1)).x);
-	
-	// Left
-	float l = abs(tex2D(heightPSSampler, uv + texelSize * float2(-1, 0)).x);
-	
-	// Bottom Left
-	float bl = abs(tex2D(heightPSSampler, uv + texelSize * float2(-1, -1)).x);
-	
-	// Top
-	float t = abs(tex2D(heightPSSampler, uv + texelSize * float2(0, 1)).x);
-	
-	// Bottom
-	float b = abs(tex2D(heightPSSampler, uv + texelSize * float2(0, -1)).x);
-	
-	// Top Right
-	float tr = abs(tex2D(heightPSSampler, uv + texelSize * float2(1, 1)).x);
-	
-	// Right
-	float r = abs(tex2D(heightPSSampler, uv + texelSize * float2(1, 0)).x);
-	
-	// Bottom Right
-	float br = abs(tex2D(heightPSSampler, uv + texelSize * float2(1, -1)).x);
-	
-	float dx = -tl - 2.0f * l - bl + tr + 2.0f * r + br;
-	float dy = -tl - 2.0f * t - tr + bl + 2.0f * b + br;
-	
-	float4 normal = float4(normalize(float3(dx, 1.0f / normalStrength, dy)), 1.0f);
-	
-	// Convert coordinates from range (-1,1) to range (0,1)
-	return normal * 0.5f + 0.5f;
-}
-float4 PixelShader(in float2 texCoord : TEXCOORD0, in float4 worldPos : TEXCOORD1, in float4 color : COLOR0, in float2 fog : TEXCOORD3) : COLOR0
-{
-    
-	color = tex2D(TextureSampler1, texCoord);
-	
-    
-	float4 normal = normalize(2.0f * (tex2D(normalSampler, (worldPos/terrainScale)) - 0.5f));
-	
-	float4 light = normalize(float4(-LightDirection,1.0));
-	
-	float LdotN = dot(light, normal);
-	LdotN = max(0, LdotN);
-	
+    float3 mapdata = tex2D(grassmapSampler, worldPos);
+	color = tex2D(TextureSampler1, texCoord) * mapdata.r;
+	color += tex2D(TextureSampler2, texCoord) * mapdata.g;
+	color += tex2D(TextureSampler3, texCoord) * mapdata.b;
 	float oldA = color.a;
+    
+	//float4 normal = normalize(2.0f * (tex2D(normalSampler, (worldPos)) - 0.5f));
 	
-	color *= (0.1f + LdotN);
+	//float4 light = normalize(float4(-LightDirection,1.0));
 	
-	float3 displacement = normalize((cameraPosition)-(worldPos));
+	//float LdotN = dot(light, normal);
+	//LdotN = max(0, LdotN);
 	
-	color.a = oldA * saturate(1 - (length(displacement)) / (startFadingInDistance - stopFadingInDistance));
-	//color.a = fog.x/terrainScale;
+	
+	
+	//color *= (0.1f + LdotN);
+	
+	
+	float3 displacement = length(worldPos*(textureSize*terrainScale)-cameraPosition);
+	
+	//color.a = oldA * (1-normalize((displacement - stopFadingInDistance) / (startFadingInDistance - stopFadingInDistance)));
+	color.a = oldA * (fog.x);
     return color;
     //return tex2D(TextureSampler, texCoord) * color;
 }
 
-technique ComputeNormals
-{
-	pass P0
-	{
-		pixelShader = compile ps_3_0 ComputeNormalsPS();
-	}
-}
+
 technique Billboards
 {
     // We use a two-pass technique to render alpha blended geometry with almost-correct
@@ -327,8 +303,8 @@ technique Billboards
     
     pass RenderOpaquePixels
     {
-        VertexShader = compile vs_3_0 VertexShader();
-        PixelShader = compile ps_3_0 PixelShader();
+        VertexShader = compile vs_3_0 VShader();
+        PixelShader = compile ps_3_0 PShader();
 
         AlphaBlendEnable = false;
         SrcBlend = SrcAlpha;
@@ -340,13 +316,13 @@ technique Billboards
         ZEnable = true;
         ZWriteEnable = true;
 
-        CullMode = NONE;
+        CullMode = CCW;
     }
 
     pass RenderAlphaBlendedFringes
     {
-        VertexShader = compile vs_3_0 VertexShader();
-        PixelShader = compile ps_3_0 PixelShader();
+        VertexShader = compile vs_3_0 VShader();
+        PixelShader = compile ps_3_0 PShader();
         
         AlphaBlendEnable = true;
         SrcBlend = SrcAlpha;
@@ -359,6 +335,25 @@ technique Billboards
         ZEnable = true;
         ZWriteEnable = false;
 
-        CullMode = NONE;
+        CullMode = CCW;
     }
+    
+    /*pass RenderAlphaBlendedSinglePass
+    {
+        VertexShader = compile vs_3_0 VShader();
+        PixelShader = compile ps_3_0 PShader();
+        
+        AlphaBlendEnable = true;
+        SrcBlend = SrcAlpha;
+        DestBlend = InvSrcAlpha;
+        
+        AlphaTestEnable = false;
+        AlphaFunc = Greater;
+        AlphaRef = 225;
+
+        ZEnable = true;
+        ZWriteEnable = false;
+
+        CullMode = CCW;
+    }*/
 }

@@ -7,11 +7,8 @@
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
 
-
 // Maximum number of bone matrices we can render using shader 2.0 in a single pass.
-
 #define MaxBones 70
-
 
 // Input parameters.
 float4x4 View;
@@ -28,7 +25,7 @@ float4 AmbientColor = 0.2;
 
 texture2D Texture : TEXTURE0;
 
-sampler Sampler = sampler_state
+sampler TextureSampler = sampler_state
 {
     Texture = (Texture);
 
@@ -61,20 +58,17 @@ struct VS_OUTPUT
 
 
 // Vertex shader program.
-VS_OUTPUT VertexShader(VS_INPUT input)
+VS_OUTPUT VShader(VS_INPUT input)
 {
     VS_OUTPUT output;
     
-    // Blend between the weighted bone matrices.
     float4x3 skinTransform = 0;
     
     skinTransform += Bones[input.BoneIndices.x] * input.BoneWeights.x;
     skinTransform += Bones[input.BoneIndices.y] * input.BoneWeights.y;
     skinTransform += Bones[input.BoneIndices.z] * input.BoneWeights.z;
     skinTransform += Bones[input.BoneIndices.w] * input.BoneWeights.w;
-    
-    // Skin the vertex position.
-    // Combine skin and world transformations
+
    float4x4 matSmoothSkinWorld = 0;
    matSmoothSkinWorld[0] = float4(skinTransform[0], 0);
    matSmoothSkinWorld[1] = float4(skinTransform[1], 0);
@@ -97,8 +91,6 @@ VS_OUTPUT VertexShader(VS_INPUT input)
     
     return output;
 }
-
-
 // Pixel shader input structure.
 struct PS_INPUT
 {
@@ -108,21 +100,19 @@ struct PS_INPUT
 
 
 // Pixel shader program.
-float4 PixelShader(PS_INPUT input) : COLOR0
+float4 PShader(PS_INPUT input) : COLOR0
 {
-    float4 color = tex2D(Sampler, input.TexCoord);
-
+	float4 color = tex2D(TextureSampler, input.TexCoord);
     color.rgb *= input.Lighting;
-    
     return color;
-}
+};
 
 
 technique ActorTechnique
 {
     pass ActorPass
     {
-        VertexShader = compile vs_3_0 VertexShader();
-        PixelShader = compile ps_3_0 PixelShader();
+        VertexShader = compile vs_3_0 VShader();
+        PixelShader = compile ps_3_0 PShader();
     }
 }

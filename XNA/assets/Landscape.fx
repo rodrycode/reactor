@@ -7,7 +7,7 @@ float4x4 WorldView : WORLDVIEW;
 float3 LightDirection;
 float4 AmbientColor;
 float AmbientPower;
-float3 SpecularColor;
+float4 SpecularColor;
 float SpecularPower;
 float4 DiffuseColor;
 float3 CameraForward;
@@ -19,51 +19,83 @@ float TerrainWidth;
 
 //------- Texture Samplers --------
 Texture TextureMap;
-sampler TextureMapSampler = sampler_state { texture = <TextureMap> ; magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                                                                         mipfilter = ANISOTROPIC; AddressU  = Wrap;
-                                                                         AddressV  = Wrap; AddressW  = Wrap;};
+sampler TextureMapSampler = sampler_state { 
+	texture = <TextureMap>;
+	magfilter = ANISOTROPIC;
+	minfilter = ANISOTROPIC;
+	AddressU  = Wrap;
+    AddressV  = Wrap;
+	AddressW  = Wrap;
+};
 
 Texture GrassTexture;
-sampler GrassTextureSampler = sampler_state { texture = <GrassTexture> ; magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                                                                         mipfilter = ANISOTROPIC; AddressU  = Wrap;
-                                                                         AddressV  = Wrap; AddressW  = Wrap;};
+sampler GrassTextureSampler = sampler_state { 
+	texture = <GrassTexture>;
+	magfilter = ANISOTROPIC;
+	minfilter = ANISOTROPIC;
+	AddressU  = Wrap;
+    AddressV  = Wrap;
+	AddressW  = Wrap;
+};
 
 Texture SandTexture;
-sampler SandTextureSampler = sampler_state { texture = <SandTexture> ; magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                                                                       mipfilter = ANISOTROPIC; AddressU  = Wrap;
-                                                                       AddressV  = Wrap; AddressW  = Wrap;};
+sampler SandTextureSampler = sampler_state { 
+	texture = <SandTexture>;
+	magfilter = ANISOTROPIC;
+	minfilter = ANISOTROPIC;
+	AddressU  = Wrap;
+    AddressV  = Wrap;
+	AddressW  = Wrap;
+};
 
 Texture RockTexture;
-sampler RockTextureSampler = sampler_state { texture = <RockTexture> ; magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                                                                       mipfilter = ANISOTROPIC; AddressU  = Wrap;
-                                                                       AddressV  = Wrap; AddressW  = Wrap;};
+sampler RockTextureSampler = sampler_state { 
+	texture = <RockTexture>;
+	magfilter = ANISOTROPIC;
+	minfilter = ANISOTROPIC;
+	AddressU  = Wrap;
+    AddressV  = Wrap;
+	AddressW  = Wrap;
+};
 
 Texture GrassNormal;
-sampler2D GrassNormalSampler : TEXUNIT1 = sampler_state
+sampler2D GrassNormalSampler = sampler_state
 { Texture   = (GrassNormal); magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                             mipfilter = ANISOTROPIC; AddressU  = Wrap;
+                             AddressU  = Wrap;
                              AddressV  = Wrap; AddressW  = Wrap;};
 
 Texture SandNormal;
-sampler2D SandNormalSampler : TEXUNIT1 = sampler_state
+sampler2D SandNormalSampler = sampler_state
 { Texture   = (SandNormal); magfilter  = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                             mipfilter = ANISOTROPIC; AddressU  = Wrap;
+                             AddressU  = Wrap;
                              AddressV  = Wrap; AddressW  = Wrap;};
 
 Texture RockNormal;
-sampler2D RockNormalSampler : TEXUNIT1 = sampler_state
+sampler2D RockNormalSampler = sampler_state
 { Texture   = (RockNormal); magfilter = ANISOTROPIC; minfilter = ANISOTROPIC; 
-                             mipfilter = ANISOTROPIC; AddressU  = Wrap;
+                             AddressU  = Wrap;
                              AddressV  = Wrap; AddressW  = Wrap;};
 
+Texture HeightMap;
+sampler HeightMapSampler = sampler_state { texture = <HeightMap> ; magfilter = Linear; minfilter = Linear; 
+                                                                       AddressU  = Clamp;
+                                                                       AddressV  = Clamp; AddressW  = Clamp;};
+                                                                       
+Texture NormalMap;
+sampler NormalMapSampler = sampler_state { texture = <NormalMap> ; magfilter = Linear; minfilter = Linear; 
+                                                                       AddressU  = Clamp;
+                                                                       AddressV  = Clamp; AddressW  = Clamp;};
+
+float normalStrength = 1.0f;
+float textureSize = 512;
 //------- Technique: MultiTexturedNormaled --------
  
  struct VS_INPUT
  {
      float4 Position            : POSITION;    
      float3 Normal              : NORMAL0;    
-     float3 Tangent            : TANGENT0;	// Needed for accurate normal mapping
-     float3 Binormal             : BINORMAL0;		// Needed for accurate normal mapping
+     float3 Tangent             : TANGENT0;	// Needed for accurate normal mapping
+     float3 Binormal            : BINORMAL0;		// Needed for accurate normal mapping
      float4 Color               : COLOR0;
  };
 
@@ -75,7 +107,7 @@ struct VS_OUTPUT
     float3 Binormal			   : TEXCOORD2;
     float3 Tangent			   : TEXCOORD3;
     float3 Normal			   : TEXCOORD4;
-    float Fog                  : FOG;
+    float2 Fog                 : TEXCOORD5;
 };
 
  VS_OUTPUT MultiTexturedNormaledVS( VS_INPUT input)    
@@ -106,7 +138,7 @@ struct VS_OUTPUT
 	 Output.Binormal = mul(input.Binormal,  xWorld);
 	 //Output.Tangent = input.Tangent;
 	 //Output.Binormal = input.Binormal;
-	 Output.Fog = 1 - saturate(length(mul(input.Position, WorldView)) / FOGDIST);
+	 Output.Fog = float2(1 - saturate(length(mul(input.Position, WorldView)) / FOGDIST),0);
      return Output;    
  }
  
@@ -115,25 +147,28 @@ struct VS_OUTPUT
 	 float3 TerrainColorWeight = tex2D(TextureMapSampler, input.texCoordNoWrap);
 	 
 	 input.Normal = normalize(input.Normal);
- 
-     float3 normalFromMap = (2.0f + tex2D(SandNormalSampler, input.texCoord) - 1.0f) * TerrainColorWeight.r;
-     normalFromMap += (2.0f + tex2D(GrassNormalSampler, input.texCoord) - 1.0f) * TerrainColorWeight.g;
-     normalFromMap += (2.0f + tex2D(RockNormalSampler, input.texCoord) - 1.0f)  * TerrainColorWeight.b;
-     normalFromMap = normalize(mul(normalFromMap, float3x3(input.Tangent, input.Binormal, input.Normal)) * 0.15f);
+	 //float3 normalFromMap = (2.0*tex2D(NormalMapSampler, input.texCoordNoWrap)-1.0);
+     float3 normalFromMap = (2.0*tex2D(SandNormalSampler, input.texCoord)-0.5) * TerrainColorWeight.r;
+     normalFromMap += (2.0*tex2D(GrassNormalSampler, input.texCoord)-0.5) * TerrainColorWeight.g;
+     normalFromMap += (2.0*tex2D(RockNormalSampler, input.texCoord)-0.5)  * TerrainColorWeight.b;
+     normalFromMap = normalize(mul(normalFromMap, float3x3(input.Tangent, input.Binormal, input.Normal)) * 1.5f);
 	
      // Factor in normal mapping and terrain vertex normals as well in lighting of the pixel
      //float lightingFactor = saturate(mul(2.0, dot(normalFromMap + input.Normal, LightDirection)));
-	 float lightingFactor = mul(1.0, dot(normalFromMap + input.Normal, LightDirection));
+	 float lightingFactor = dot(normalFromMap + input.Normal, -LightDirection);
      float4 Color = tex2D(SandTextureSampler, input.texCoord)   * TerrainColorWeight.r;
      Color += tex2D(GrassTextureSampler, input.texCoord) * TerrainColorWeight.g;
      Color += tex2D(RockTextureSampler, input.texCoord)  * TerrainColorWeight.b;
 
-     float3 Reflect = saturate((lightingFactor * input.Normal) + (-LightDirection));
-     float3 specular = pow(dot(Reflect, CameraForward), SpecularPower);
+     float3 Reflect = ((lightingFactor) * input.Normal) + (LightDirection);
+     float3 specular = pow(abs(normalize(dot(Reflect, CameraForward))), SpecularPower);
      
-	 Color.rgb *= (AmbientColor + (DiffuseColor * lightingFactor) + (SpecularColor * specular * lightingFactor)) * AmbientPower;
+	 Color.rgb *= ((AmbientColor + (DiffuseColor * lightingFactor) + (SpecularColor * specular * lightingFactor)) * AmbientPower);
+	 //Color.rgb *= ((AmbientColor + (DiffuseColor * lightingFactor)) * AmbientPower);
 	 Color.a = 1.0f;
- 
+	 if(FOGENABLE)
+     return lerp(Color, FOGCOLOR, 1-input.Fog.x);
+     else
      return Color;
  }
  
@@ -141,14 +176,55 @@ struct VS_OUTPUT
  {
      pass Pass0
      {
-     	FogEnable = (FOGENABLE);
-		FogVertexMode = NONE;
-		FogColor = (FOGCOLOR);
-        VertexShader = compile vs_2_0 MultiTexturedNormaledVS();
-        PixelShader = compile ps_2_0 MultiTexturedNormaledPS();
+     	
+        VertexShader = compile vs_3_0 MultiTexturedNormaledVS();
+        PixelShader = compile ps_3_0 MultiTexturedNormaledPS();
+        
      }
  }
- 
+ float4 ComputeNormalsPS(in float2 uv : TEXCOORD0) : COLOR
+{
+	float texelSize = 1.0f / textureSize;
+	
+	// Top left
+	float tl = abs(tex2D(HeightMapSampler, uv + texelSize * float2(-1, 1)).x);
+	
+	// Left
+	float l = abs(tex2D(HeightMapSampler, uv + texelSize * float2(-1, 0)).x);
+	
+	// Bottom Left
+	float bl = abs(tex2D(HeightMapSampler, uv + texelSize * float2(-1, -1)).x);
+	
+	// Top
+	float t = abs(tex2D(HeightMapSampler, uv + texelSize * float2(0, 1)).x);
+	
+	// Bottom
+	float b = abs(tex2D(HeightMapSampler, uv + texelSize * float2(0, -1)).x);
+	
+	// Top Right
+	float tr = abs(tex2D(HeightMapSampler, uv + texelSize * float2(1, 1)).x);
+	
+	// Right
+	float r = abs(tex2D(HeightMapSampler, uv + texelSize * float2(1, 0)).x);
+	
+	// Bottom Right
+	float br = abs(tex2D(HeightMapSampler, uv + texelSize * float2(1, -1)).x);
+	
+	float dx = -tl - 2.0f * l - bl + tr + 2.0f * r + br;
+	float dy = -tl - 2.0f * t - tr + bl + 2.0f * b + br;
+	
+	float4 normal = float4(normalize(float3(dx, 1.0f / normalStrength, dy)), 1.0f);
+	
+	// Convert coordinates from range (-1,1) to range (0,1)
+	return normal * 0.5f + 0.5f;
+}
+ technique ComputeNormals
+{
+	pass P0
+	{
+		pixelShader = compile ps_3_0 ComputeNormalsPS();
+	}
+}
  // ================================================
  //------- Technique: MultiTextured --------
  
@@ -211,10 +287,10 @@ struct VSBASIC_OUTPUT
  {
      pass Pass0
      {
-		FogEnable = (FOGENABLE);
-		FogVertexMode = NONE;
-		FogColor = (FOGCOLOR);
+		
          VertexShader = compile vs_3_0 MultiTexturedVS();
          PixelShader = compile ps_3_0 MultiTexturedPS();
+         
+         
      }
  }
