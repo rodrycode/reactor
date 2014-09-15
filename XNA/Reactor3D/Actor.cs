@@ -68,7 +68,7 @@ namespace Reactor
             _model = new Model();
             _content = new ContentManager(REngine.Instance._game.Services);
             _content.RootDirectory = _content.RootDirectory + "\\Content";
-            _resourcecontent = new ResourceContentManager(REngine.Instance._game.Services, Resource1.ResourceManager);
+            
             
         }
         public void Load(string filename)
@@ -80,10 +80,12 @@ namespace Reactor
             _objectMatrix = Matrix.CreateScale(1.0f / scale);
             scaling = new Vector3(scale, scale, scale);
             _objectMatrix = BuildScalingMatrix(_objectMatrix);
-#if !XBOX
-            _defaultEffect = _resourcecontent.Load<RShader>("Actor");
+#if XBOX
+            _defaultEffect = _resourcecontent.Load<RShader>("Actor.Xbox");
+#elif MACOSX
+			_defaultEffect = RShader.LoadEffectResource("Actor.ogl.mgfx");
 #else
-            _defaultEffect = _resourcecontent.Load<Effect>("Actor1");
+            _defaultEffect = _resourcecontent.Load<Effect>("Actor.Windows");
 #endif
             _defaultEffect.effect.CurrentTechnique = _defaultEffect.effect.Techniques[0];
             _sphere = _model.Meshes[0].BoundingSphere;

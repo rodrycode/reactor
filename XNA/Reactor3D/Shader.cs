@@ -30,6 +30,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System;
+using System.IO;
 
 namespace Reactor
 {
@@ -53,6 +54,8 @@ namespace Reactor
 
                 _instance.content = new ContentManager(REngine.Instance._game.Services);
                 _instance.content.RootDirectory = _instance.content.RootDirectory+"\\Content";
+
+
             }
             
         }
@@ -81,6 +84,23 @@ namespace Reactor
             effect = RShaderManager.Instance.content.Load<Effect>(Filename);
         }
 
+		internal RShader(byte[] byteCode){
+			effect = new Effect(REngine.Instance._graphics.GraphicsDevice, byteCode);
+		}
+		internal static RShader LoadEffectResource(string name)
+		{
+			#if WINRT
+			var assembly = typeof(Effect).GetTypeInfo().Assembly;
+			#else
+			var assembly = typeof(Effect).Assembly;
+			#endif
+			var stream = assembly.GetManifestResourceStream(name);
+			using (var ms = new MemoryStream())
+			{
+				stream.CopyTo(ms);
+				return new RShader(ms.ToArray());
+			}
+		}
         public void Load(string Filename)
         {
             
