@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7EBD9592-2AC6-41FE-89A3-8F01EEAB2584}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Reactor</RootNamespace>
+    <AssemblyName>ReactorMono</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG; MACOSX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework\bin\MacOS\Release\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Sdl">
+      <HintPath>..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework\bin\MacOS\Release\Tao.Sdl.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework\bin\MacOS\Release\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMac">
+      <HintPath>..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework\bin\MacOS\Release\MonoMac.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Reactor3D\Actor.cs">
+      <Link>Actor.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Atmosphere.cs">
+      <Link>Atmosphere.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Camera.cs">
+      <Link>Camera.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\ContentTypes.cs">
+      <Link>ContentTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Engine.cs">
+      <Link>Engine.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Game.cs">
+      <Link>Game.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Input.cs">
+      <Link>Input.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Landscape.cs">
+      <Link>Landscape.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Lighting.cs">
+      <Link>Lighting.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Mesh.cs">
+      <Link>Mesh.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\ParticleSystem.cs">
+      <Link>ParticleSystem.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Paths.cs">
+      <Link>Paths.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Physics.cs">
+      <Link>Physics.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\RGraphicEffect.cs">
+      <Link>RGraphicEffect.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\RVideoManager.cs">
+      <Link>RVideoManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\RenderSurface.cs">
+      <Link>RenderSurface.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Resource1.Designer.cs">
+      <Link>Resource1.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Scene.cs">
+      <Link>Scene.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Screen2d.cs">
+      <Link>Screen2d.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Shader.cs">
+      <Link>Shader.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Sound.cs">
+      <Link>Sound.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\TextureFactory.cs">
+      <Link>TextureFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Types.cs">
+      <Link>Types.cs</Link>
+    </Compile>
+    <Compile Include="..\Reactor3D\Water.cs">
+      <Link>Water.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\Reactor3D\Reactor3D.csproj">
+      <Link>Reactor3D.csproj</Link>
+    </None>
+    <None Include="..\Reactor3D\Resource1.resx">
+      <Link>Resource1.resx</Link>
+    </None>
+    <None Include="..\Reactor3D\box.xnb">
+      <Link>box.xnb</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Actor.fx">
+      <Link>Content\Actor.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Billboard.fx">
+      <Link>Content\Billboard.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\BloomCombine.fx">
+      <Link>Content\BloomCombine.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\BloomExtract.fx">
+      <Link>Content\BloomExtract.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Content.contentproj">
+      <Link>Content\Content.contentproj</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\GaussianBlur.fx">
+      <Link>Content\GaussianBlur.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Grass.fx">
+      <Link>Content\Grass.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Landscape.fx">
+      <Link>Content\Landscape.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\ParticleSystem.fx">
+      <Link>Content\ParticleSystem.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\SkyCube.dds">
+      <Link>Content\SkyCube.dds</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Skybox.fx">
+      <Link>Content\Skybox.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Star.fx">
+      <Link>Content\Star.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Tahoma.spritefont">
+      <Link>Content\Tahoma.spritefont</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\Water.fx">
+      <Link>Content\Water.fx</Link>
+    </None>
+    <None Include="..\Reactor3D\Content\box.x">
+      <Link>Content\box.x</Link>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{10B59586-6CED-4C2B-B0D2-B985CC1EB1C8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Reactor.Content.Importer</RootNamespace>
+    <AssemblyName>ReactorMonoContentImporter</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework\bin\MacOS\Release\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="AssimpNet">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\AssimpNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedPVRTC">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\ManagedPVRTC.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework.Content.Pipeline">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\MonoGame.Framework.Content.Pipeline.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMac">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\MonoMac.dll</HintPath>
+    </Reference>
+    <Reference Include="NAudio">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\NAudio.dll</HintPath>
+    </Reference>
+    <Reference Include="Nvidia.TextureTools">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\Nvidia.TextureTools.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpFont">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\SharpFont.dll</HintPath>
+    </Reference>
+    <Reference Include="Tao.Sdl">
+      <HintPath>..\..\..\..\..\Downloads\MonoGame-3.2\MonoGame.Framework.Content.Pipeline\bin\MacOS\Release\Tao.Sdl.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\..\ReactorContentImporter\ActorProcessor.cs">
+      <Link>ActorProcessor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReactorContentImporter\AnimationData.cs">
+      <Link>AnimationData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\ReactorContentImporter\ModelData.cs">
+      <Link>ModelData.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="..\..\ReactorContentImporter\Content\Content.contentproj">
+      <Link>Content\Content.contentproj</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ReactorMonoContent\ReactorContent.csproj">
+      <Project>{36683BFF-0161-4174-BC40-83601E318B02}</Project>
+      <Name>ReactorContent</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
