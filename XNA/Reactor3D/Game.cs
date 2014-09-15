@@ -202,7 +202,7 @@ namespace Reactor
                 REngine.Instance._graphics = graphics;
                 
 
-                REngine.Instance._resourceContent = new ResourceContentManager(Services, Resource1.ResourceManager);
+                REngine.Instance._resourceContent = new ResourceContentManager(Services, Resources.ResourceManager);
 #if !XBOX
                 REngine.Instance._systemfont = REngine.Instance._resourceContent.Load<SpriteFont>("Tahoma");
 #else

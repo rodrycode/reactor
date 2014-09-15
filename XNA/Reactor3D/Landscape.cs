@@ -1623,7 +1623,6 @@ namespace Reactor
         {
             Device = REngine.Instance._graphics.GraphicsDevice;
             Content = new ContentManager(REngine.Instance._game.Services);
-            resource = new ResourceContentManager(REngine.Instance._game.Services, Resource1.ResourceManager);
             DetailDefault = RLANDSCAPE_LOD.Ultra;
             Detail = DetailDefault;
 #if !XBOX
@@ -1691,8 +1690,7 @@ namespace Reactor
 
             Device = REngine.Instance._graphics.GraphicsDevice;
             Content = new ContentManager(REngine.Instance._game.Services);
-            resource = new ResourceContentManager(REngine.Instance._game.Services, Resource1.ResourceManager);
-
+            
             this.DetailDefault = (RLANDSCAPE_LOD)DetailDefault;
             Detail = this.DetailDefault;
 #if !XBOX

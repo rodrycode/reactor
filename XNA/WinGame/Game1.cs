@@ -341,8 +341,7 @@ namespace WinGame
                 atmosphere.Fog_Enable(fog);
             }
 
-            if (input.IsKeyDown(CONST_REACTOR_KEY.F1))
-                scene.SetShadeMode(CONST_REACTOR_FILLMODE.Point);
+            
             if (input.IsKeyDown(CONST_REACTOR_KEY.F2))
                 scene.SetShadeMode(CONST_REACTOR_FILLMODE.Wireframe);
             if (input.IsKeyDown(CONST_REACTOR_KEY.F3))

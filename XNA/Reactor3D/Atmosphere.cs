@@ -322,7 +322,7 @@ namespace Reactor
         public void Initialize()
         {
             InitFullScreenQuad();
-            _instance.skyResource = new ResourceContentManager(REngine.Instance._game.Services, Resource1.ResourceManager);
+            
 #if !XBOX
             _instance.skyBox = _instance.skyResource.Load<Model>("box");
 #else

@@ -105,7 +105,11 @@
     <Compile Include="Physics.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderSurface.cs" />
-    <Compile Include="Resource1.Designer.cs" />
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RGraphicEffect.cs" />
     <Compile Include="RVideoManager.cs" />
     <Compile Include="Sound.cs" />
@@ -121,11 +125,6 @@
       <Project>bfb9813c-d670-4474-808a-9c65e4ce7936</Project>
       <Visible>False</Visible>
     </NestedContentProject>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resource1.resx">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -160,23 +159,34 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Actor.xnb" />
-    <None Include="Billboard.xnb" />
     <None Include="bin\x86\Debug\Content\BloomCombine.xnb" />
     <None Include="bin\x86\Debug\Content\BloomExtract.xnb" />
     <None Include="bin\x86\Debug\Content\GaussianBlur.xnb" />
     <None Include="bin\Xbox 360\Debug\Content\BloomCombine.xnb" />
     <None Include="bin\Xbox 360\Debug\Content\BloomExtract.xnb" />
     <None Include="bin\Xbox 360\Debug\Content\GaussianBlur.xnb" />
-    <None Include="box.xnb" />
-    <None Include="Grass.xnb" />
-    <None Include="Landscape.xnb" />
-    <None Include="LobbyCube.xnb" />
-    <None Include="ParticleSystem.xnb" />
-    <None Include="Skybox.xnb" />
-    <None Include="SkyCube.xnb" />
-    <None Include="Tahoma.xnb" />
-    <None Include="Water.xnb" />
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Actor.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\Actor.ogl.mgfxo" />
+    <EmbeddedResource Include="Resources\Billboard.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\Billboard.ogl.mgfxo" />
+    <EmbeddedResource Include="Resources\BloomCombine.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\BloomCombine.ogl.mgfxo" />
+    <EmbeddedResource Include="Resources\BloomExtract.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\BloomExtract.ogl.mgfxo" />
+    <EmbeddedResource Include="Resources\GaussianBlur.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\GaussianBlur.ogl.mgfxo" />
+    <EmbeddedResource Include="Resources\Landscape.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\Landscape.ogl.mgfxo" />
+    <EmbeddedResource Include="Resources\ParticleSystem.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\ParticleSystem.ogl.mgfxo" />
+    <EmbeddedResource Include="Resources\Skybox.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\Skybox.ogl.mgfxo" />
+    <EmbeddedResource Include="Resources\Water.dx11.mgfxo" />
+    <EmbeddedResource Include="Resources\Water.ogl.mgfxo" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReactorContent\ReactorContent.csproj">

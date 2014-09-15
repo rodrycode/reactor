@@ -118,34 +118,58 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Actor" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Actor.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Actor_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\actor.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Billboard" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Billboard.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Actor_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\actor.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="box" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>box.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Billboard_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\billboard.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Landscape" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Landscape.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Billboard_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\billboard.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ParticleSystem" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>ParticleSystem.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="BloomCombine_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\bloomcombine.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Skybox" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Skybox.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="BloomCombine_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\bloomcombine.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Tahoma" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Tahoma.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="BloomExtract_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\bloomextract.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Water" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Water.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="BloomExtract_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\bloomextract.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="Grass" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Grass.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="GaussianBlur_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\gaussianblur.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="LobbyCube" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>SkyCube.xnb;System.Byte[], mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="GaussianBlur_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\gaussianblur.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Landscape_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\landscape.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Landscape_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\landscape.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ParticleSystem_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\particlesystem.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ParticleSystem_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\particlesystem.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Skybox_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\skybox.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Skybox_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\skybox.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Water_dx11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\water.dx11.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="Water_ogl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\water.ogl.mgfxo;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

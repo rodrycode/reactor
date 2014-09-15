@@ -190,11 +190,12 @@ namespace Reactor
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            _content = new ResourceContentManager(Game.Services, Resource1.ResourceManager);
+            
 #if !XBOX
-            bloomExtractEffect = _content.Load<Effect>("BloomExtract");
-            bloomCombineEffect = _content.Load<Effect>("BloomCombine");
-            gaussianBlurEffect = _content.Load<Effect>("GaussianBlur");
+            bloomExtractEffect = RShader.LoadEffectResource("BloomExtract.ogl.mgfxo").effect;
+            bloomExtractEffect = RShader.LoadEffectResource("BloomExtract.ogl.mgfxo").effect;
+            bloomCombineEffect = RShader.LoadEffectResource("BloomCombine.ogl.mgfxo").effect;
+            gaussianBlurEffect = RShader.LoadEffectResource("GaussianBlur.ogl.mgfxo").effect;
 #else
             bloomExtractEffect = _content.Load<Effect>("BloomExtract1");
             bloomCombineEffect = _content.Load<Effect>("BloomCombine1");

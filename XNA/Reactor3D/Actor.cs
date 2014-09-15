@@ -81,11 +81,11 @@ namespace Reactor
             scaling = new Vector3(scale, scale, scale);
             _objectMatrix = BuildScalingMatrix(_objectMatrix);
 #if XBOX
-            _defaultEffect = _resourcecontent.Load<RShader>("Actor.Xbox");
+            _defaultEffect = REngine.Instance._resourceContent.Load<RShader>("Actor.Xbox");
 #elif MACOSX
-			_defaultEffect = RShader.LoadEffectResource("Actor.ogl.mgfx");
+			_defaultEffect = RShader.LoadEffectResource("Actor.ogl.mgfxo");
 #else
-            _defaultEffect = _resourcecontent.Load<Effect>("Actor.Windows");
+            _defaultEffect = RShader.LoadEffectResource("Actor.ogl.mgfxo");
 #endif
             _defaultEffect.effect.CurrentTechnique = _defaultEffect.effect.Techniques[0];
             _sphere = _model.Meshes[0].BoundingSphere;

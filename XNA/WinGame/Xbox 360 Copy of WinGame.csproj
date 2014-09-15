@@ -116,16 +116,6 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Reactor3D\Xbox 360 Copy of Reactor3D.csproj">
-      <Project>{c5c0b2e8-3e8e-481c-8921-58c511ab85b6}</Project>
-      <Name>Xbox 360 Copy of Reactor3D</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReactorContent\Xbox 360 Copy of ReactorContent.csproj">
-      <Project>{15e8d1ec-544b-4d44-bb19-8b15e695e937}</Project>
-      <Name>Xbox 360 Copy of ReactorContent</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
