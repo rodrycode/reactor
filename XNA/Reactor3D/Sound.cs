@@ -34,7 +34,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 namespace Reactor
 {
-    public class RSoundEffect : RSceneNode
+    public class RSoundEffect
     {
         internal SoundEffect _effect;
         internal SoundEffectInstance _instance;
@@ -42,6 +42,13 @@ namespace Reactor
         float _volume = 1.0f;
         bool _looping = false;
         bool _playing = false;
+		private string _name;
+
+		public string Name 
+		{
+			get { return _name; }
+			internal set { _name = value; }
+		}
         public RSoundEffect()
         {
 
@@ -77,7 +84,7 @@ namespace Reactor
         }
         internal void CreateSoundEffect(string Name)
         {
-            this._name = Name;
+            this.Name = Name;
         }
         
         public void Play()

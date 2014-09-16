@@ -91,9 +91,6 @@
     <Compile Include="..\Reactor3D\RenderSurface.cs">
       <Link>RenderSurface.cs</Link>
     </Compile>
-    <Compile Include="..\Reactor3D\Resource1.Designer.cs">
-      <Link>Resource1.Designer.cs</Link>
-    </Compile>
     <Compile Include="..\Reactor3D\Scene.cs">
       <Link>Scene.cs</Link>
     </Compile>
@@ -120,12 +117,6 @@
   <ItemGroup>
     <None Include="..\Reactor3D\Reactor3D.csproj">
       <Link>Reactor3D.csproj</Link>
-    </None>
-    <None Include="..\Reactor3D\Resource1.resx">
-      <Link>Resource1.resx</Link>
-    </None>
-    <None Include="..\Reactor3D\box.xnb">
-      <Link>box.xnb</Link>
     </None>
     <None Include="..\Reactor3D\Content\Actor.fx">
       <Link>Content\Actor.fx</Link>
@@ -172,5 +163,75 @@
     <None Include="..\Reactor3D\Content\box.x">
       <Link>Content\box.x</Link>
     </None>
+    <None Include="..\Reactor3D\Resources\Actor.dx11.mgfxo">
+      <Link>Resources\Actor.dx11.mgfxo</Link>
+    </None>
+    <None Include="..\Reactor3D\Resources\Billboard.dx11.mgfxo">
+      <Link>Resources\Billboard.dx11.mgfxo</Link>
+    </None>
+    <None Include="..\Reactor3D\Resources\BloomCombine.dx11.mgfxo">
+      <Link>Resources\BloomCombine.dx11.mgfxo</Link>
+    </None>
+    <None Include="..\Reactor3D\Resources\BloomExtract.dx11.mgfxo">
+      <Link>Resources\BloomExtract.dx11.mgfxo</Link>
+    </None>
+    <None Include="..\Reactor3D\Resources\GaussianBlur.dx11.mgfxo">
+      <Link>Resources\GaussianBlur.dx11.mgfxo</Link>
+    </None>
+    <None Include="..\Reactor3D\Resources\Landscape.dx11.mgfxo">
+      <Link>Resources\Landscape.dx11.mgfxo</Link>
+    </None>
+    <None Include="..\Reactor3D\Resources\ParticleSystem.dx11.mgfxo">
+      <Link>Resources\ParticleSystem.dx11.mgfxo</Link>
+    </None>
+    <None Include="..\Reactor3D\Resources\Skybox.dx11.mgfxo">
+      <Link>Resources\Skybox.dx11.mgfxo</Link>
+    </None>
+    <None Include="..\Reactor3D\Resources\Water.dx11.mgfxo">
+      <Link>Resources\Water.dx11.mgfxo</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Reactor3D\Resources\Actor.ogl.mgfxo">
+      <Link>Resources\Actor.ogl.mgfxo</Link>
+      <LogicalName>Actor.ogl.mgfxo</LogicalName>
+      <DeployService-Deploy>True</DeployService-Deploy>
+      <DeployService-TargetDirectoryId>Binaries</DeployService-TargetDirectoryId>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Reactor3D\Resources\Billboard.ogl.mgfxo">
+      <Link>Resources\Billboard.ogl.mgfxo</Link>
+      <LogicalName>Billboard.ogl.mgfxo</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Reactor3D\Resources\BloomCombine.ogl.mgfxo">
+      <Link>Resources\BloomCombine.ogl.mgfxo</Link>
+      <LogicalName>BloomCombine.ogl.mgfxo</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Reactor3D\Resources\BloomExtract.ogl.mgfxo">
+      <Link>Resources\BloomExtract.ogl.mgfxo</Link>
+      <LogicalName>BloomExtract.ogl.mgfxo</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Reactor3D\Resources\GaussianBlur.ogl.mgfxo">
+      <Link>Resources\GaussianBlur.ogl.mgfxo</Link>
+      <LogicalName>GaussianBlur.ogl.mgfxo</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Reactor3D\Resources\Landscape.ogl.mgfxo">
+      <Link>Resources\Landscape.ogl.mgfxo</Link>
+      <LogicalName>Landscape.ogl.mgfxo</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Reactor3D\Resources\ParticleSystem.ogl.mgfxo">
+      <Link>Resources\ParticleSystem.ogl.mgfxo</Link>
+      <LogicalName>ParticleSystem.ogl.mgfxo</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Reactor3D\Resources\Skybox.ogl.mgfxo">
+      <Link>Resources\Skybox.ogl.mgfxo</Link>
+      <LogicalName>Skybox.ogl.mgfxo</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Reactor3D\Resources\Water.ogl.mgfxo">
+      <Link>Resources\Water.ogl.mgfxo</Link>
+      <LogicalName>Water.ogl.mgfxo</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

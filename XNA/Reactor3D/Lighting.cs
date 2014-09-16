@@ -205,7 +205,6 @@ namespace Reactor
         internal Hashtable _MaterialList = new Hashtable();
         public RMaterialFactory()
         {
-            RShaderManager manager = new RShaderManager();
             if (_instance == null)
                 _instance = this;
         }

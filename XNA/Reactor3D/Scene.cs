@@ -43,98 +43,8 @@ namespace Reactor
         {
             get { return _instance; }
         }
-        public RSceneNode CloneNode(RSceneNode node, string name)
-        {
-            if (node.GetType() == typeof(RActor))
-            {
-                RActor actor = Instance.CreateActor(name);
-                actor._model = ((RActor)node)._model;
-                actor._content = ((RActor)node)._content;
-                actor._player = ((RActor)node)._player;
-                actor._position = node.Position;
-                actor._rotation = node.Rotation;
-                actor._skinningData = ((RActor)node)._skinningData;
-                actor._transforms = ((RActor)node)._transforms;
-                actor._objectMatrix = ((RActor)node)._objectMatrix;
-                actor._defaultEffect = ((RActor)node)._defaultEffect;
-                actor._material = ((RActor)node)._material;
-                actor._materials = ((RActor)node)._materials;
-                
-                actor.scaling = ((RActor)node).scaling;
-                actor.ParentNode = ((RActor)node).ParentNode;
-                return actor;
-            }
-            else if (node.GetType() == typeof(RMesh))
-            {
-                RMesh mesh = Instance.CreateMesh(name);
-                mesh._basicEffect = ((RMesh)node)._basicEffect;
-                mesh._boundingBox = ((RMesh)node)._boundingBox;
-                mesh._content = ((RMesh)node)._content;
-                mesh._material = ((RMesh)node)._material;
-                mesh._materials = ((RMesh)node)._materials;
-                mesh._model = ((RMesh)node)._model;
-                mesh._name = ((RMesh)node)._name;
-                mesh._objectMatrix = ((RMesh)node)._objectMatrix;
-                mesh._position = ((RMesh)node)._position;
-                mesh._rotation = ((RMesh)node)._rotation;
-                mesh._transforms = ((RMesh)node)._transforms;
-                
-                mesh.scaling = ((RMesh)node).scaling;
-                mesh.ParentNode = node.ParentNode;
-                return mesh;
-            }
-            else if (node.GetType() == typeof(RMeshBuilder))
-            {
-                RMeshBuilder mesh = Instance.CreateMeshBuilder(name);
-                mesh._name = name;
-                mesh.Matrix = node.Matrix;
-                mesh.Position = node.Position;
-                mesh.Quaternion = node.Quaternion;
-                mesh.Rotation = node.Rotation;
-                return mesh;
-            }
-            else if (node.GetType() == typeof(RParticleEmitter))
-            {
-                RParticleEmitter particles = Instance.CreateParticleEmitter(((RParticleEmitter)node)._type, name);
-                particles._emitter = ((RParticleEmitter)node)._emitter;
-                particles._emitters = ((RParticleEmitter)node)._emitters;
-                particles._psystem = ((RParticleEmitter)node)._psystem;
-                particles._type = ((RParticleEmitter)node)._type;
-                particles.Position = node.Position;
-                particles.Quaternion = node.Quaternion;
-                particles.Matrix = node.Matrix;
-                particles.Rotation = node.Rotation;
-                particles.TextureID = ((RParticleEmitter)node).TextureID;
-                particles.settings = ((RParticleEmitter)node).settings;
-                particles.ParentNode = node.ParentNode;
-                return particles;
-            }
-            else if (node.GetType() == typeof(GrassBillboard))
-            {
-                GrassBillboard g = new GrassBillboard();
-                g.Position = node.Position;
-                g.Rotation = node.Rotation;
-                g.Quaternion = node.Quaternion;
-                g.normal = ((GrassBillboard)node).normal;
-                g.buffer = ((GrassBillboard)node).buffer;
-                g.indices = ((GrassBillboard)node).indices;
-                g.maxDistance = ((GrassBillboard)node).maxDistance;
-                g.Matrix = node.Matrix;
-                g._name = name;
-                g.height = ((GrassBillboard)node).height;
-                g.width = ((GrassBillboard)node).width;
-                g.texture = ((GrassBillboard)node).texture;
-                g.type = ((GrassBillboard)node).type;
-                g.vegEffect = ((GrassBillboard)node).vegEffect;
-                return g;
-            }
-            else
-            {
-                throw new Exception("SceneNode Not Supported by Clone : " + node.GetType().ToString());
-            }
-            
-        }
-        #endregion
+		#endregion
+        
 
         #region Internal Members
         internal Hashtable _MeshBuilderList = new Hashtable();
@@ -176,6 +86,106 @@ namespace Reactor
         {
             
         }
+		public RSceneNode CloneNode(RSceneNode node, string name)
+		{
+			if (node.GetType() == typeof(RActor))
+			{
+				RActor oldActor = (RActor)node;
+				RActor actor = Instance.CreateActor(name);
+				actor._model = oldActor._model;
+				actor._player = oldActor._player;
+				actor.Position = oldActor.Position;
+				actor.Rotation = oldActor.Rotation;
+				actor._skinningData = oldActor._skinningData;
+				actor._transforms = oldActor._transforms;
+				actor.Matrix = oldActor.Matrix;
+				actor._defaultEffect = oldActor._defaultEffect;
+				actor._material = oldActor._material;
+				actor._materials = oldActor._materials;
+
+				actor.Scaling = oldActor.Scaling;
+				actor.ParentNode = oldActor.ParentNode;
+				actor.Name = name;
+				return actor;
+			}
+			else if (node.GetType() == typeof(RMesh))
+			{
+				RMesh oldMesh = (RMesh)node;
+				RMesh mesh = Instance.CreateMesh(name);
+				mesh._basicEffect = oldMesh._basicEffect;
+				mesh._boundingBox = oldMesh._boundingBox;
+				mesh._material = oldMesh._material;
+				mesh._materials = oldMesh._materials;
+				mesh._model = oldMesh._model;
+				mesh.Name = oldMesh.Name;
+				mesh.Matrix = oldMesh.Matrix;
+				mesh.Position = oldMesh.Position;
+				mesh.Rotation = oldMesh.Rotation;
+				mesh._transforms = oldMesh._transforms;
+
+				mesh.Scaling = oldMesh.Scaling;
+				mesh.ParentNode = node.ParentNode;
+				return mesh;
+			}
+			else if (node.GetType() == typeof(RMeshBuilder))
+			{
+				RMeshBuilder mesh = Instance.CreateMeshBuilder(name);
+				RMeshBuilder oldMesh = (RMeshBuilder)node;
+				mesh.Name = name;
+				mesh.Matrix = node.Matrix;
+				mesh.Position = node.Position;
+				mesh.Quaternion = node.Quaternion;
+				mesh.Rotation = node.Rotation;
+				mesh.Name = name;
+				mesh._buffer = oldMesh._buffer;
+				mesh._basicEffect = oldMesh._basicEffect;
+				mesh._index = oldMesh._index;
+				mesh._material = oldMesh._material;
+				mesh.vertCount = oldMesh.vertCount;
+				return mesh;
+			}
+			else if (node.GetType() == typeof(RParticleEmitter))
+			{
+				RParticleEmitter particles = Instance.CreateParticleEmitter(((RParticleEmitter)node)._type, name);
+				particles._emitter = ((RParticleEmitter)node)._emitter;
+				particles._emitters = ((RParticleEmitter)node)._emitters;
+				particles._psystem = ((RParticleEmitter)node)._psystem;
+				particles._type = ((RParticleEmitter)node)._type;
+				particles.Position = node.Position;
+				particles.Quaternion = node.Quaternion;
+				particles.Matrix = node.Matrix;
+				particles.Rotation = node.Rotation;
+				particles.TextureID = ((RParticleEmitter)node).TextureID;
+				particles.settings = ((RParticleEmitter)node).settings;
+				particles.ParentNode = node.ParentNode;
+				return particles;
+			}
+			else if (node.GetType() == typeof(GrassBillboard))
+			{
+				GrassBillboard g = new GrassBillboard();
+				g.Position = node.Position;
+				g.Rotation = node.Rotation;
+				g.Quaternion = node.Quaternion;
+				g.normal = ((GrassBillboard)node).normal;
+				g.buffer = ((GrassBillboard)node).buffer;
+				g.indices = ((GrassBillboard)node).indices;
+				g.maxDistance = ((GrassBillboard)node).maxDistance;
+				g.Matrix = node.Matrix;
+				g.Name = name;
+				g.height = ((GrassBillboard)node).height;
+				g.width = ((GrassBillboard)node).width;
+				g.texture = ((GrassBillboard)node).texture;
+				g.type = ((GrassBillboard)node).type;
+				g.vegEffect = ((GrassBillboard)node).vegEffect;
+				return g;
+			}
+			else
+			{
+				throw new Exception("SceneNode Not Supported by Clone : " + node.GetType().ToString());
+			}
+
+		}
+
         public RRenderTarget2D CreateRenderTarget2D(string Name, int Width, int Height, int Levels, RSURFACEFORMAT Format)
         {
             RRenderTarget2D target = new RRenderTarget2D();
@@ -216,7 +226,7 @@ namespace Reactor
         {
             RLandscape landscape = new RLandscape();
             landscape.CreateLandscape();
-            landscape._name = name;
+            landscape.Name = name;
             _instance._LandscapeList.Add(name, landscape);
             _instance._NodeList.Add(landscape);
             REngine.Instance.AddToLog("RLandscape: " + name + " Created by RScene");
@@ -226,7 +236,7 @@ namespace Reactor
         {
             RParticleEmitter emitter = new RParticleEmitter();
             emitter.CreateEmitter(type);
-            emitter._name = name;
+            emitter.Name = name;
             _instance._ParticleEmitterList.Add(name, emitter);
             _instance._NodeList.Add(emitter);
             REngine.Instance.AddToLog("RParticleEmitter: " + name + " Created by RScene");
@@ -236,7 +246,7 @@ namespace Reactor
         {
             RWater water = new RWater();
             water.CreateWater();
-            water._name = name;
+            water.Name = name;
             _instance._WaterList.Add(name, water);
             _instance._NodeList.Add(water);
             REngine.Instance.AddToLog("RWater: " + name + " Created by RScene");
@@ -296,7 +306,7 @@ namespace Reactor
                 }
                 catch
                 {
-                    REngine.Instance.AddToLog("Could not dispose of " + actor._name);
+                    REngine.Instance.AddToLog("Could not dispose of " + actor.Name);
                 }
             }
             foreach (RMesh mesh in _instance._MeshList)
@@ -307,7 +317,7 @@ namespace Reactor
                 }
                 catch
                 {
-                    REngine.Instance.AddToLog("Could not dispose of " + mesh._name);
+                    REngine.Instance.AddToLog("Could not dispose of " + mesh.Name);
                 }
             }
             foreach (RLandscape land in _instance._LandscapeList)
@@ -318,7 +328,7 @@ namespace Reactor
                 }
                 catch
                 {
-                    REngine.Instance.AddToLog("Could not dispose of " + land._name);
+                    REngine.Instance.AddToLog("Could not dispose of " + land.Name);
                 }
             }
             foreach (RWater water in _instance._WaterList)
@@ -329,7 +339,7 @@ namespace Reactor
                 }
                 catch
                 {
-                    REngine.Instance.AddToLog("Could not dispose of " + water._name);
+                    REngine.Instance.AddToLog("Could not dispose of " + water.Name);
                 }
             }
             foreach (RParticleEmitter emitter in _instance._ParticleEmitterList)
@@ -340,7 +350,7 @@ namespace Reactor
                 }
                 catch
                 {
-                    REngine.Instance.AddToLog("Could not dispose of " + emitter._name);
+                    REngine.Instance.AddToLog("Could not dispose of " + emitter.Name);
                 }
             }
             try
@@ -371,16 +381,18 @@ namespace Reactor
 
     public class RSceneNode
     {
-        internal Vector3 Position;
-        internal Vector3 Rotation;
-        internal Matrix Matrix;
+		internal Vector3 Position = Vector3.Zero;
+		internal Vector3 Rotation = Vector3.Zero;
+		internal Vector3 Scaling = Vector3.One;
+		internal Matrix Matrix = Matrix.Identity;
         internal Quaternion Quaternion;
         internal RSceneNode ParentNode;
         internal List<RSceneNode> ChildNodes = new List<RSceneNode>();
-        internal string _name;
+        private string _name;
         public string Name
         {
             get { return _name; }
+			internal set { _name = value; }
         }
         public RSceneNode GetParentNode()
         {
@@ -421,5 +433,112 @@ namespace Reactor
         public virtual void Render()
         {
         }
+		public R3DVECTOR GetRotation()
+		{
+			return R3DVECTOR.FromVector3(Rotation);
+		}
+
+		public R3DVECTOR GetScale()
+		{
+			return R3DVECTOR.FromVector3(Scaling);
+		}
+		public R3DMATRIX GetMatrix()
+		{
+			return R3DMATRIX.FromMatrix(this.Matrix);
+		}
+		public void SetMatrix(R3DMATRIX Matrix)
+		{
+			this.Matrix = Matrix.matrix;
+		}
+		public void SetLookAt(R3DVECTOR vector)
+		{
+
+			Vector3 dir = Vector3.Normalize(vector.vector - Position);
+
+			Matrix = Matrix.CreateLookAt(Position, vector.vector, Vector3.Up);
+			Matrix = BuildScalingMatrix(Matrix);
+			Matrix.Translation = Position;
+			Quaternion q = Quaternion.CreateFromRotationMatrix(Matrix);
+
+			Rotation.X = q.X;
+			Rotation.Y = q.Y;
+			Rotation.Z = q.Z;
+
+
+
+
+		}
+		internal Matrix BuildRotationMatrix(Matrix m)
+		{   
+			m *= Matrix.CreateRotationX(Rotation.X);
+			m *= Matrix.CreateRotationY(Rotation.Y);
+			m *= Matrix.CreateRotationZ(Rotation.Z);
+			return m;
+		}
+		internal Matrix BuildScalingMatrix(Matrix m)
+		{
+			m *= Matrix.CreateScale(Scaling);
+			return m;
+		}
+		internal Matrix BuildPositionMatrix(Matrix m)
+		{
+			m *= Matrix.CreateTranslation(Position);
+			//_transforms[_model.Meshes[0].ParentBone.Index] = m;
+			return m;
+		}
+		public void RotateX(float value)
+		{
+			Rotation.X += MathHelper.ToRadians(value);
+			Matrix *= Matrix.CreateRotationX(Rotation.X);
+		}
+		public void RotateY(float value)
+		{
+			Rotation.Y += MathHelper.ToRadians(value);
+			Matrix *= Matrix.CreateRotationY(Rotation.Y);
+		}
+		public void RotateZ(float value)
+		{
+			Rotation.Z += MathHelper.ToRadians(value);
+			Matrix *= Matrix.CreateRotationZ(Rotation.Z);
+		}
+		public void Rotate(float X, float Y, float Z)
+		{
+			RotateX(X);
+			RotateY(Y);
+			RotateZ(Z);
+		}
+		public R3DVECTOR GetPosition()
+		{
+			return R3DVECTOR.FromVector3(Position);
+		}
+		public void SetPosition(R3DVECTOR vector)
+		{
+			Position = vector.vector;
+			Matrix = BuildPositionMatrix(Matrix);
+			return;
+		}
+		public void SetPosition(float x, float y, float z)
+		{
+			Position = new Vector3(x, y, z);
+			Matrix.Translation = Position;
+		}
+		public void Move(R3DVECTOR vector)
+		{
+			Move(vector.X, vector.Y, vector.Z);
+		}
+		public void Move(float x, float y, float z)
+		{
+			Position += Matrix.Left * x;
+			Position += Matrix.Up * y;
+			Position += Matrix.Forward * z;
+
+			Matrix.Translation = Position;
+		}
+		public void SetScale(float ScaleX, float ScaleY, float ScaleZ)
+		{
+			Scaling = new Vector3(ScaleX, ScaleY, ScaleZ);
+			Matrix = BuildScalingMatrix(Matrix);
+
+		}
     }
 }

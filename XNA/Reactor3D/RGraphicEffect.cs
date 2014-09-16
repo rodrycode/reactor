@@ -100,27 +100,27 @@ namespace Reactor
         };
         public static RBloomSettings DefaultSettings
         {
-            get { return new RBloomSettings("Default", 0.25f, 4, 1.25f, 1, 1, 1); }
+			get { return PresetSettings[0]; }
         }
         public static RBloomSettings SoftSettings
         {
-            get { return new RBloomSettings("Soft", 0, 3, 1, 1, 1, 1); }
+			get { return PresetSettings[1]; }
         }
         public static RBloomSettings DesaturatedSettings
         {
-            get { return new RBloomSettings("Desaturated", 0.5f, 8, 2, 1, 0, 1); }
+			get { return PresetSettings[2]; }
         }
         public static RBloomSettings SaturatedSettings
         {
-            get { return new RBloomSettings("Saturated", 0.25f, 4, 2, 1, 2, 0); }
+			get { return PresetSettings[3]; }
         }
         public static RBloomSettings BlurrySettings
         {
-            get { return new RBloomSettings("Blurry", 0, 2, 1, 0.1f, 1, 1); }
+			get { return PresetSettings[4]; }
         }
         public static RBloomSettings SubtleSettings
         {
-            get { return new RBloomSettings("Subtle", 0.5f, 2, 1, 1, 1, 1); }
+			get { return PresetSettings[5]; }
         }
     }
     internal class BloomComponent : DrawableGameComponent

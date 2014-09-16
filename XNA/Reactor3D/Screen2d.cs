@@ -48,7 +48,6 @@ namespace Reactor
 
         #region Internal Members
         internal SpriteBatch _spritebatch;
-        internal ContentManager _fontcontent;
         internal BasicEffect _basicEffect;
         internal VertexDeclaration _lineDeclaration;
         internal Texture2D _lineTexture;
@@ -61,7 +60,6 @@ namespace Reactor
             if (_instance == null)
             {
                 _instance = this;
-                _instance._fontcontent = new ContentManager(REngine.Instance._game.Services);
                 _instance._spritebatch = new SpriteBatch(REngine.Instance._graphics.GraphicsDevice);
                 _instance._basicEffect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice);
                 _instance._lineDeclaration = VertexPositionColor.VertexDeclaration;
@@ -115,7 +113,7 @@ namespace Reactor
         {
             RFONT font = new RFONT();
             font._name = FontName;
-            font._spriteFont = _instance._fontcontent.Load<SpriteFont>("Content\\"+FileName);
+            font._spriteFont = REngine.Instance._content.Load<SpriteFont>(FileName);
             return font;
         }
         public void Draw_TextureFont(RFONT font, int X, int Y, string Message)
@@ -141,7 +139,6 @@ namespace Reactor
             VertexPositionColor[] v = new VertexPositionColor[3];
             v[0] = new VertexPositionColor(start.vector, new Color(color.vector));
             v[1] = new VertexPositionColor(end.vector, new Color(color.vector));
-            v[2] = new VertexPositionColor(end.vector, new Color(color.vector));
             
            
             _instance._basicEffect.View = REngine.Instance._camera.viewMatrix;
@@ -156,8 +153,8 @@ namespace Reactor
 
             // Draw the triangle.
 
-            REngine.Instance._graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineStrip,
-                                              v, 0, 2);
+            REngine.Instance._graphics.GraphicsDevice.DrawUserPrimitives(PrimitiveType.LineList,
+                                              v, 0, 1);
 
 
         }

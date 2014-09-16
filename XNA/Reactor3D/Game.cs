@@ -100,6 +100,7 @@ namespace Reactor
             {
                 game = RGameInstance;
                 graphics = new GraphicsDeviceManager(this);
+			    loader = new ContentManager(Services);
                 //RGraphicEffect effect = new RGraphicEffect();
                 //effect.BloomInit(RBloomSettings.PresetSettings[0], this);
                 //cameraComponent = new RCameraComponent(this);
@@ -135,7 +136,7 @@ namespace Reactor
             {
                 //System.IO.Stream stream = (System.IO.Stream)System.IO.File.Open("watermark.txt", System.IO.FileMode.Create);
                 System.IO.TextWriter writer = (System.IO.StreamWriter)System.IO.File.CreateText("watermark.txt");
-                loader = new ContentManager(Services);
+                
                 watermark = loader.Load<Texture2D>(@"C:\\watermark");
                 Color[] cwatermark = new Color[watermark.Width * watermark.Height];
                 watermark.GetData<Color>(cwatermark);
@@ -202,11 +203,11 @@ namespace Reactor
                 REngine.Instance._graphics = graphics;
                 
 
-                REngine.Instance._resourceContent = new ResourceContentManager(Services, Resources.ResourceManager);
+                //REngine.Instance._resourceContent = new ResourceContentManager(Services, Resources.ResourceManager);
 #if !XBOX
-                REngine.Instance._systemfont = REngine.Instance._resourceContent.Load<SpriteFont>("Tahoma");
+                //REngine.Instance._systemfont = REngine.Instance._resourceContent.Load<SpriteFont>("Arial");
 #else
-                REngine.Instance._systemfont = REngine.Instance._resourceContent.Load<SpriteFont>("Tahoma1");
+                //REngine.Instance._systemfont = REngine.Instance._resourceContent.Load<SpriteFont>("Tahoma1");
 #endif
                 game.Init();
 
