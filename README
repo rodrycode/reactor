@@ -1,17 +1,13 @@
 Reactor 3D Game Engine - Reiser Games
 
 The Reactor 3D Game Engine was originally written with XNA/C# for cross-platform windows/xbox360 gaming.
-Over 2 years worth of development has gone into it but I must say that it is lacking
-in a few features here and there.  Overall it's enough to get anyone started using XNA
-and developing for Windows and XBox 360.  Recently, I ported it to MonoGame to support
-cross-platform development on Windows, Linux, Mac OSX, Android, iOS, and Windows Phone.
+Over 2 years worth of development has gone into it but I must say that it is lacking in a few features here and there.  Overall it's enough to get anyone started using XNA
+and developing for Windows and XBox 360.  Recently, I ported it to MonoGame to support cross-platform development on Windows, Linux, Mac OSX, Android, iOS, and Windows Phone.
 
 A game called Alchemist was released on XBox Live Indy Games in 2009 using this game engine.
 
-Originally I was going to port it all to C++/OpenGL but found the task too daunting.  Luckily
-the MonoGame guys came around and I was able to reuse all this code.
+Originally I was going to port it all to C++/OpenGL but found the task too daunting.  Luckily the MonoGame guys came around and I was able to reuse all this code.
 
-Hopefully I can add more features and make this a more feature complete engine.  It will take time
-but I'm optimistic about the possibilities.
+Hopefully I can add more features and make this a more feature complete engine.  It will take time but I'm optimistic about the possibilities.
 
 Gabriel Reiser - Reiser Games.
