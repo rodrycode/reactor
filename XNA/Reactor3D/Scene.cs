@@ -455,6 +455,7 @@ namespace Reactor
 			this.Position = this.Matrix.Translation;
 			this.Quaternion = RQUATERNION.CreateFromRotationMatrix(R3DMATRIX.FromMatrix(this.Matrix)).quaternion;
 			this.Rotation = new Vector3(Quaternion.X, Quaternion.Y, Quaternion.Z);
+			this.AABB.Center = R3DVECTOR.FromVector3(this.Position);
 			R3DVECTOR[] bounds = this.AABB.GetCorners();
 			for(int i = 0; i < bounds.Length; i++){
 				bounds[i] = R3DVECTOR.Transform(bounds[i], Quaternion.CreateFromRotationMatrix(this.Matrix));
