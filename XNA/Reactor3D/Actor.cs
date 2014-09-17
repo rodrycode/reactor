@@ -195,7 +195,6 @@ namespace Reactor
                 foreach (Effect effect in mesh.Effects)
                 {
                     //effect.Begin();
-
                     effect.Parameters["Bones"].SetValue(bones);
                     effect.Parameters["View"].SetValue(camera.viewMatrix);
                     effect.Parameters["Projection"].SetValue(camera.projMatrix);
@@ -220,12 +219,19 @@ namespace Reactor
         }
         public override void Update()
         {
+			Matrix[] bones = _player.GetSkinTransforms();
+			Matrix[] m_transforms = new Matrix[_model.Bones.Count];
+			_model.CopyAbsoluteBoneTransformsTo(m_transforms);
             if (_playing)
             {
                 _player.Update(REngine.Instance._gameTime.ElapsedGameTime, true, Matrix * _model.Bones[0].Transform);
             }
 
-            
+			foreach(ModelMesh mesh in _model.Meshes)
+			{
+				mesh.BoundingSphere=BoundingSphere.CreateMerged(mesh.BoundingSphere, mesh.BoundingSphere);
+				mesh.BoundingSphere.Transform(m_transforms[mesh.ParentBone.Index]);
+			}
             Quaternion = Quaternion.CreateFromRotationMatrix(Matrix);
         }
         public void PlayAnimation(string Name)

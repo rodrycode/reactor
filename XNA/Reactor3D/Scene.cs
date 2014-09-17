@@ -440,6 +440,30 @@ namespace Reactor
 		public void SetMatrix(R3DMATRIX Matrix)
 		{
 			this.Matrix = Matrix.matrix;
+			UpdateAABB();
+		}
+		private void UpdateAABB()
+		{
+			UpdateAABB(1.0f);
+		}
+		private void UpdateAABB(float scale)
+		{
+			UpdateAABB(scale, scale, scale);
+		}
+		private void UpdateAABB(float scaleX, float scaleY, float scaleZ)
+		{
+			this.Position = this.Matrix.Translation;
+			this.Quaternion = RQUATERNION.CreateFromRotationMatrix(R3DMATRIX.FromMatrix(this.Matrix)).quaternion;
+			this.Rotation = new Vector3(Quaternion.X, Quaternion.Y, Quaternion.Z);
+			R3DVECTOR[] bounds = this.AABB.GetCorners();
+			for(int i = 0; i < bounds.Length; i++){
+				bounds[i] = R3DVECTOR.Transform(bounds[i], Quaternion.CreateFromRotationMatrix(this.Matrix));
+				bounds[i] += R3DVECTOR.FromVector3(Matrix.Translation);
+				R3DVECTOR scaleDir = bounds[i] - this.AABB.Center;
+				bounds[i] += (scaleDir * new R3DVECTOR(scaleX, scaleY, scaleZ));
+
+			}
+			this.AABB = RBOUNDINGBOX.CreateFromPoints(bounds);
 		}
 		public void SetLookAt(R3DVECTOR vector)
 		{
@@ -454,7 +478,7 @@ namespace Reactor
 			Rotation.X = q.X;
 			Rotation.Y = q.Y;
 			Rotation.Z = q.Z;
-
+			UpdateAABB();
 
 
 
@@ -481,16 +505,19 @@ namespace Reactor
 		{
 			Rotation.X += MathHelper.ToRadians(value);
 			Matrix *= Matrix.CreateRotationX(Rotation.X);
+			UpdateAABB();
 		}
 		public void RotateY(float value)
 		{
 			Rotation.Y += MathHelper.ToRadians(value);
 			Matrix *= Matrix.CreateRotationY(Rotation.Y);
+			UpdateAABB();
 		}
 		public void RotateZ(float value)
 		{
 			Rotation.Z += MathHelper.ToRadians(value);
 			Matrix *= Matrix.CreateRotationZ(Rotation.Z);
+			UpdateAABB();
 		}
 		public void Rotate(float X, float Y, float Z)
 		{
@@ -506,12 +533,13 @@ namespace Reactor
 		{
 			Position = vector.vector;
 			Matrix = BuildPositionMatrix(Matrix);
-			return;
+			UpdateAABB();
 		}
 		public void SetPosition(float x, float y, float z)
 		{
 			Position = new Vector3(x, y, z);
 			Matrix.Translation = Position;
+			UpdateAABB();
 		}
 		public void Move(R3DVECTOR vector)
 		{
@@ -524,12 +552,13 @@ namespace Reactor
 			Position += Matrix.Forward * z;
 
 			Matrix.Translation = Position;
+			UpdateAABB();
 		}
 		public void SetScale(float ScaleX, float ScaleY, float ScaleZ)
 		{
 			Scaling = new Vector3(ScaleX, ScaleY, ScaleZ);
 			Matrix = BuildScalingMatrix(Matrix);
-
+			UpdateAABB(ScaleX, ScaleY, ScaleZ);
 		}
 		#endregion
 
