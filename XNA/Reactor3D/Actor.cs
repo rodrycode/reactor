@@ -41,7 +41,6 @@ namespace Reactor
     {
 
         internal Model _model;
-        internal ResourceContentManager _resourcecontent;
         internal Matrix[] _transforms;
         internal RShader _defaultEffect;
         internal BasicEffect _basicEffect;
@@ -61,6 +60,10 @@ namespace Reactor
         {
             Name = name;
             _model = new Model();
+			foreach(ModelMesh mesh in _model.Meshes)
+			{
+				AABB = RBOUNDINGBOX.CreateMerged(AABB, RBOUNDINGBOX.CreateFromSphere(mesh.BoundingSphere));
+			}
             
         }
         public void Load(string filename)

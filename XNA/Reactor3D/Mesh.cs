@@ -74,8 +74,9 @@ namespace Reactor
                 _basicEffect.Texture = (Texture2D)RTextureFactory.Instance._textureList[TextureID];
         }
 
-        public void CreateSphere(R3DVECTOR Center, float verticalRadius, float horizontalRadius, int NumPhiSides, int NumThetaSides)
+		public void CreateSphere(R3DVECTOR Center, float Radius, int NumPhiSides, int NumThetaSides)
         {
+			AABB = RBOUNDINGBOX.CreateFromSphere(new BoundingSphere(Center.ToVector3(), Radius));
             RVERTEXFORMAT[] vertices = new RVERTEXFORMAT[NumThetaSides * 2 * (NumPhiSides + 1)];
             vertCount = NumThetaSides * 2 * (NumPhiSides + 1);
             int index = 0;
@@ -88,11 +89,11 @@ namespace Reactor
                 {
                     float phi = ((float)j / (float)NumPhiSides) * MathHelper.ToRadians(180f);
 
-                    float x1 = (float)(Math.Sin(phi) * Math.Cos(theta1)) * horizontalRadius;
-                    float z1 = (float)(Math.Sin(phi) * Math.Sin(theta1)) * horizontalRadius;
-                    float x2 = (float)(Math.Sin(phi) * Math.Cos(theta2)) * horizontalRadius;
-                    float z2 = (float)(Math.Sin(phi) * Math.Sin(theta2)) * horizontalRadius;
-                    float y = (float)Math.Cos(phi) * verticalRadius;
+                    float x1 = (float)(Math.Sin(phi) * Math.Cos(theta1)) * Radius;
+                    float z1 = (float)(Math.Sin(phi) * Math.Sin(theta1)) * Radius;
+                    float x2 = (float)(Math.Sin(phi) * Math.Cos(theta2)) * Radius;
+                    float z2 = (float)(Math.Sin(phi) * Math.Sin(theta2)) * Radius;
+                    float y = (float)Math.Cos(phi) * Radius;
 
                     Vector3 position = Center.vector + new Vector3(x1, y, z1);
 
@@ -294,6 +295,11 @@ namespace Reactor
             _model = new Model();
             _basicEffect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice);
             _basicEffect.CurrentTechnique = _basicEffect.Techniques[0];
+			AABB = new RBOUNDINGBOX();
+			foreach(ModelMesh mesh in _model.Meshes)
+			{
+				AABB = RBOUNDINGBOX.CreateMerged(AABB, RBOUNDINGBOX.CreateFromSphere(mesh.BoundingSphere));
+			}
         }
         public void Load(string filename)
         {

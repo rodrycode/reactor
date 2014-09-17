@@ -54,7 +54,7 @@ namespace Reactor
         internal Hashtable _LandscapeList = new Hashtable();
         internal Hashtable _WaterList = new Hashtable();
         internal Hashtable _RenderTargets = new Hashtable();
-        internal List<RSceneNode> _NodeList = new List<RSceneNode>();
+		internal Octree _octree;
         #endregion
 
         #region Public Methods
@@ -199,7 +199,7 @@ namespace Reactor
             RMesh mesh = new RMesh();
             mesh.CreateMesh(name);
             _instance._MeshList.Add(name, mesh);
-            _instance._NodeList.Add(mesh);
+			_instance._octree.Add(mesh, mesh.AABB);
             REngine.Instance.AddToLog("RMesh: " + name + " Created by RScene");
             return mesh;
         }
@@ -208,8 +208,8 @@ namespace Reactor
             RMeshBuilder mesh = new RMeshBuilder();
             mesh.CreateMesh(name);
             _instance._MeshBuilderList.Add(name, mesh);
-            _instance._NodeList.Add(mesh);
-            REngine.Instance.AddToLog("RMeshBuilder: " + name + " Created by RScene");
+			_instance._octree.Add(mesh, mesh.AABB);
+			REngine.Instance.AddToLog("RMeshBuilder: " + name + " Created by RScene");
             return mesh;
         }
 
@@ -218,7 +218,8 @@ namespace Reactor
             RActor actor = new RActor();
             actor.CreateActor(name);
             _instance._ActorList.Add(name, actor);
-            _instance._NodeList.Add(actor);
+			_instance._octree.Add(actor, actor.AABB);
+
             REngine.Instance.AddToLog("RActor: " + name + " Created by RScene");
             return actor;
         }
@@ -228,7 +229,8 @@ namespace Reactor
             landscape.CreateLandscape();
             landscape.Name = name;
             _instance._LandscapeList.Add(name, landscape);
-            _instance._NodeList.Add(landscape);
+			_instance._octree.Add(landscape, landscape.AABB);
+
             REngine.Instance.AddToLog("RLandscape: " + name + " Created by RScene");
             return landscape;
         }
@@ -238,7 +240,7 @@ namespace Reactor
             emitter.CreateEmitter(type);
             emitter.Name = name;
             _instance._ParticleEmitterList.Add(name, emitter);
-            _instance._NodeList.Add(emitter);
+			_instance._octree.Add(emitter, emitter.AABB);
             REngine.Instance.AddToLog("RParticleEmitter: " + name + " Created by RScene");
             return emitter;
         }
@@ -248,7 +250,8 @@ namespace Reactor
             water.CreateWater();
             water.Name = name;
             _instance._WaterList.Add(name, water);
-            _instance._NodeList.Add(water);
+			_instance._octree.Add(water, water.AABB);
+
             REngine.Instance.AddToLog("RWater: " + name + " Created by RScene");
             return water;
         }
@@ -353,34 +356,22 @@ namespace Reactor
                     REngine.Instance.AddToLog("Could not dispose of " + emitter.Name);
                 }
             }
-            try
-            {
-                _instance._NodeList.Clear();
-            }
-            catch(Exception e)
-            {
-                REngine.Instance.AddToLog("Could not dispose of NodeList! " + e.Message);
-            }
         }
         public void UpdateAll()
         {
-            foreach (RSceneNode node in _instance._NodeList)
-            {
-                node.Update();
-            }
+			_octree.Update();
         }
         public void RenderAll()
         {
-            foreach (RMesh mesh in _instance._MeshList.Values)
-            {
-                mesh.Render();
-            }
+			_octree.Draw();
         }
         #endregion
     }
 
     public class RSceneNode
     {
+		internal RBOUNDINGBOX AABB = new RBOUNDINGBOX();
+		internal int Level = 0;
 		internal Vector3 Position = Vector3.Zero;
 		internal Vector3 Rotation = Vector3.Zero;
 		internal Vector3 Scaling = Vector3.One;
@@ -403,11 +394,11 @@ namespace Reactor
             ParentNode = node;
         }
         
-        public RSceneNode[] GetChildNodes()
+        public RSceneNode[] GetChildNodesArray()
         {
             return ChildNodes.ToArray();
         }
-        public List<RSceneNode> GetChildNodeList()
+        public List<RSceneNode> GetChildNodes()
         {
             return ChildNodes;
         }
@@ -433,11 +424,11 @@ namespace Reactor
         public virtual void Render()
         {
         }
+		#region movement
 		public R3DVECTOR GetRotation()
 		{
 			return R3DVECTOR.FromVector3(Rotation);
 		}
-
 		public R3DVECTOR GetScale()
 		{
 			return R3DVECTOR.FromVector3(Scaling);
@@ -540,5 +531,413 @@ namespace Reactor
 			Matrix = BuildScalingMatrix(Matrix);
 
 		}
+		#endregion
+
     }
+
+	public class Octree
+	{
+		/// 
+
+		/// The number of children in an octree.
+		/// 
+
+		private const int ChildCount = 8;
+
+		/// 
+
+		/// The octree's looseness value.
+		/// 
+
+		private float looseness = 0;
+
+		/// 
+
+		/// The octree's depth.
+		/// 
+
+		private int depth = 0;
+
+		//private static DebugShapesDrawer debugDraw = null;
+
+		/// 
+
+		/// Gets or sets the debug draw.
+		/// 
+
+		/// 
+		/// The debug draw.
+		/// 
+		//public DebugShapesDrawer DebugDraw
+		//{
+		//	get { return debugDraw; }
+		//	set { debugDraw = value; }
+		//}
+
+		/// 
+
+		/// The octree's center coordinates.
+		/// 
+
+		private R3DVECTOR center = R3DVECTOR.Zero;
+
+		/// 
+
+		/// The octree's length.
+		/// 
+
+		private float length = 0f;
+
+		/// 
+
+		/// The bounding box that represents the octree.
+		/// 
+
+		private RBOUNDINGBOX bounds = default(RBOUNDINGBOX);
+
+		/// 
+
+		/// The objects in the octree.
+		/// 
+
+		private ArrayList objects = new ArrayList();
+
+		public ArrayList Nodes
+		{
+			get { return objects; }
+		}
+
+		/// 
+
+		/// The octree's child nodes.
+		/// 
+
+		private Octree[] children = null;
+
+		public Octree[] Children
+		{
+			get { return children; }
+		}
+
+		/// 
+
+		/// The octree's world size.
+		/// 
+
+		private float worldSize = 0f;
+
+		/// 
+
+		/// Creates a new octree.
+		/// 
+
+		/// The octree's world size.
+		/// The octree's looseness value.
+		/// The octree recursion depth.
+		public Octree(float worldSize, float looseness, int depth)
+			: this(worldSize, looseness, depth, 0, R3DVECTOR.Zero)
+		{
+		}
+
+		public Octree(float worldSize, float looseness, int depth, R3DVECTOR center)
+			: this(worldSize, looseness, depth, 0, center)
+		{
+		}
+
+		/// 
+
+		/// Creates a new octree.
+		/// 
+
+		/// The octree's world size.
+		/// The octree's looseness value.
+		/// The maximum depth to recurse to.
+		/// The octree recursion depth.
+		/// The octree's center coordinates.
+		private Octree(float worldSize, float looseness,
+			int maxDepth, int depth, R3DVECTOR center)
+		{
+			this.worldSize = worldSize;
+			this.looseness = looseness;
+			this.depth = depth;
+			this.center = center;
+			this.length = this.looseness * this.worldSize / (float)Math.Pow(2, this.depth);
+			float radius = this.length / 2f;
+
+			// Create the bounding box.
+			R3DVECTOR min = this.center + new R3DVECTOR(-radius);
+			R3DVECTOR max = this.center + new R3DVECTOR(radius);
+			this.bounds = new RBOUNDINGBOX(min, max);
+
+			// Split the octree if the depth hasn't been reached.
+			if (this.depth < maxDepth)
+			{
+				this.Split(maxDepth);
+			}
+		}
+
+		/// 
+
+		/// Removes the specified obj.
+		/// 
+
+		/// The obj.
+		public void Remove(RSceneNode obj)
+		{
+			objects.Remove(obj);
+		}
+
+		/// 
+
+		/// Determines whether the specified obj has changed.
+		/// 
+
+		/// The obj.
+		/// The transformebbox.
+		/// 
+		///   true if the specified obj has changed; otherwise, false.
+		/// 
+		public bool HasChanged(RSceneNode obj, RBOUNDINGBOX transformebbox)
+		{
+			return this.bounds.Contains(transformebbox) == ContainmentType.Contains;
+		}
+
+		/// 
+
+		/// Stills inside ?
+		/// 
+
+		/// The o.
+		/// The center.
+		/// The radius.
+		/// 
+		public bool StillInside(RSceneNode o, R3DVECTOR center, float radius)
+		{
+			R3DVECTOR min = center - new R3DVECTOR(radius);
+			R3DVECTOR max = center + new R3DVECTOR(radius);
+			RBOUNDINGBOX bounds = new RBOUNDINGBOX(min, max);
+
+			if (this.children != null)
+				return false;
+
+			if (this.bounds.Contains(bounds) == ContainmentType.Contains)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		/// 
+
+		/// Stills inside ?.
+		/// 
+
+		/// The obj.
+		/// Its bounds.
+		/// 
+		public bool StillInside(RSceneNode o, RBOUNDINGBOX bounds)
+		{
+			if (this.children != null)
+				return false;
+
+			if (this.bounds.Contains(bounds) == ContainmentType.Contains)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		/// 
+
+		/// Adds the given object to the octree.
+		/// 
+
+		/// The object to add.
+		/// The object's center coordinates.
+		/// The object's radius.
+		public Octree Add(RSceneNode o, R3DVECTOR center, float radius)
+		{
+			R3DVECTOR min = center - new R3DVECTOR(radius);
+			R3DVECTOR max = center + new R3DVECTOR(radius);
+			RBOUNDINGBOX bounds = new RBOUNDINGBOX(min, max);
+
+			if (this.bounds.Contains(bounds) == ContainmentType.Contains)
+			{
+				return this.Add(o, bounds, center, radius);
+			}
+			return null;
+		}
+
+
+		/// 
+
+		/// Adds the given object to the octree.
+		/// 
+
+		public Octree Add(RSceneNode o, RBOUNDINGBOX transformebbox)
+		{
+			float radius = (transformebbox.Max - transformebbox.Min).Length() / 2;
+			R3DVECTOR center = (transformebbox.Max + transformebbox.Min) / 2;
+
+			if (this.bounds.Contains(transformebbox) == ContainmentType.Contains)
+			{
+				return this.Add(o, transformebbox, center, radius);
+			}
+			return null;
+		}
+
+
+		/// 
+
+		/// Adds the given object to the octree.
+		/// 
+
+		/// The object to add.
+		/// The object's bounds.
+		/// The object's center coordinates.
+		/// The object's radius.
+		private Octree Add(RSceneNode o, RBOUNDINGBOX bounds, R3DVECTOR center, float radius)
+		{
+			if (this.children != null)
+			{
+				// Find which child the object is closest to based on where the
+				// object's center is located in relation to the octree's center.
+				int index = (center.X <= this.center.X ? 0 : 1) +
+					(center.Y >= this.center.Y ? 0 : 4) +
+					(center.Z <= this.center.Z ? 0 : 2);
+
+				// Add the object to the child if it is fully contained within
+				// it.
+				if (this.children[index].bounds.Contains(bounds) == ContainmentType.Contains)
+				{
+					return this.children[index].Add(o, bounds, center, radius);
+
+				}
+			}
+			this.objects.Add(o);
+			return this;
+		}
+
+
+		public void Update()
+		{
+			foreach(RSceneNode node in objects)
+			{
+				node.Update();
+
+				if(!StillInside(node, bounds)){
+					Remove(node);
+					Add(node, node.AABB);
+				}
+			}
+			foreach(Octree child in children)
+			{
+				child.Update();
+			}
+		}
+
+		/// 
+
+		/// Draws the octree.
+		/// 
+
+		/// The viewing matrix.
+		/// The projection matrix.
+		/// The objects in the octree.
+		/// The number of octrees drawn.
+		public int Draw()
+		{
+			RCamera camera = REngine.Instance.GetCamera();
+			Matrix view = camera.ViewMatrix.ToMatrix();
+			Matrix projection = camera.ProjectionMatrix.ToMatrix();
+			BoundingFrustum frustum = new BoundingFrustum(view * projection);
+			ContainmentType containment = frustum.Contains(this.bounds.ToBoundingBox());
+
+			return this.Draw(frustum, view, projection, containment, objects);
+		}
+
+		/// 
+
+		/// Draws the octree.
+		/// 
+
+		/// The viewing frustum used to determine if the octree is in view.
+		/// The viewing matrix.
+		/// The projection matrix.
+		/// Determines how much of the octree is visible.
+		/// The objects in the octree.
+		/// The number of octrees drawn.
+		private int Draw(BoundingFrustum frustum, Matrix view, Matrix projection,
+			ContainmentType containment, ArrayList objects)
+		{
+			int count = 0;
+
+			if (containment != ContainmentType.Contains)
+			{
+				containment = frustum.Contains(this.bounds.ToBoundingBox());
+			}
+
+			// Draw the octree only if it is atleast partially in view.
+			if (containment != ContainmentType.Disjoint)
+			{
+				// Draw the octree's bounds if there are objects in the octree.
+				if (this.objects.Count > 0)
+				{                    
+					//if (DebugDraw != null)
+					//	DebugDraw.AddShape(new DebugBox(this.bounds,Color.White));
+					objects.AddRange(this.objects);
+					count++;
+				}
+
+				// Draw the octree's children.
+				if (this.children != null)
+				{
+					foreach (Octree child in this.children)
+					{
+						count += child.Draw(frustum, view, projection, containment, objects);
+					}
+				}
+			}
+
+			return count;
+		}
+
+		/// 
+
+		/// Splits the octree into eight children.
+		/// 
+
+		/// The maximum depth to recurse to.
+		private void Split(int maxDepth)
+		{
+			this.children = new Octree[Octree.ChildCount];
+			int depth = this.depth + 1;
+			float quarter = this.length / this.looseness / 4f;
+
+			this.children[0] = new Octree(this.worldSize, this.looseness,
+				maxDepth, depth, this.center + new R3DVECTOR(-quarter, quarter, -quarter));
+			this.children[1] = new Octree(this.worldSize, this.looseness,
+				maxDepth, depth, this.center + new R3DVECTOR(quarter, quarter, -quarter));
+			this.children[2] = new Octree(this.worldSize, this.looseness,
+				maxDepth, depth, this.center + new R3DVECTOR(-quarter, quarter, quarter));
+			this.children[3] = new Octree(this.worldSize, this.looseness,
+				maxDepth, depth, this.center + new R3DVECTOR(quarter, quarter, quarter));
+			this.children[4] = new Octree(this.worldSize, this.looseness,
+				maxDepth, depth, this.center + new R3DVECTOR(-quarter, -quarter, -quarter));
+			this.children[5] = new Octree(this.worldSize, this.looseness,
+				maxDepth, depth, this.center + new R3DVECTOR(quarter, -quarter, -quarter));
+			this.children[6] = new Octree(this.worldSize, this.looseness,
+				maxDepth, depth, this.center + new R3DVECTOR(-quarter, -quarter, quarter));
+			this.children[7] = new Octree(this.worldSize, this.looseness,
+				maxDepth, depth, this.center + new R3DVECTOR(quarter, -quarter, quarter));
+		}
+
+	}
+
 }
