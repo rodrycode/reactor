@@ -25,13 +25,15 @@ THE SOFTWARE.
 
 namespace Reactor
 {
-	REngine* REngine::_instance = NULL;
+	shared_ptr<REngine> REngine::_instance = NULL;
 	REngine::REngine()
 	{
 		
-		
-        REngine::_instance = this;
+		if(REngine::_instance == NULL){
+			REngine::_instance = make_shared<REngine>();
 			REngine::_instance->clearColor = RColor(0,0,0,0);
+		}
+        
 			//REngine::_instance->gldevice = rGLDevice();
 		
 	}
@@ -41,15 +43,15 @@ namespace Reactor
 		
 		if(REngine::_instance)
 		{
-			delete REngine::_instance;
+			REngine::_instance->DestroyAll();
 		}
-		REngine::_instance = null;
+		REngine::_instance = NULL;
 
 	}
-	REngine* REngine::getInstance()
+	shared_ptr<REngine> REngine::getInstance()
 	{
-		if(REngine::_instance == null)
-			REngine::_instance = new REngine();
+		if(REngine::_instance == NULL)
+			REngine::_instance = make_shared<REngine>();
 		return REngine::_instance;
 	}
 

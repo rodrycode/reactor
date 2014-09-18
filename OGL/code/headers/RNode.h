@@ -21,11 +21,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#ifndef __RNODE__
-#define __RNODE__
 
 #include "common.h"
 #include "collection.h"
+
+#ifndef __RNODE__
+#define __RNODE__
+
 using namespace std;
 namespace Reactor {
 	

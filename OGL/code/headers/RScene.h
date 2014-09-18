@@ -31,12 +31,12 @@ namespace Reactor {
 	class RScene
 	{
 	private:
-		static RScene *_instance;
+		static shared_ptr<RScene> _instance;
 		RScene();
 		~RScene();
 	public:
 		//rGLDevice* getDevice();
-		static RScene* getInstance();
+		static shared_ptr<RScene> getInstance();
 	};
 	
 	

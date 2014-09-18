@@ -33,13 +33,14 @@ namespace Reactor
 	class RGame
 	{
 	private:
-		REngine* engine;
-		static RGame *_instance;
+		shared_ptr<REngine> engine;
+		static shared_ptr<RGame> _instance;
         
 	public:
 		RGame(int argc, char** argv);
+		RGame();
 		~RGame();
-		static RGame* getInstance();
+		static shared_ptr<RGame> GetInstance();
 		void Init();
 		virtual void Load(){};
 		virtual void Unload(){};
@@ -49,7 +50,7 @@ namespace Reactor
 		virtual void Render(){};
 		virtual void Update(){};
         virtual void Idle(){};
-		REngine* Reactor();
+		shared_ptr<REngine> Reactor();
 		float GetFPS();
 
 	};

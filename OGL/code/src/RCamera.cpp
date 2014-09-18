@@ -28,7 +28,7 @@ namespace Reactor
 	RCamera::RCamera()
 	{
 		//Init with standard OGL values:
-		Position = RVector3 (0.0, 0.0, 0.0);
+		Position = RVector3(0.0, 0.0, 0.0);
 		ViewDir = RVector3( 0.0, 0.0, -1.0);
 		RightVector = RVector3(1.0, 0.0, 0.0);
 		UpVector = RVector3(0.0, 1.0, 0.0);

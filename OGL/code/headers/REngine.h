@@ -33,18 +33,16 @@ namespace Reactor
 	{
 	private:
 		//rGLDevice gldevice;
-		static REngine *_instance;
-		REngine();
-		~REngine();
+		static shared_ptr<REngine> _instance;
 		bool _fullscreen;
 		RColor clearColor;
 		int window;
 		
-        
 	public:
-
+		REngine();
+		~REngine();
 		//rGLDevice* getDevice();
-		static REngine* getInstance();
+		static shared_ptr<REngine> getInstance();
 		const RECT& GetScreenSize();
 		void Init3DWindowed(RECT &rect, const char* title);
 		void Init3DFullscreen(const char* title, RINT width, RINT height, RINT color, RINT depth);

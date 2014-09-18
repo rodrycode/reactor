@@ -25,18 +25,19 @@ THE SOFTWARE.
 
 namespace Reactor
 {
-	RGame* RGame::_instance = NULL;
+	shared_ptr<RGame> RGame::_instance = NULL;
 	static int __ticks = 0;
     static int __frames = 0;
     static int __timebase = 0;
     static float __fps = 0.0f;
 	RGame::RGame(int argc, char** argv)
 	{
-		if(_instance == null)
+		if(RGame::_instance == NULL)
 		{
-			_instance = this;
+			RGame* game = this;
+			RGame::_instance = make_shared<RGame>();
 		
-			this->engine = REngine::getInstance();
+			RGame::_instance->engine = REngine::getInstance();
 			//glutSetWorkingDirectory(argv[0]);
 			glutInit(&argc, argv);
 			glutInitDisplayMode (GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -44,11 +45,25 @@ namespace Reactor
         }
 	}
 
+	RGame::RGame()
+	{
+		
+	}
 	RGame::~RGame()
 	{
-		if(_instance->engine)
+		if(_instance->engine != NULL){
 			_instance->engine->DestroyAll();
+		}
+			
 		delete this;
+	}
+	
+	shared_ptr<RGame> RGame::GetInstance()
+	{
+		if(_instance != NULL){
+			return _instance;
+		}
+		return nullptr;
 	}
 
     
@@ -99,7 +114,7 @@ namespace Reactor
     
 	
 
-	REngine* RGame::Reactor()
+	shared_ptr<REngine> RGame::Reactor()
 	{
 		return REngine::getInstance();
 	}

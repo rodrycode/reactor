@@ -30,9 +30,8 @@ namespace Reactor {
     
     class RInput {
     private:
-        RInput();
-        ~RInput();
-        static RInput* _instance;
+        
+        static std::shared_ptr<RInput> _instance;
         static RVOID KeyFunc(RCHAR key, RINT x, RINT y);
         static RVOID KeyUpFunc(RCHAR key, RINT x, RINT y);
         static RVOID SpecialKeyFunc(RINT key, RINT x, RINT y);
@@ -46,7 +45,9 @@ namespace Reactor {
         RVector2 mouse;
         
     public:
-        static RInput* getInstance();
+	    RInput();
+        ~RInput();
+        static std::shared_ptr<RInput> GetInstance();
         RVOID Init();
         RVOID Destroy();
         const RVector2& GetMouse();

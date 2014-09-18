@@ -82,6 +82,7 @@ typedef uint64_t GLuint64EXT;
 #include <GLUT/GLUT.h>
 //#include <err.h>
 
+#include <memory>
 
 #define __max(a,b)	(((a) > (b)) ? (a) : (b))
 #define __min(a,b)  (((a) < (b)) ? (a) : (b))

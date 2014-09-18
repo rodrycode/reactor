@@ -40,11 +40,12 @@ namespace Reactor
         public REngine Reactor;
         public RGame()
         {
-            game = new ReactorGame(this);
-            Reactor = new REngine(game);
+            
         }
         public void Run()
         {
+			game = new ReactorGame(this);
+			Reactor = new REngine(game);
             game.Run();
             Dispose();
         }

@@ -24,12 +24,12 @@
 #include "../headers/RInput.h"
 
 namespace Reactor {
-    RInput* RInput::_instance = NULL;
+    std::shared_ptr<RInput> RInput::_instance = NULL;
     
     
     RInput::RInput(){
-        if(_instance == null)
-            _instance = this;
+        if(RInput::_instance == NULL)
+            RInput::_instance = std::make_shared<RInput>();
         
     }
     
@@ -40,12 +40,12 @@ namespace Reactor {
         }
     }
     
-    RInput* RInput::getInstance(){
-        if(_instance == null){
-            _instance = new RInput();
+    std::shared_ptr<RInput> RInput::GetInstance(){
+        if(RInput::_instance == NULL){
+            RInput::_instance = std::make_shared<RInput>();
         
         } 
-        return _instance;
+        return RInput::_instance;
     }
     
     RVOID RInput::Init(){
@@ -120,7 +120,6 @@ namespace Reactor {
         keys = null;
         mbuttons = null;
         jbuttons = null;
-        delete _instance;
     }
     
     RBOOL RInput::IsKeyDown(RBYTE key){
