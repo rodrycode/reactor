@@ -22,11 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#include "common.h"
-#include "collection.h"
+
 
 #ifndef __RNODE__
 #define __RNODE__
+
+#include "reactor.h"
 
 using namespace std;
 namespace Reactor {

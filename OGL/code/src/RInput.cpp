@@ -24,28 +24,12 @@
 #include "../headers/RInput.h"
 
 namespace Reactor {
-    std::shared_ptr<RInput> RInput::_instance = NULL;
-    
-    
-    RInput::RInput(){
-        if(RInput::_instance == NULL)
-            RInput::_instance = std::make_shared<RInput>();
-        
-    }
     
     RInput::~RInput(){
         if(keys != null){
         delete keys;
         delete mbuttons;
         }
-    }
-    
-    std::shared_ptr<RInput> RInput::GetInstance(){
-        if(RInput::_instance == NULL){
-            RInput::_instance = std::make_shared<RInput>();
-        
-        } 
-        return RInput::_instance;
     }
     
     RVOID RInput::Init(){
@@ -73,53 +57,53 @@ namespace Reactor {
     
     RVOID RInput::JoystickFunc(RUINT state, RINT x, RINT y, RINT z){
         for(int i=0;i<32;i++){      
-            _instance->jbuttons[i] =  (state & (1<<i));
+            Instance()->jbuttons[i] =  (state & (1<<i));
         }
-        _instance->joystick = RVector3(x, y, z);
+        Instance()->joystick = RVector3(x, y, z);
         
     }
     RVOID RInput::KeyFunc(RCHAR key, RINT x, RINT y){
         fprintf(stdout, "Key Out: %c", key);
         
-        _instance->keys[key] = true;
-        _instance->mouse = RVector2(x, y);
+        Instance()->keys[key] = true;
+        Instance()->mouse = RVector2(x, y);
         
     }
     
     RVOID RInput::KeyUpFunc(RCHAR key, RINT x, RINT y){
         fprintf(stdout, "Key Up: %c", key);
-        _instance->keys[key] = false;
-        _instance->mouse = RVector2(x, y);
+        Instance()->keys[key] = false;
+        Instance()->mouse = RVector2(x, y);
         
     }
     
     RVOID RInput::SpecialKeyFunc(RINT key, RINT x, RINT y){
         fprintf(stdout, "Key Up: %c", key);
-        _instance->keys[key] = true;
-        _instance->mouse = RVector2(x, y);
+        Instance()->keys[key] = true;
+        Instance()->mouse = RVector2(x, y);
     }
     
     RVOID RInput::SpecialKeyUpFunc(RINT key, RINT x, RINT y){
         fprintf(stdout, "Key Up: %c", key);
-        _instance->keys[key] = false;
-        _instance->mouse = RVector2(x, y);
+        Instance()->keys[key] = false;
+        Instance()->mouse = RVector2(x, y);
     }
     
     RVOID RInput::MouseFunc(RINT button, RINT state, RINT x, RINT y){
         
         if(state == GLUT_UP)
-            _instance->mbuttons[button] = false;
+            Instance()->mbuttons[button] = false;
         else
-            _instance->mbuttons[button] = true;
+            Instance()->mbuttons[button] = true;
     }
     
     RVOID RInput::Destroy(){
         delete keys;
         delete mbuttons;
         delete jbuttons;
-        keys = null;
-        mbuttons = null;
-        jbuttons = null;
+        keys = NULL;
+        mbuttons = NULL;
+        jbuttons = NULL;
     }
     
     RBOOL RInput::IsKeyDown(RBYTE key){

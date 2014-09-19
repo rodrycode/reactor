@@ -21,30 +21,26 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#include "common.h"
-#include "RScene.h"
+
 #ifndef RENGINE_H
 #define RENGINE_H
+
+#include "reactor.h"
+#include "RScene.h"
 
 namespace Reactor
 {
 
-	class REngine
+	class REngine : public RSingleton<REngine>
 	{
 	private:
-		//rGLDevice gldevice;
-		static shared_ptr<REngine> _instance;
 		bool _fullscreen;
 		RColor clearColor;
 		int window;
 		
 	public:
-		REngine();
-		~REngine();
-		//rGLDevice* getDevice();
-		static shared_ptr<REngine> getInstance();
 		const RECT& GetScreenSize();
-		void Init3DWindowed(RECT &rect, const char* title);
+		void Init3DWindowed(const char* title, RECT &rect);
 		void Init3DFullscreen(const char* title, RINT width, RINT height, RINT color, RINT depth);
 		void Init3DNoRender();
 		void ToggleFullscreen();

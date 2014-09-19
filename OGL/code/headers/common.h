@@ -24,10 +24,48 @@ THE SOFTWARE.
 
 #ifndef __RCOMMON__
 #define __RCOMMON__
+#include <new>
+#include <memory>
+#include <cstdio>
+#include <cstdlib>
+#include <cassert>
+#include <cwchar>
+#include <cwctype>
+#include <cctype>
+#include <cmath>
+#include <cstdarg>
+#include <ctime>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <cstring>
+#include <vector>
+#include <list>
+#include <set>
+#include <stack>
+#include <map>
+#include <queue>
+#include <algorithm>
+#include <limits>
+#include <functional>
+#include <bitset>
+#include <typeinfo>
 
-//#include "../../dependencies/GLTools/include/GLTools.h"
-
-//#include "../../dependencies/GLTools/include/GLShaderManager.h"
+using std::memcpy;
+using std::fabs;
+using std::sqrt;
+using std::cos;
+using std::sin;
+using std::tan;
+using std::isspace;
+using std::isdigit;
+using std::toupper;
+using std::tolower;
+using std::size_t;
+using std::min;
+using std::max;
+using std::modf;
+using std::atoi;
 
 #ifdef __WIN32__
 #define WINVER 0x0700
@@ -83,7 +121,7 @@ typedef uint64_t GLuint64EXT;
 //#include <err.h>
 
 #include <memory>
-
+#include "singleton.hpp"
 #define __max(a,b)	(((a) > (b)) ? (a) : (b))
 #define __min(a,b)  (((a) < (b)) ? (a) : (b))
 #endif
@@ -102,16 +140,21 @@ typedef long RRESULT;
 #define null NULL
 
 
-
+#ifdef WIN32
 #define R_API __declspec( dllexport )
 #define R_IMPORT __declspec( dllimport )
+#else
+#define R_API export;
+#define R_IMPORT import;
+#endif
 
 
 #define PI 3.1415926535897932384626433832795
+#define TWO_PI PI*2
 #define PIdiv180 (PI/180.0)
-
-
-#include "rtypes.h"
+#define random() ((1.0 + rand()) / 2.0)
+#define NaN(f) ( (f != f) ? true : false )
+#define clamp(n, l, u) (__min(l,__max(n,u)))
 #include "collection.h"
 
 

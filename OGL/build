@@ -3,10 +3,10 @@
 if [ ! -d output ]; then
      	mkdir ./output
 		cd ./output
-		cmake ../
+		cmake -v ../
 		make
 else
 		cd ./output
-		cmake ../
+		cmake -v ../
 		make
 fi

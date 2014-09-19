@@ -21,22 +21,22 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-#include "common.h"
-#include "RNode.h"
+
 #ifndef __RSCENE__
 #define __RSCENE__
 
+#include "reactor.h"
+#include "RNode.h"
+
 namespace Reactor {
 	
-	class RScene
+	class RScene : public RSingleton<RScene>
 	{
 	private:
-		static shared_ptr<RScene> _instance;
 		RScene();
 		~RScene();
 	public:
-		//rGLDevice* getDevice();
-		static shared_ptr<RScene> getInstance();
+		
 	};
 	
 	

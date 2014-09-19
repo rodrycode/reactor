@@ -4,6 +4,7 @@ project (Reactor3d)
 set(CMAKE_CXX_FLAGS "-std=c++11 -stdlib=libc++")
 
 
+
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 1)
 set(VERSION_PATCH 0)
@@ -23,7 +24,7 @@ set(HEADER_FILES
 	   code/headers/RInput.h
 	   code/headers/RNode.h
 	   code/headers/RScene.h
-	   code/headers/rtypes.h)
+	   code/headers/reactor.h)
 
 
 if (APPLE)
@@ -49,13 +50,14 @@ if (APPLE)
 
 	set(EXTRA_LIBS ${COCOA_LIBRARY} ${GLUT_LIBRARY} ${OPENGL_LIBRARY})
 	
-	file(GLOB R3D_HEADERS RELATIVE ${PROJECT_SOURCE_DIR} "/code/headers/*")
+	file(GLOB R3D_HEADERS RELATIVE ${PROJECT_SOURCE_DIR} "/code/headers/**")
 	
 	add_library (ReactorObjects OBJECT  code/src/RCamera.cpp
 										code/src/REngine.cpp
  										code/src/RGame.cpp
  										code/src/RInput.cpp
-										code/src/RNode.cpp)
+										code/src/RNode.cpp
+										code/src/RMathUtils.cpp)
 
 	add_library (sReactor3d STATIC $<TARGET_OBJECTS:ReactorObjects> ${EXTRA_LIBS})
 	add_library (Reactor3d SHARED $<TARGET_OBJECTS:ReactorObjects> ${EXTRA_LIBS})
