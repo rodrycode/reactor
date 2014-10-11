@@ -34,37 +34,7 @@ using System.IO;
 
 namespace Reactor
 {
-    internal class RShaderManager : IDisposable
-    {
-        static RShaderManager _instance;
-        
-        public static RShaderManager Instance
-        {
-            get { return _instance; }
-        }
-
-        internal List<Effect> Effects = new List<Effect>();
-        internal ContentManager content;
-        public RShaderManager()
-        {
-            if (_instance == null)
-            {
-                _instance = this;
-
-
-                _instance.content = new ContentManager(REngine.Instance._game.Services);
-                _instance.content.RootDirectory = _instance.content.RootDirectory+"\\Content";
-
-
-            }
-            
-        }
-
-        public void Dispose()
-        {
-            _instance.content.Dispose();
-        }
-    }
+    
     public class RShader : IDisposable
     {
         string source;
@@ -81,7 +51,7 @@ namespace Reactor
         {
             
             filename = Filename;
-            effect = RShaderManager.Instance.content.Load<Effect>(Filename);
+            effect = REngine.Instance._content.Load<Effect>(Filename);
         }
 
 		internal RShader(byte[] byteCode){
@@ -105,7 +75,7 @@ namespace Reactor
         {
             
 
-            effect = RShaderManager.Instance.content.Load<Effect>(Filename);
+            effect = REngine.Instance._content.Load<Effect>(Filename);
         }
 
         public bool GetParamBool(string ParamName)

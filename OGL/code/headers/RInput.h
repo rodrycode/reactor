@@ -22,17 +22,18 @@
  THE SOFTWARE.
  */
 
-#include "common.h"
+
 
 #ifndef RINPUT_H
 #define RINPUT_H
+
+#include "reactor.h"
+
 namespace Reactor {
     
-    class RInput {
+    class RInput : public RSingleton<RInput> {
     private:
-        RInput();
-        ~RInput();
-        static RInput* _instance;
+		~RInput();
         static RVOID KeyFunc(RCHAR key, RINT x, RINT y);
         static RVOID KeyUpFunc(RCHAR key, RINT x, RINT y);
         static RVOID SpecialKeyFunc(RINT key, RINT x, RINT y);
@@ -46,7 +47,6 @@ namespace Reactor {
         RVector2 mouse;
         
     public:
-        static RInput* getInstance();
         RVOID Init();
         RVOID Destroy();
         const RVector2& GetMouse();

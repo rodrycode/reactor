@@ -526,7 +526,7 @@ namespace Reactor
             BoundingSphere sphere = new BoundingSphere();
             foreach(ModelMesh mesh in node._model.Meshes)
                 sphere = BoundingSphere.CreateMerged(sphere, mesh.BoundingSphere);
-            sphere.Radius *= node.scaling.Length();
+            sphere.Radius *= node.Scaling.Length();
             sphere.Center = node.Position;
             if (frus.Contains(sphere) != ContainmentType.Disjoint)
                 return true;
@@ -539,7 +539,7 @@ namespace Reactor
             BoundingSphere sphere = new BoundingSphere();
             foreach(ModelMesh mesh in node._model.Meshes)
                 sphere = BoundingSphere.CreateMerged(sphere, mesh.BoundingSphere);
-            sphere.Radius *= node.scaling.Length();
+            sphere.Radius *= node.Scaling.Length();
             sphere.Center = node.Position;
             if (frus.Contains(sphere) != ContainmentType.Disjoint)
                 return true;

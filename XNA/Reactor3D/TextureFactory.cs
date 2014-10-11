@@ -144,7 +144,7 @@ namespace Reactor
     public class RTextureFactory
     {
         #region Static Instances
-        static RTextureFactory _instance;
+		static RTextureFactory _instance = new RTextureFactory();
         public static RTextureFactory Instance
         {
             get { return _instance; }
@@ -154,7 +154,6 @@ namespace Reactor
         #region Internal Members
         internal Hashtable _textureTable = new Hashtable();
         internal List<Texture> _textureList = new List<Texture>();
-        internal ContentManager _content;
         #endregion
 
         #region Public Methods
@@ -162,8 +161,6 @@ namespace Reactor
         {
             if (_instance == null)
             {
-                _content = new ContentManager(REngine.Instance._game.Services);
-                _content.RootDirectory = _content.RootDirectory + "\\Content";
                 _instance = this;
             }
             else
@@ -182,8 +179,6 @@ namespace Reactor
         {
             if (_instance != null)
             {
-                _instance._content.Unload();
-                _instance._content = null;
                 _instance = null;
             }
             else
@@ -237,7 +232,7 @@ namespace Reactor
             
             if (iType == CONST_RTEXTURE_TYPE.Texture2D)
             {
-                Texture2D t = _instance._content.Load<Texture2D>(Filename);
+                Texture2D t = REngine.Instance._content.Load<Texture2D>(Filename);
                 t.Tag = Filename;
                 t.Name = Name;
                 _instance._textureList.Add(t);
@@ -248,7 +243,7 @@ namespace Reactor
             }
             else if (iType == CONST_RTEXTURE_TYPE.Texture3D)
             {
-                Texture3D t = _instance._content.Load<Texture3D>(Filename);
+				Texture3D t = REngine.Instance._content.Load<Texture3D>(Filename);
                 t.Tag = Filename;
                 t.Name = Name;
                 _instance._textureList.Add(t);
@@ -258,7 +253,7 @@ namespace Reactor
             }
             else if (iType == CONST_RTEXTURE_TYPE.TextureCube)
             {
-                TextureCube t = _instance._content.Load<TextureCube>(Filename);
+				TextureCube t = REngine.Instance._content.Load<TextureCube>(Filename);
                 t.Tag = Filename;
                 t.Name = Name;
                 _instance._textureList.Add(t);
@@ -268,6 +263,7 @@ namespace Reactor
             }
             return 0;
         }
+
         public void SetPixel2D(int TextureID, int X, int Y, R4DVECTOR Color)
         {
             Texture2D tex = (Texture2D)_instance._textureList[TextureID];
@@ -286,7 +282,7 @@ namespace Reactor
             
             RTexture texture = new RTexture();
             texture._Texture = (Texture)_instance._textureList[TextureID];
-            texture.Filename = _instance._content.RootDirectory+"\\"+(string)texture._Texture.Tag+".xnb";
+			texture.Filename = REngine.Instance._content.RootDirectory+"\\"+(string)texture._Texture.Tag+".xnb";
             
 
             return texture;

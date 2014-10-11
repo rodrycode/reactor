@@ -105,13 +105,13 @@ namespace Reactor
 			int nGrowBy = ( m_nMaxSize == 0 ) ? 16 : m_nMaxSize;
 
 			// Limit nGrowBy to keep m_nMaxSize less than INT_MAX
-			if( ( RUINT )m_nMaxSize + ( RUINT )nGrowBy > ( RUINT )INT_MAX )
+			if( ( unsigned int )m_nMaxSize + ( unsigned int )nGrowBy > ( unsigned int )INT_MAX )
 				nGrowBy = INT_MAX - m_nMaxSize;
 
 			nNewMaxSize = __max( nNewMaxSize, m_nMaxSize + nGrowBy );
 
 			// Verify that (nNewMaxSize * sizeof(TYPE)) is not greater than UINT_MAX or the realloc will overrun
-			if( sizeof( TYPE ) > UINT_MAX / ( RUINT )nNewMaxSize )
+			if( sizeof( TYPE ) > UINT_MAX / ( unsigned int )nNewMaxSize )
 				return R_INVALIDARG;
 
 			TYPE* pDataNew = ( TYPE* )realloc( m_pData, nNewMaxSize * sizeof( TYPE ) );

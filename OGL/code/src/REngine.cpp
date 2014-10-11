@@ -25,52 +25,24 @@ THE SOFTWARE.
 
 namespace Reactor
 {
-	REngine* REngine::_instance = NULL;
-	REngine::REngine()
-	{
-		
-		
-        REngine::_instance = this;
-			REngine::_instance->clearColor = RColor(0,0,0,0);
-			//REngine::_instance->gldevice = rGLDevice();
-		
-	}
-
-	REngine::~REngine()
-	{
-		
-		if(REngine::_instance)
-		{
-			delete REngine::_instance;
-		}
-		REngine::_instance = null;
-
-	}
-	REngine* REngine::getInstance()
-	{
-		if(REngine::_instance == null)
-			REngine::_instance = new REngine();
-		return REngine::_instance;
-	}
-
 	
     const RECT& REngine::GetScreenSize(){
         int w = glutGet(GLUT_SCREEN_WIDTH);
         int h = glutGet(GLUT_SCREEN_HEIGHT);
-		RECT* r = new RECT(0, 0, w, h);
+		const RECT* r = new RECT(0, 0, w, h);
         return *r;
     }
 	
     
 
-	void REngine::Init3DWindowed(RECT &rect, const char* title)
+	void REngine::Init3DWindowed(const char* title, RECT &rect)
 	{
 		
 		glutInitWindowSize (rect.right - rect.left, rect.bottom - rect.top);
 		glutInitWindowPosition(rect.left, rect.top);
 		window = glutCreateWindow(title);
 		
-		REngine::_instance->_fullscreen = false;
+		this->_fullscreen = false;
 		//REngine::_instance->shaderManager.InitializeStockShaders();
 	}
 
@@ -89,7 +61,7 @@ namespace Reactor
 		glutGameModeString(str.str().c_str());
 		
 		
-		REngine::_instance->_fullscreen = true;
+		this->_fullscreen = true;
 		
 	}
 	
@@ -125,7 +97,7 @@ namespace Reactor
 		}
 		else
 		{
-			glClearColor(REngine::_instance->clearColor.r, REngine::_instance->clearColor.g, REngine::_instance->clearColor.b, REngine::_instance->clearColor.a);
+			glClearColor(this->clearColor.r, this->clearColor.g, this->clearColor.b, this->clearColor.a);
 			glClearDepth(1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}

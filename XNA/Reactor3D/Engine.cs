@@ -69,6 +69,7 @@ namespace Reactor
         internal SpriteFont _systemfont;
         internal SpriteBatch _system2d;
         internal ResourceContentManager _resourceContent;
+		internal ContentManager _content;
         internal TextWriter _logwriter;
         internal string _logfile;
         internal StringBuilder _log;
@@ -97,7 +98,7 @@ namespace Reactor
             {
                 _instance = this;
                 _instance._game = game;
-
+				_instance._content = game.Content;
                 _instance._currentViewport = CreateViewport("root");
                 _instance._camera = new RCamera();
                 _instance._logfile = Path.GetFullPath("reactordebug.txt");

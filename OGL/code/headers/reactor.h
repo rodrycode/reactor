@@ -22,34 +22,87 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef RGAME_H
-#define RGAME_H
 
-#include "reactor.h"
-#include "REngine.h"
+#ifndef RTYPESH
+#define RTYPESH
 
-namespace Reactor
-{
 
-	class RGame : public RSingleton<RGame>
+#include "common.h"
+
+namespace Reactor {
+
+    class RVector2;
+
+    class RVector3;
+
+    class RVector4;
+
+    class RQuaternion;
+
+    class RMatrix;
+
+    class REngine;
+
+    class RScene;
+
+    class RCamera;
+
+    class RGame;
+
+    class RInput;
+
+    class RMathUtils;
+
+    class RNode;
+}
+
+
+#include "RMathUtils.h"
+
+#include "types/RVector2.h"
+#include "types/RVector3.h"
+#include "types/RVector4.h"
+#include "types/RQuaternion.h"
+#include "types/RMatrix.h"
+
+namespace Reactor{
+
+    typedef enum RLIGHT_TYPE
+    {
+        DIRECTIONAL		=	0x0000,
+        POINT			=	0x0001,
+        SPOT			=	0x0002
+    } RLIGHT_TYPE;
+
+/*
+
+	struct rGLDevice
 	{
-    private:
-		~RGame();
-	public:
-		void Run(int argc, char** argv);
-		void Init();
-		virtual void Load(){};
-		virtual void Unload(){};
-		static void OnResize(int width, int height);
-		static void OnRender(void);
-		static void OnIdle(void);
-		virtual void Render(){};
-		virtual void Update(){};
-        virtual void Idle(){};
-		REngine& Reactor();
-		float GetFPS();
 
+		HGLRC context;
+		HDC handle;
+		HWND hwnd;
+		rGLDevice()
+		{
+			context = NULL;
+			handle = NULL;
+			hwnd = NULL;
+		};
 	};
-};
 
+*/
+
+
+
+
+    struct RLight
+    {
+        RLIGHT_TYPE type;
+        RVector3 position, direction, attenuation;
+        RColor diffuse, ambient, specular;
+        RFLOAT falloff, phi, theta, radius;
+        RBOOL enabled;
+    };
+
+}
 #endif

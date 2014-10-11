@@ -47,12 +47,8 @@ namespace Reactor
         #region Members
         internal RMaterial _material;
         internal BasicEffect _basicEffect;
-        internal Vector3 _scaling = Vector3.One;
         internal VertexBuffer _buffer;
         internal IndexBuffer _index;
-        internal ContentManager _content;
-        internal Vector3 _position = Vector3.Zero;
-        internal Matrix _objectMatrix = Matrix.Identity;
         internal int vertCount = 0;
         #endregion
         #region Methods
@@ -64,56 +60,12 @@ namespace Reactor
         }
         internal void CreateMesh(string name)
         {
-            this._name = name;
-            _content = new ContentManager(REngine.Instance._game.Services);
-            _content.RootDirectory = _content.RootDirectory + "\\Content";
-            _objectMatrix = Matrix.CreateScale(1.0f);
+            this.Name = name;
+            Matrix = Matrix.CreateScale(1.0f);
             _basicEffect = new BasicEffect(REngine.Instance._game.GraphicsDevice);
         }
 
-        internal Matrix BuildScalingMatrix(Matrix m)
-        {
-            m *= Matrix.CreateScale(_scaling);
-            return m;
-        }
-        public void SetScale(float ScaleX, float ScaleY, float ScaleZ)
-        {
-            _scaling = new Vector3(ScaleX, ScaleY, ScaleZ);
-            _objectMatrix = BuildScalingMatrix(_objectMatrix);
-
-        }
-        public void SetMatrix(R3DMATRIX matrix)
-        {
-            _objectMatrix = matrix.matrix;
-        }
-        public R3DMATRIX GetMatrix()
-        {
-            return R3DMATRIX.FromMatrix(_objectMatrix);
-        }
-        public R3DVECTOR GetScale()
-        {
-            return R3DVECTOR.FromVector3(_scaling);
-        }
-        public void Move(R3DVECTOR vector)
-        {
-            Move(vector.X, vector.Y, vector.Z);
-        }
-        public void Move(float x, float y, float z)
-        {
-            _position += _objectMatrix.Left * x;
-            _position += _objectMatrix.Up * y;
-            _position += _objectMatrix.Forward * z;
-
-            _objectMatrix.Translation = _position;
-        }
-        public void SetPosition(R3DVECTOR position)
-        {
-            _position = position.vector;
-            //_objectMatrix = BuildPositionMatrix(_objectMatrix);
-            _objectMatrix.Translation = _position;
-            //Quaternion q = Quaternion.CreateFromRotationMatrix(_objectMatrix);
-            //_model.Meshes[0].Effects[0].Parameters
-        }
+        
         public void SetTexture(int TextureID)
         {
             if (_material != null)
@@ -122,8 +74,9 @@ namespace Reactor
                 _basicEffect.Texture = (Texture2D)RTextureFactory.Instance._textureList[TextureID];
         }
 
-        public void CreateSphere(R3DVECTOR Center, float verticalRadius, float horizontalRadius, int NumPhiSides, int NumThetaSides)
+		public void CreateSphere(R3DVECTOR Center, float Radius, int NumPhiSides, int NumThetaSides)
         {
+			AABB = RBOUNDINGBOX.CreateFromSphere(new BoundingSphere(Center.ToVector3(), Radius));
             RVERTEXFORMAT[] vertices = new RVERTEXFORMAT[NumThetaSides * 2 * (NumPhiSides + 1)];
             vertCount = NumThetaSides * 2 * (NumPhiSides + 1);
             int index = 0;
@@ -136,11 +89,11 @@ namespace Reactor
                 {
                     float phi = ((float)j / (float)NumPhiSides) * MathHelper.ToRadians(180f);
 
-                    float x1 = (float)(Math.Sin(phi) * Math.Cos(theta1)) * horizontalRadius;
-                    float z1 = (float)(Math.Sin(phi) * Math.Sin(theta1)) * horizontalRadius;
-                    float x2 = (float)(Math.Sin(phi) * Math.Cos(theta2)) * horizontalRadius;
-                    float z2 = (float)(Math.Sin(phi) * Math.Sin(theta2)) * horizontalRadius;
-                    float y = (float)Math.Cos(phi) * verticalRadius;
+                    float x1 = (float)(Math.Sin(phi) * Math.Cos(theta1)) * Radius;
+                    float z1 = (float)(Math.Sin(phi) * Math.Sin(theta1)) * Radius;
+                    float x2 = (float)(Math.Sin(phi) * Math.Cos(theta2)) * Radius;
+                    float z2 = (float)(Math.Sin(phi) * Math.Sin(theta2)) * Radius;
+                    float y = (float)Math.Cos(phi) * Radius;
 
                     Vector3 position = Center.vector + new Vector3(x1, y, z1);
 
@@ -257,7 +210,7 @@ namespace Reactor
                 _basicEffect.DirectionalLight0.Direction = RAtmosphere.Instance.sunDirection;
                 _basicEffect.DirectionalLight0.SpecularColor = Vector3.One;
                 _basicEffect.DirectionalLight0.Enabled = true;
-                _basicEffect.World = Matrix.Identity * Matrix.CreateScale(_scaling) * _objectMatrix;
+                _basicEffect.World = Matrix.Identity * Matrix.CreateScale(Scaling) * Matrix;
                 //effect.World = _objectMatrix;
                 _basicEffect.View = camera.viewMatrix;
                 _basicEffect.Projection = camera.projMatrix;
@@ -310,11 +263,11 @@ namespace Reactor
         {
             _buffer.Dispose();
             _index.Dispose();
-            _content.Dispose();
+            
         }
 
 
-#endregion
+        #endregion
     }
     public class RMesh : RSceneNode, IDisposable
     {
@@ -322,13 +275,7 @@ namespace Reactor
 
         #region Internal Members
         internal Model _model;
-        internal ContentManager _content;
         internal Matrix[] _transforms;
-        internal Matrix _objectMatrix;
-        internal Vector3 scaling;
-        internal Vector3 dir;
-        internal Vector3 _rotation;
-        internal Vector3 _position;
         internal BasicEffect _basicEffect;
 
         internal RMaterial _material;
@@ -338,33 +285,33 @@ namespace Reactor
         #region Public Methods
         public RMesh()
         {
-            _rotation = Vector3.Zero;
-            _position = Vector3.Zero;
-            scaling = Vector3.One;
+            Rotation = Vector3.Zero;
+            Position = Vector3.Zero;
+            Scaling = Vector3.One;
         }
         internal void CreateMesh(string name)
         {
-            _name = name;
+            Name = name;
             _model = new Model();
-            _content = new ContentManager(REngine.Instance._game.Services);
-            _content.RootDirectory = _content.RootDirectory + "\\Content";
             _basicEffect = new BasicEffect(REngine.Instance._graphics.GraphicsDevice);
             _basicEffect.CurrentTechnique = _basicEffect.Techniques[0];
+			AABB = new RBOUNDINGBOX();
+			foreach(ModelMesh mesh in _model.Meshes)
+			{
+				AABB = RBOUNDINGBOX.CreateMerged(AABB, RBOUNDINGBOX.CreateFromSphere(mesh.BoundingSphere));
+			}
         }
         public void Load(string filename)
         {
-            _model = _content.Load<Model>(filename);
+			_model = REngine.Instance._content.Load<Model>(filename);
 
             _transforms = new Matrix[_model.Bones.Count];
 
             _model.CopyAbsoluteBoneTransformsTo(_transforms);
 
-            float scale = _model.Meshes[0].BoundingSphere.Radius * _transforms[0].Right.Length();
-            if (scale == 0)
-                scale = 0.0001f;
-            _objectMatrix = Matrix.CreateScale(1.0f / scale);
-            scaling = new Vector3(scale, scale, scale);
-            _objectMatrix = BuildScalingMatrix(ref _objectMatrix);
+            Matrix = Matrix.CreateScale(1.0f);
+            Scaling = new Vector3(1f, 1f, 1f);
+            Matrix = BuildScalingMatrix(Matrix);
             
             
             foreach(ModelMesh mesh in _model.Meshes)
@@ -377,37 +324,7 @@ namespace Reactor
             
             
         }
-        public void SetScale(float ScaleX, float ScaleY, float ScaleZ)
-        {
-            scaling = new Vector3(ScaleX, ScaleY, ScaleZ);
-            _objectMatrix = BuildScalingMatrix(ref _objectMatrix);
-            Rotate(MathHelper.ToDegrees(_rotation.X), MathHelper.ToDegrees(_rotation.Y), MathHelper.ToDegrees(_rotation.Z));
-            
-        }
-        public void SetMatrix(R3DMATRIX matrix)
-        {
-            _objectMatrix = matrix.matrix / _transforms[_model.Meshes[0].ParentBone.Index];
-        }
-        public R3DMATRIX GetMatrix()
-        {
-            return R3DMATRIX.FromMatrix(_transforms[_model.Meshes[0].ParentBone.Index] * _objectMatrix);
-        }
-        public R3DVECTOR GetScale()
-        {
-            return R3DVECTOR.FromVector3(scaling);
-        }
-        public void Move(R3DVECTOR vector)
-        {
-            Move(vector.X, vector.Y, vector.Z);
-        }
-        public void Move(float x, float y, float z)
-        {
-            _position += _objectMatrix.Left * x;
-            _position += _objectMatrix.Up * y;
-            _position += _objectMatrix.Forward * z;
-
-            _objectMatrix.Translation = _position;
-        }
+        
         public override void Update()
         {
             //_objectMatrix = BuildRotationMatrix(_objectMatrix);
@@ -417,10 +334,6 @@ namespace Reactor
             
             //_objectMatrix = BuildScalingMatrix(_objectMatrix);
             //_objectMatrix = _transforms[_model.Meshes[0].ParentBone.Index] * _objectMatrix;
-            dir = _objectMatrix.Forward;
-            base.Position = _position;
-            base.Rotation = _rotation;
-            base.Matrix = _objectMatrix;
             base.Quaternion = Quaternion.CreateFromRotationMatrix(base.Matrix);
             
         }
@@ -510,7 +423,7 @@ namespace Reactor
                         //effect.FogEnd = REngine.Instance._camera.zfar;
                         //effect.FogColor = new Vector3(RAtmosphere.Instance.fogColor.X, RAtmosphere.Instance.fogColor.Y, RAtmosphere.Instance.fogColor.Z);
 
-                        effect.World = _transforms[_model.Meshes[0].ParentBone.Index] * _objectMatrix;
+                        effect.World = _transforms[_model.Meshes[0].ParentBone.Index] * Matrix;
                         //effect.World = _objectMatrix;
                         effect.View = camera.viewMatrix;
                         effect.Projection = camera.projMatrix;
@@ -541,7 +454,7 @@ namespace Reactor
             GraphicsDevice graphicsDevice = REngine.Instance._graphics.GraphicsDevice;
 
             _material.shader.effect.CurrentTechnique = _material.shader.effect.Techniques[techniqueName];
-            this.Matrix = _transforms[_model.Meshes[0].ParentBone.Index] * _objectMatrix;
+            this.Matrix = _transforms[_model.Meshes[0].ParentBone.Index] * Matrix;
             //_material.Prepare(this);
             // Draw the model. A model can have multiple meshes, so loop.
             foreach (ModelMesh mesh in _model.Meshes)
@@ -575,67 +488,7 @@ namespace Reactor
                 mesh.Draw();
             }
         }
-        internal Matrix BuildRotationMatrix(ref Matrix m)
-        {
-            m *= Matrix.CreateRotationX(_rotation.X);
-            m *= Matrix.CreateRotationY(_rotation.Y);
-            m *= Matrix.CreateRotationZ(_rotation.Z);
-            return m;
-        }
-        internal Matrix BuildScalingMatrix(ref Matrix m)
-        {
-            m = Matrix.CreateScale(scaling);
-            return m;
-        }
-        internal Matrix BuildPositionMatrix(ref Matrix m)
-        {
-            m *= Matrix.CreateTranslation(_position);
-            //_transforms[_model.Meshes[0].ParentBone.Index] = m;
-            return m;
-        }
-        public void RotateX(float value)
-        {
-            
-            _rotation.X = MathHelper.ToRadians(value);
-            _objectMatrix *= Matrix.CreateRotationX(_rotation.X);
-            _objectMatrix.Translation = _position;
-        }
-        public void RotateY(float value)
-        {
-            _rotation.Y = MathHelper.ToRadians(value);
-            
-            _objectMatrix *= Matrix.CreateRotationY(_rotation.Y);
-            _objectMatrix.Translation = _position;
-        }
-        public void RotateZ(float value)
-        {
-            _rotation.Z = MathHelper.ToRadians(value);
-            
-            _objectMatrix *= Matrix.CreateRotationZ(_rotation.Z);
-            _objectMatrix.Translation = _position;
-        }
-        public void Rotate(float X, float Y, float Z)
-        {
-            RotateX(X);
-            RotateY(Y);
-            RotateZ(Z);
-        }
-        public void SetLookAt(R3DVECTOR vector)
-        {
-            dir = Vector3.Normalize(vector.vector - _position);
-            Vector3 up = Vector3.Up;
-
-            
-            
-            //_objectMatrix = BuildScalingMatrix(ref _objectMatrix);
-            //_objectMatrix = BuildPositionMatrix(ref _objectMatrix);
-            Quaternion q = Quaternion.CreateFromRotationMatrix(Matrix.CreateLookAt(_position, vector.vector, _objectMatrix.Up));
-            
-            _rotation.X = q.X;
-            _rotation.Y = q.Y;
-            _rotation.Z = q.Z;
-            _objectMatrix = BuildRotationMatrix(ref _objectMatrix);
-        }
+        
         int texid;
         public void SetTexture(int TextureID, int TextureLayer)
         {
@@ -773,22 +626,7 @@ namespace Reactor
             meshIDs = mindex.ToArray();
             mindex = null;
         }
-        public R3DVECTOR GetPosition()
-        {
-            return R3DVECTOR.FromVector3(_objectMatrix.Translation);
-        }
-        public R3DVECTOR GetRotation()
-        {
-            return R3DVECTOR.FromVector3(_rotation);
-        }
-        public void SetPosition(R3DVECTOR position)
-        {
-            _position = position.vector;
-            _objectMatrix = BuildPositionMatrix(ref _objectMatrix);
-            //_objectMatrix.Translation = _position;
-            //Quaternion q = Quaternion.CreateFromRotationMatrix(_objectMatrix);
-            //_model.Meshes[0].Effects[0].Parameters
-        }
+        
         
         public void Dispose()
         {
@@ -797,8 +635,6 @@ namespace Reactor
                 _basicEffect.Dispose();
                 _basicEffect = null;
                 _model = null;
-                _content.Unload();
-                _content = null;
             }
         }
         public void AdvancedCollision()

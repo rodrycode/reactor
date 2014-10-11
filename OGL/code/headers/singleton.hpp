@@ -21,35 +21,38 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
-
-#ifndef RGAME_H
-#define RGAME_H
-
-#include "reactor.h"
-#include "REngine.h"
+#ifndef SINGLETON_H
+#define SINGLETON_H
 
 namespace Reactor
 {
-
-	class RGame : public RSingleton<RGame>
+	template <class T>
+	class RSingleton
 	{
-    private:
-		~RGame();
 	public:
-		void Run(int argc, char** argv);
-		void Init();
-		virtual void Load(){};
-		virtual void Unload(){};
-		static void OnResize(int width, int height);
-		static void OnRender(void);
-		static void OnIdle(void);
-		virtual void Render(){};
-		virtual void Update(){};
-        virtual void Idle(){};
-		REngine& Reactor();
-		float GetFPS();
+	  template <typename... Args>
+	  static
+	  T* Instance(Args... args)
+	  {
+	    if (!instance_)
+	      {
+	        instance_ = new T(std::forward<Args>(args)...);
+	      }
 
+	    return instance_;
+	  }
+
+	  static
+	  void Destroy()
+	  {
+	    delete instance_;
+	    instance_ = nullptr;
+	  }
+
+	private:
+	  static T* instance_;
 	};
-};
 
+	template <class T> T*  RSingleton<T>::instance_ = nullptr;
+}
 #endif
