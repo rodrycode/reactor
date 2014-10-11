@@ -223,6 +223,16 @@ namespace Reactor {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] Tahoma {
+            get {
+                object obj = ResourceManager.GetObject("Tahoma", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] Water_dx11 {
             get {
                 object obj = ResourceManager.GetObject("Water_dx11", resourceCulture);

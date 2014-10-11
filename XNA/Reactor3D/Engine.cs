@@ -176,6 +176,38 @@ namespace Reactor
         {
             return _fps;
         }
+
+        public void SetWindowTitle(string Title)
+        {
+            _instance._game.Window.Title = Title;
+        }
+        public String GetWindowTitle()
+        {
+            return _instance._game.Window.Title;
+        }
+
+        public void SetWindowPosition(R2DVECTOR v)
+        {
+#if !XBOX
+            Type type = typeof(OpenTKGameWindow);
+            System.Reflection.FieldInfo field = type.GetField("window", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            OpenTK.GameWindow window = (OpenTK.GameWindow)field.GetValue(_instance._game.Window);
+            window.X = (int)v.X;
+            window.Y = (int)v.Y;
+#endif
+        }
+
+        public void SetWindowBorderless(bool Borderless)
+        {
+            Type type = typeof(OpenTKGameWindow);
+            System.Reflection.FieldInfo field = type.GetField("window", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            OpenTK.GameWindow window = (OpenTK.GameWindow)field.GetValue(_instance._game.Window);
+            if (Borderless)
+                window.WindowBorder = OpenTK.WindowBorder.Hidden;
+            else
+                window.WindowBorder = OpenTK.WindowBorder.Resizable;
+
+        }
 #if XBOX
         public Microsoft.Xna.Framework.GamerServices.GamerServicesComponent GetServices()
         {
@@ -324,7 +356,7 @@ namespace Reactor
                 pos.X += 50;
                 pos.Y += 20;
 #endif
-                _instance._system2d.DrawString(_systemfont, _fps.ToString() + " AVG FPS", pos, Color.White);
+                _instance._system2d.DrawString(_systemfont, _fps.ToString(), pos, Color.White);
                 _instance._system2d.End();
                 //RScreen2D.IAction_End2D();
             }

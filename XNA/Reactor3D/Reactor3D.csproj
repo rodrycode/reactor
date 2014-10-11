@@ -187,6 +187,7 @@
     <EmbeddedResource Include="Resources\Skybox.ogl.mgfxo" />
     <EmbeddedResource Include="Resources\Water.dx11.mgfxo" />
     <EmbeddedResource Include="Resources\Water.ogl.mgfxo" />
+    <None Include="Tahoma.xnb" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReactorContent\ReactorContent.csproj">

@@ -482,10 +482,10 @@ namespace Reactor
                     {
                         VertexTerrain tempVert = new VertexTerrain();
                         tempVert.Position = new Vector3((OffsetX + x) * Terrain.scale,
-                                                        Terrain.HeightData[OffsetX + x, OffsetY + y],
+                                                        Terrain.HeightData[x, y],
                                                         (OffsetY + y) * Terrain.scale);
 
-                        tempVert.Normal = Terrain.TerrainNormals[OffsetX + x, OffsetY + y];
+                        tempVert.Normal = Terrain.TerrainNormals[x,y];
                         verts[x + y * Width] = tempVert;
                         //Terrain.TerrainVertices.Add(tempVert);
                     }

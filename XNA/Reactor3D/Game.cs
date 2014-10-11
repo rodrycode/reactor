@@ -377,7 +377,7 @@ namespace Reactor
                 // TODO: Add your drawing code here
                 
                 //RenderWatermark();
-                //REngine.Instance.DrawFps();
+                REngine.Instance.DrawFps();
 
                 
                 //pmv.Draw(gameTime);
